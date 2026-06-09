@@ -1850,13 +1850,8 @@ window.addEventListener("hashchange", () => {
 document.querySelector("#home-search")?.addEventListener("submit", (event) => {
   event.preventDefault();
   const query = document.querySelector("#home-query").value.trim();
-  const categorySelect = document.querySelector("#home-search select");
-  const category = categorySelect?.value || "All categories";
-  
   if (!query) return;
-  
-  // Perform the search
-  performSearch(query, category);
+  performSearch(query);
   renderSearchResults();
   goToRoute("search");
 });
