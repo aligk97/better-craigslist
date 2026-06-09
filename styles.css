@@ -18,7 +18,7 @@
   --shadow: 0 18px 44px rgba(23, 21, 31, 0.1);
   --radius: 8px;
   --topbar-bg: rgba(255, 255, 255, 0.94);
-  --hero-gradient: linear-gradient(120deg, #f8f8ff 0%, #ffffff 48%, #edf8f2 100%);
+  --hero-gradient: linear-gradient(120deg, #f8f8ff 0%, #ffffff 48%, #ede0fa 100%);
   --nav-hover: #f0eefc;
   --thumb-border: transparent;
   --badge-bg: #eef1f5;
@@ -50,7 +50,7 @@
     --rose: #ed7090;
     --shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
     --topbar-bg: rgba(27, 29, 39, 0.94);
-    --hero-gradient: linear-gradient(120deg, #161822 0%, #1b1d27 48%, #16201e 100%);
+    --hero-gradient: linear-gradient(120deg, #161822 0%, #1b1d27 48%, #2b2045 100%);
     --nav-hover: #2a2645;
     --thumb-border: var(--line);
     --badge-bg: #2e3148;
@@ -83,7 +83,7 @@ html:not(.dark) {
   --shadow: 0 18px 44px rgba(23, 21, 31, 0.1);
   --radius: 8px;
   --topbar-bg: rgba(255, 255, 255, 0.94);
-  --hero-gradient: linear-gradient(120deg, #f8f8ff 0%, #ffffff 48%, #edf8f2 100%);
+  --hero-gradient: linear-gradient(120deg, #f8f8ff 0%, #ffffff 48%, #ede0fa 100%);
   --nav-hover: #f0eefc;
   --thumb-border: transparent;
   --badge-bg: #eef1f5;
@@ -112,7 +112,7 @@ html.dark {
   --rose: #ed7090;
   --shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
   --topbar-bg: rgba(27, 29, 39, 0.94);
-  --hero-gradient: linear-gradient(120deg, #161822 0%, #1b1d27 48%, #16201e 100%);
+  --hero-gradient: linear-gradient(120deg, #161822 0%, #1b1d27 48%, #2b2045 100%);
   --nav-hover: #2a2645;
   --thumb-border: var(--line);
   --badge-bg: #2e3148;
@@ -602,7 +602,25 @@ h3 {
   gap: 8px;
 }
 
-.trust-strip span,
+.trust-strip span {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  color: var(--green);
+  background: var(--green-soft);
+  border: 1px solid #b8e6d0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.trust-strip span .icon-sm {
+  color: var(--green);
+}
+
 .badge,
 .filter-chip,
 .year-badge,
@@ -646,6 +664,22 @@ h3 {
 .listing-card {
   overflow: hidden;
   box-shadow: 0 12px 28px rgba(23, 21, 31, 0.06);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.listing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(23, 21, 31, 0.1);
+}
+
+.mini-listing {
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.mini-listing:hover {
+  border-color: #bfb7f3;
 }
 
 .listing-body {
@@ -1751,6 +1785,20 @@ html.dark .art-wheel {
   background:
     radial-gradient(circle at 50% 50%, #3a3d55 0 12%, #2a2d45 13% 37%, #2e3148 38% 42%, #2a2d45 43% 55%, transparent 56%),
     linear-gradient(#1b1d2e, #202338);
+}
+
+html.dark .mini-listing:hover {
+  border-color: #7d61d8;
+}
+
+html.dark .trust-strip span {
+  color: var(--green);
+  background: var(--green-soft);
+  border-color: #1a5a44;
+}
+
+html.dark .trust-strip span .icon-sm {
+  color: var(--green);
 }
 
 /* ── Brand mark in dark mode ── */

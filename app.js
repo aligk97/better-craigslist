@@ -323,7 +323,7 @@ function renderHousingNeighborhoodOptions() {
   if (!quickLinks) return;
   const values = topValues(categoryListings("housing"), (listing) => normalizeLocation(listing.location || ""), 9);
   quickLinks.innerHTML = values
-    .map((value) => `<button type="button" data-housing-filter="${escapeHtml(value)}">${escapeHtml(value)}</button>`)
+    .map((value) => `<button class="chip ${housingFilters.has(value) ? "is-selected" : ""}" type="button" data-housing-filter="${escapeHtml(value)}">${escapeHtml(value)}</button>`)
     .join("");
 }
 
@@ -655,16 +655,15 @@ function renderHomeListings() {
   ].filter(Boolean);
   container.innerHTML = picks.map((listing) => {
     const art = listing.category === "housing" ? "art-apartment" : listing.category === "computers" ? "art-laptop" : "art-car";
-    const route = listing.category === "housing" ? "housing" : listing.category === "computers" ? "computers" : "detail";
     return `
-      <article class="listing-card">
+      <article class="listing-card" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="${escapeHtml(listing.category)}">
         <div class="visual-art ${photoClass(listing, art)}"${photoStyle(listing)}></div>
         <div class="listing-body">
           <div class="listing-topline">
             <span class="price">${formatPrice(listing.price, listing.category === "housing" ? "/mo" : "")}</span>
             <span class="badge badge-green">${appState.data.mode === "live" || appState.data.mode === "mixed-live" ? "Live" : "Real seed"}</span>
           </div>
-          <h3><a href="#${route}" ${listing.category === "cars" ? `data-detail-id="${escapeHtml(listing.id)}"` : `data-route-link="${route}"`}>${escapeHtml(listing.title)}</a></h3>
+          <h3>${escapeHtml(listing.title)}</h3>
           <p>${escapeHtml(listing.location)}</p>
           <div class="badge-row">
             <span class="badge">Craigslist source</span>
@@ -687,7 +686,7 @@ function renderMiniListings() {
   mini.innerHTML = picks.map((listing, index) => {
     const art = listing.category === "housing" ? "art-apartment" : listing.category === "computers" ? "art-laptop" : "art-car";
     return `
-      <article class="mini-listing ${index === 1 ? "offset" : ""}">
+      <article class="mini-listing ${index === 1 ? "offset" : ""}" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="${escapeHtml(listing.category)}">
         <div class="visual-art ${photoClass(listing, art)}"${photoStyle(listing)}></div>
         <div>
           <strong>${escapeHtml(listing.title)}</strong>
@@ -1229,14 +1228,20 @@ document.querySelector("#housing")?.addEventListener("click", (event) => {
   if (!control) return;
   const value = control.dataset.housingFilter;
   if (housingListingTypes.includes(value)) {
-    replaceFilterGroup(housingFilters, housingListingTypes, value);
+    // Toggle within listing type group
+    if (housingFilters.has(value)) housingFilters.delete(value);
+    else replaceFilterGroup(housingFilters, housingListingTypes, value);
   } else if (housingBedroomValues.includes(value)) {
-    replaceFilterGroup(housingFilters, housingBedroomValues, value);
+    // Toggle within bedroom group
+    if (housingFilters.has(value)) housingFilters.delete(value);
+    else replaceFilterGroup(housingFilters, housingBedroomValues, value);
   } else if (housingFurnishedValues.includes(value)) {
     if (housingFilters.has(value)) housingFilters.delete(value);
     else replaceFilterGroup(housingFilters, housingFurnishedValues, value);
   } else if (housingLeaseValues.includes(value)) {
-    replaceFilterGroup(housingFilters, housingLeaseValues, value);
+    // Toggle within lease term group
+    if (housingFilters.has(value)) housingFilters.delete(value);
+    else replaceFilterGroup(housingFilters, housingLeaseValues, value);
   } else if (housingFilters.has(value)) {
     housingFilters.delete(value);
   } else {
@@ -1288,7 +1293,13 @@ computerBrandSelect?.addEventListener("change", (event) => {
 computerScreenGroup?.addEventListener("click", (event) => {
   const chip = event.target.closest(".chip");
   if (!chip) return;
-  computerFilters.screen = chip.dataset.value || chip.textContent.trim();
+  const value = chip.dataset.value || chip.textContent.trim();
+  // Toggle: if already selected, reset to "Any size"
+  if (computerFilters.screen === value) {
+    computerFilters.screen = "Any size";
+  } else {
+    computerFilters.screen = value;
+  }
   renderComputerFilters();
 });
 
