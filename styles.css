@@ -220,8 +220,7 @@ svg {
 .listing-body,
 .page-head > *,
 .primary-nav,
-.active-filters,
-.smart-banner > * {
+.active-filters {
   min-width: 0;
 }
 
@@ -254,8 +253,7 @@ svg {
 .seller-head,
 .verification-grid,
 .active-bar,
-.computer-tabs,
-.smart-banner {
+.computer-tabs {
   display: flex;
   align-items: center;
 }
@@ -896,14 +894,6 @@ h3 {
 .page-head h1 {
   margin-bottom: 0;
   font-size: 42px;
-}
-
-.result-meta {
-  display: grid;
-  justify-items: end;
-  gap: 8px;
-  color: var(--muted);
-  font-weight: 800;
 }
 
 .live-dot::before {
@@ -1577,22 +1567,6 @@ h3 {
   white-space: nowrap;
 }
 
-.smart-banner {
-  gap: 12px;
-  min-height: 58px;
-  margin-bottom: 18px;
-  padding: 14px 16px;
-  color: #0f5132;
-  background: var(--green-soft);
-  border: 1px solid #b8e6d0;
-  border-radius: var(--radius);
-}
-
-.smart-banner span {
-  margin-left: auto;
-  color: var(--muted);
-}
-
 .select-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -1968,25 +1942,8 @@ html.dark .compare-card.is-compared {
     gap: 4px;
   }
 
-  .smart-banner {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .smart-banner strong {
-    overflow-wrap: anywhere;
-  }
-
-  .smart-banner span {
-    margin-left: 0;
-  }
-
   .segmented {
     grid-template-columns: 1fr;
-  }
-
-  .result-meta {
-    justify-items: start;
   }
 
   #compare-button,

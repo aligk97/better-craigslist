@@ -48,7 +48,6 @@ let carFilterSets = {
 
 const carFilters = new Set([]);
 const carActiveFilters = document.querySelector("#car-active-filters");
-const carCount = document.querySelector("#car-count");
 const carMakeSelect = document.querySelector("#car-make");
 const carModelSelect = document.querySelector("#car-model");
 const carYearSelect = document.querySelector("#car-year");
@@ -408,7 +407,6 @@ function renderCarFilters() {
     .map((filter) => filterChip(filter, "car"))
     .join("");
   const matches = sortListings(appState.listings.filter(matchesCar), carSortSelect?.value || "Best match", "cars");
-  if (carCount) carCount.textContent = `${matches.length} matches`;
   const container = document.querySelector("#cars .listing-list");
   if (container) {
     container.innerHTML = matches.length ? matches.map(carCard).join("") : emptyState("Try removing model, body, or year filters.");
@@ -642,7 +640,6 @@ function renderComputerFilters() {
   }
   updateCompareState();
   renderComputerActiveFilters();
-  const queryLabel = computerFilters.brand === "Apple" ? "MacBook" : computerFilters.brand !== "Any brand" ? `${computerFilters.brand} laptop` : "computer";
 }
 
 function renderHomeListings() {
