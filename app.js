@@ -2,28 +2,10 @@ const pages = Array.from(document.querySelectorAll("[data-page]"));
 const routeLinks = Array.from(document.querySelectorAll("[data-route-link]"));
 
 const fallbackData = {
-  generatedAt: "2026-06-09",
-  mode: "embedded-seed",
-  source: "Embedded seed from Craigslist New York search results; run the local server for live refresh.",
-  listings: [
-    { id: "car-7939679011", category: "cars", title: "2019 BMW X3 - Great Deal!-new jersey", price: 16495, location: "Woodside", url: "https://newyork.craigslist.org/jsy/ctd/d/woodside-2019-bmw-x3-great-deal-new/7939679011.html", image: "https://images.craigslist.org/01414_hFwmJPd8ZQr_0ew0aS_600x450.jpg", year: 2019, make: "BMW", model: "X3", body: "SUV", mileage: 96139, transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7939358963", category: "cars", title: "2008 BMW X3 3.0si AWD 4dr SUV", price: 4600, location: "Trenton", url: "https://newyork.craigslist.org/brx/ctd/d/trenton-2008-bmw-x3-30si-awd-4dr-suv/7939358963.html", image: "https://images.craigslist.org/00O0O_kIrb7fk3h8z_0dI0ah_600x450.jpg", year: 2008, make: "BMW", model: "X3", body: "SUV", transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7939275196", category: "cars", title: "An Impressive 2019 BMW X3 with 96,139 Miles-long island", price: 15900, location: "Freeport", url: "https://newyork.craigslist.org/lgi/ctd/d/roosevelt-an-impressive-2019-bmw-x3/7939275196.html", image: null, year: 2019, make: "BMW", model: "X3", body: "SUV", mileage: 96139, transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7939066504", category: "cars", title: "2019 BMW X5 xDrive40i AWD Fully Loaded (Camera, Panorama, Navi)", price: 20990, location: "Brooklyn", url: "https://newyork.craigslist.org/brk/cto/d/brooklyn-2019-bmw-x5-xdrive40i-awd/7939066504.html", image: null, year: 2019, make: "BMW", model: "X5", body: "SUV", transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7938805789", category: "cars", title: "BMW X3 2014", price: 7500, location: "Nassau County", url: "https://newyork.craigslist.org/lgi/cto/d/melville-bmw-x3-2014/7938805789.html", image: null, year: 2014, make: "BMW", model: "X3", body: "SUV", transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7938716285", category: "cars", title: "2020 BMW X3 M40i", price: 24995, location: "Floral Park", url: "https://newyork.craigslist.org/brk/ctd/d/floral-park-2020-bmw-x3-m40i/7938716285.html", image: null, year: 2020, make: "BMW", model: "X3", body: "SUV", transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "housing-7939394454", category: "housing", listingType: "For rent", title: "2 Bed/1 Bath Basement Appartment available in Brooklyn", price: 1800, location: "Kensington", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-bed-bath-basement-appartment/7939394454.html", image: null, bedrooms: 2, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["Basement", "Brooklyn"] },
-    { id: "housing-7939342197", category: "housing", listingType: "For rent", title: "A Brooklyn 1-Bed With Comfort, Convenience, and a Little Extra Space", price: 2495, location: "Brooklyn", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-brooklyn-bed-with-comfort/7939342197.html", image: null, bedrooms: 1, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["Extra space", "Transit"] },
-    { id: "housing-7939064569", category: "housing", listingType: "For rent", title: "Amazing Bright Large 1 BR Bensonhurst / Bath Beach NO Fee", price: 2156, location: "Bensonhurst / Bath Beach", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-amazing-bright-large-br/7939064569.html", image: null, bedrooms: 1, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["No fee", "Bright", "Large"] },
-    { id: "housing-7939061463", category: "housing", listingType: "For rent", title: "Cozy 1 Bedroom | Prime Flatbush Brooklyn Location", price: 1964, location: "Flatbush", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-cozy-bedroom-prime-flatbush/7939061463.html", image: null, bedrooms: 1, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["Prime location", "Flatbush"] },
-    { id: "housing-7938719015", category: "housing", listingType: "For rent", title: "Renovated Studio 1 Block to Brooklyn College - Separate Eat-In Kitchen", price: 1600, location: "Flatbush", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-renovated-studio-block-to/7938719015.html", image: null, bedrooms: 0, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["Renovated", "Eat-in kitchen"] },
-    { id: "computer-7910839552", category: "computers", subcategory: "Laptops", title: "MacBook Air Early 2015", price: 100, location: "Bedford Hills", url: "https://newyork.craigslist.org/wch/sys/d/bedford-hills-macbook-air-early-2015/7910839552.html", image: "https://images.craigslist.org/00N0N_fqw41Jmgnln_0CI0t2_600x450.jpg", brand: "Apple", year: 2015, screen: 13, ramGb: 8, storageGb: 128, condition: "Good" },
-    { id: "computer-7939700366", category: "computers", subcategory: "Laptops", title: "Macbook Pro 15 Touch Bar 2.7ghz i7 processor 16 500GB", price: 200, location: "Brooklyn", url: "https://newyork.craigslist.org/brk/sys/d/staten-island-macbook-pro-15-touch-bar/7939700366.html", image: "https://images.craigslist.org/00x0x_kguRKCy7oPA_0pO0ew_600x450.jpg", brand: "Apple", year: 2016, screen: 15, ramGb: 16, storageGb: 500, condition: "Good" },
-    { id: "computer-7938258973", category: "computers", subcategory: "Accessories", title: "NEW Case MacBook Air 15 inch 2024 2023 M3 M2 Model A3114 A2941", price: 12, location: "Ridgewood 11385 Queens", url: "https://newyork.craigslist.org/que/sys/d/ridgewood-new-case-macbook-air-15-inch/7938258973.html", image: "https://images.craigslist.org/00g0g_lJXrRjwIdYH_08w0ak_600x450.jpg", brand: "Apple", year: 2024, screen: 15, ramGb: null, storageGb: null, condition: "Open box" },
-    { id: "computer-7939653842", category: "computers", subcategory: "Laptops", title: "MacBook Pro 13", price: 290, location: "New York", url: "https://newyork.craigslist.org/mnh/sys/d/new-york-macbook-pro-13/7939653842.html", image: "https://images.craigslist.org/00f0f_lm7NSjDsRQ5_0t20CI_600x450.jpg", brand: "Apple", year: null, screen: 13, ramGb: null, storageGb: null, condition: "Good" },
-    { id: "computer-7939646209", category: "computers", subcategory: "Laptops", title: "Apple Macbook Pro 16 - A2141 - 6-core i7, 16G, 512G - works well!", price: 270, location: "Bushwick", url: "https://newyork.craigslist.org/brk/sys/d/brooklyn-apple-macbook-pro-16-core-i7/7939646209.html", image: "https://images.craigslist.org/00i0i_22jAxlCUK1s_0CI0t2_600x450.jpg", brand: "Apple", year: 2019, screen: 16, ramGb: 16, storageGb: 512, condition: "Good" },
-    { id: "computer-7939623274", category: "computers", subcategory: "Laptops", title: "Macbook Air 13 2015 i5 SSD", price: 120, location: "Staten Island", url: "https://newyork.craigslist.org/stn/sys/d/staten-island-macbook-air-i5-ssd/7939623274.html", image: "https://images.craigslist.org/00D0D_5Pa8t6J0ud1_0jm0o9_600x450.jpg", brand: "Apple", year: 2015, screen: 13, ramGb: 8, storageGb: 128, condition: "Good" }
-  ]
+  generatedAt: null,
+  mode: "empty",
+  source: "No embedded mock data. Listings load from data/listings.json or /api/listings.",
+  listings: []
 };
 
 const appState = {
@@ -97,6 +79,19 @@ const computerScreenGroup = document.querySelector("#computers .filter-panel .ch
 const computerActiveFilters = document.querySelector("#computers .active-filters");
 const compareButton = document.querySelector("#compare-button");
 
+const categoryMeta = {
+  cars: { label: "Cars & trucks", nav: "cars", art: "art-car", icon: "i-car" },
+  housing: { label: "Housing / apartments", nav: "housing", art: "art-apartment", icon: "i-home", suffix: "/mo" },
+  electronics: { label: "Electronics", nav: "electronics", art: "art-dashboard", icon: "i-tag" },
+  computers: { label: "Computers", nav: "computers", art: "art-laptop", icon: "i-laptop" },
+  phones: { label: "Phones", nav: "phones", art: "light-laptop", icon: "i-id" }
+};
+const goodsCategories = ["electronics", "phones"];
+const goodsSortSelects = Object.fromEntries(goodsCategories.map((category) => [
+  category,
+  document.querySelector(`#${category} [aria-label='Sort ${category} listings']`)
+]));
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -166,6 +161,21 @@ function photoStyle(listing) {
   return src ? ` style="--photo: url('${escapeHtml(src)}')"` : "";
 }
 
+function metaForCategory(category) {
+  return categoryMeta[category] || { label: "Craigslist listing", nav: category || "home", art: "art-dashboard", icon: "i-tag" };
+}
+
+function artForListing(listing) {
+  if (listing.category === "cars") return listing.body === "Truck" ? "art-truck" : listing.color === "Silver" ? "silver-car" : "art-car";
+  if (listing.category === "housing") return listing.bedrooms === 0 ? "art-loft" : listing.bedrooms >= 2 ? "art-townhouse" : "art-apartment";
+  if (listing.category === "computers") return listing.subcategory === "Accessories" ? "light-laptop" : "art-laptop";
+  return metaForCategory(listing.category).art;
+}
+
+function detailLinkAttrs(listing) {
+  return `href="#detail" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="${escapeHtml(listing.category)}"`;
+}
+
 function emptyState(message) {
   return `<div class="empty-state"><strong>No matching listings</strong><span>${escapeHtml(message)}</span></div>`;
 }
@@ -199,6 +209,12 @@ function bestMatchScore(listing, category) {
   }
   if (category === "computers") {
     score += valueScore(listing);
+  }
+  if (category === "electronics" || category === "phones") {
+    if (listing.image) score += 2;
+    if (listing.price) score += Math.max(0, 5 - Math.log10(listing.price + 1));
+    if (listing.condition === "New" || listing.condition === "Excellent") score += 2;
+    if (listing.brand) score += 1;
   }
   return score;
 }
@@ -645,30 +661,78 @@ function renderComputerFilters() {
   renderComputerActiveFilters();
 }
 
+function goodsBadges(listing) {
+  return [
+    listing.subcategory,
+    listing.brand,
+    listing.condition,
+    listing.storageGb ? `${listing.storageGb}GB` : null,
+    listing.unlocked ? "Unlocked" : null
+  ].filter(Boolean).slice(0, 4);
+}
+
+function goodsCard(listing) {
+  const meta = metaForCategory(listing.category);
+  const badges = goodsBadges(listing);
+  return `
+    <article class="listing-card horizontal">
+      <div class="visual-art ${photoClass(listing, artForListing(listing))}"${photoStyle(listing)}></div>
+      <div class="listing-body">
+        <div class="listing-topline">
+          <span class="badge badge-green">${escapeHtml(meta.label)}</span>
+          <span class="badge">Craigslist source</span>
+        </div>
+        <h3><a ${detailLinkAttrs(listing)}>${escapeHtml(listing.title)}</a></h3>
+        <p>${escapeHtml([listing.location, listing.subcategory, listing.brand].filter(Boolean).join(" · "))}</p>
+        <div class="badge-row">
+          ${badges.map((item) => `<span class="badge">${escapeHtml(item)}</span>`).join("")}
+        </div>
+        <div class="listing-bottom">
+          <span class="price">${formatPrice(listing.price)}</span>
+          <a class="seller-rating" href="${escapeHtml(listing.url || "#")}" target="_blank" rel="noreferrer">Open source</a>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function renderGoodsCategory(category) {
+  const meta = metaForCategory(category);
+  const sortValue = goodsSortSelects[category]?.value || "Best match";
+  const matches = sortListings(categoryListings(category), sortValue, category);
+  const status = document.querySelector(`#${category}-status`);
+  const container = document.querySelector(`#${category} .listing-list`);
+  if (status) status.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
+  if (container) {
+    container.innerHTML = matches.length ? matches.map(goodsCard).join("") : emptyState(`No ${meta.label.toLowerCase()} listings were loaded from Craigslist.`);
+  }
+}
+
 function renderHomeListings() {
   const container = document.querySelector("#home .listing-grid");
   if (!container) return;
   const picks = [
     sortListings(appState.listings.filter((item) => item.category === "cars"), "Best match", "cars")[0],
     sortListings(appState.listings.filter((item) => item.category === "housing"), "Best match", "housing")[0],
-    sortListings(appState.listings.filter((item) => item.category === "computers" && !excludedComputer(item)), "Best value", "computers")[0]
+    sortListings(appState.listings.filter((item) => item.category === "electronics"), "Best match", "electronics")[0],
+    sortListings(appState.listings.filter((item) => item.category === "computers" && !excludedComputer(item)), "Best value", "computers")[0],
+    sortListings(appState.listings.filter((item) => item.category === "phones"), "Best match", "phones")[0]
   ].filter(Boolean);
   container.innerHTML = picks.map((listing) => {
-    const art = listing.category === "housing" ? "art-apartment" : listing.category === "computers" ? "art-laptop" : "art-car";
-    const route = listing.category === "housing" ? "housing" : listing.category === "computers" ? "computers" : "detail";
+    const meta = metaForCategory(listing.category);
     return `
       <article class="listing-card">
-        <div class="visual-art ${photoClass(listing, art)}"${photoStyle(listing)}></div>
+        <div class="visual-art ${photoClass(listing, artForListing(listing))}"${photoStyle(listing)}></div>
         <div class="listing-body">
           <div class="listing-topline">
             <span class="price">${formatPrice(listing.price, listing.category === "housing" ? "/mo" : "")}</span>
-            <span class="badge badge-green">${appState.data.mode === "live" || appState.data.mode === "mixed-live" ? "Live" : "Real seed"}</span>
+            <span class="badge badge-green">Craigslist</span>
           </div>
-          <h3><a href="#${route}" ${listing.category === "cars" ? `data-detail-id="${escapeHtml(listing.id)}"` : `data-route-link="${route}"`}>${escapeHtml(listing.title)}</a></h3>
+          <h3><a ${detailLinkAttrs(listing)}>${escapeHtml(listing.title)}</a></h3>
           <p>${escapeHtml(listing.location)}</p>
           <div class="badge-row">
             <span class="badge">Craigslist source</span>
-            <span class="badge">${escapeHtml(listing.category)}</span>
+            <span class="badge">${escapeHtml(meta.label)}</span>
           </div>
         </div>
       </article>
@@ -750,12 +814,16 @@ function buildGalleryPhotos(listing) {
   } else if (cat === "computers") {
     const arts = ["art-laptop", "dark-laptop", "light-laptop", "art-dashboard", "art-wheel"];
     arts.forEach((artClass) => photos.push({ type: "deco", url: artClass }));
+  } else {
+    const arts = [metaForCategory(cat).art, "art-dashboard", "art-wheel", "light-laptop", "dark-laptop"];
+    arts.forEach((artClass) => photos.push({ type: "deco", url: artClass }));
   }
   return photos;
 }
 
 function renderDetail() {
   const category = appState.selectedDetailCategory || "cars";
+  const meta = metaForCategory(category);
   const listings = appState.listings.filter((item) => item.category === category);
   const listing = listings.find((item) => item.id === appState.selectedDetailId) || listings[0];
   if (!listing) return;
@@ -769,17 +837,12 @@ function renderDetail() {
   if (breadcrumbLink) {
     breadcrumbLink.href = `#${category}`;
     breadcrumbLink.setAttribute("data-route-link", category);
-    const label = category === "housing" ? "housing" : category === "computers" ? "computers" : "cars";
-    breadcrumbLink.innerHTML = `<svg class="icon-sm"><use href="#i-x" style="transform: rotate(135deg)"></use></svg> Back to ${label}`;
+    breadcrumbLink.innerHTML = `<svg class="icon-sm"><use href="#i-x" style="transform: rotate(135deg)"></use></svg> Back to ${escapeHtml(meta.label.toLowerCase())}`;
   }
 
   // Category labels
-  const categoryLabel = category === "housing" ? "Housing / apartments"
-    : category === "computers" ? "Electronics / computers"
-    : "Cars & trucks";
-  const categoryIcon = category === "housing" ? "i-home"
-    : category === "computers" ? "i-laptop"
-    : "i-car";
+  const categoryLabel = meta.label;
+  const categoryIcon = meta.icon;
 
   // Title & price section
   const title = document.querySelector("#detail-title");
@@ -809,6 +872,14 @@ function renderDetail() {
         listing.screen ? `${listing.screen}"` : null,
         listing.ramGb ? `${listing.ramGb}GB RAM` : null,
         listing.storageGb ? `${listing.storageGb}GB` : null,
+        listing.condition
+      ];
+    } else {
+      specs = [
+        listing.brand,
+        listing.subcategory,
+        listing.storageGb ? `${listing.storageGb}GB` : null,
+        listing.unlocked ? "Unlocked" : null,
         listing.condition
       ];
     }
@@ -854,6 +925,17 @@ function renderDetail() {
         { icon: "i-tag", label: "Subcategory", value: listing.subcategory || "n/a" },
         { icon: "i-map", label: "Location", value: listing.location || "n/a" }
       ];
+    } else {
+      cards = [
+        { icon: categoryIcon, label: "Category", value: categoryLabel },
+        { icon: "i-tag", label: "Subcategory", value: listing.subcategory || "n/a" },
+        { icon: "i-laptop", label: "Brand", value: listing.brand || "n/a" },
+        { icon: "i-shield", label: "Condition", value: listing.condition || "n/a" },
+        { icon: "i-id", label: "Storage", value: listing.storageGb ? `${listing.storageGb} GB` : "n/a" },
+        { icon: "i-check", label: "Unlocked", value: listing.unlocked ? "Yes" : "n/a" },
+        { icon: "i-check", label: "Price", value: formatPrice(listing.price) },
+        { icon: "i-map", label: "Location", value: listing.location || "n/a" }
+      ];
     }
     detailCardGrid.innerHTML = cards.map((card) => `
       <div class="detail-card">
@@ -868,7 +950,7 @@ function renderDetail() {
   const vinLabel = document.querySelector("#detail-vin-label");
   const vinText = document.querySelector("#detail-vin-text");
   const historySection = document.querySelector(".vehicle-history");
-  if (vinLabel) vinLabel.textContent = `Listing ID: ${listing.id.replace(/^(car|housing|computer)-/, "")}`;
+  if (vinLabel) vinLabel.textContent = `Listing ID: ${listing.id.replace(/^(car|housing|computer|computers|electronics|phones)-/, "")}`;
   if (vinText) {
     if (category === "cars") {
       vinText.textContent = "VIN and vehicle history are not included in Craigslist search results. Open the original listing to verify before contacting the seller.";
@@ -927,7 +1009,13 @@ function renderDetail() {
       const amenitiesList = (listing.amenities || []).join(", ");
       sellerNoteText.textContent = `This ${listing.bedrooms !== undefined ? `${listing.bedrooms}-bedroom` : ""} ${listing.listingType || "apartment"} in ${listing.location || "New York"} is available for ${listing.leaseTerm || "lease"}. ${listing.furnished ? "Furnished unit. " : ""}${amenitiesList ? `Amenities include ${amenitiesList}. ` : ""}Contact the landlord to schedule a viewing and verify lease terms.`;
     } else {
-      sellerNoteText.textContent = `This ${listing.brand || ""} ${listing.subcategory || "device"} (${listing.year || "year n/a"}) is in ${listing.condition || "good"} condition with ${listing.ramGb || ""}${listing.ramGb ? "GB RAM, " : ""}${listing.storageGb ? `${listing.storageGb}GB storage` : "storage available"}. Open the original listing to verify specs and contact the seller.`;
+      const specs = [
+        listing.year || null,
+        listing.ramGb ? `${listing.ramGb}GB RAM` : null,
+        listing.storageGb ? `${listing.storageGb}GB storage` : null,
+        listing.unlocked ? "unlocked" : null
+      ].filter(Boolean).join(", ");
+      sellerNoteText.textContent = `This ${listing.brand || ""} ${listing.subcategory || "item"} is listed in ${listing.condition || "available"} condition${specs ? ` with ${specs}` : ""}. Open the original Craigslist listing to verify details and contact the seller.`;
     }
   }
 
@@ -980,6 +1068,14 @@ function renderDetail() {
         listing.ramGb ? `${listing.ramGb}GB` : null,
         listing.storageGb ? `${listing.storageGb}GB` : null
       ];
+    } else {
+      chips = [
+        listing.subcategory || null,
+        listing.brand || null,
+        listing.condition || null,
+        listing.storageGb ? `${listing.storageGb}GB` : null,
+        listing.unlocked ? "Unlocked" : null
+      ];
     }
     chips = chips.filter(Boolean);
     if (!chips.length) chips.push("Verified listing");
@@ -1000,6 +1096,12 @@ function renderDetail() {
         <div><strong>Meet in a public place</strong><span>Use a cafe or transit station.</span></div>
         <div><strong>Test before you buy</strong><span>Boot up, check screen, test keyboard.</span></div>
         <div><strong>Use cash in person</strong><span>Avoid wiring money or deposits.</span></div>
+      `;
+    } else if (category === "electronics" || category === "phones") {
+      safetyBanner.innerHTML = `
+        <div><strong>Meet in a public place</strong><span>Use a cafe, station, or staffed pickup spot.</span></div>
+        <div><strong>Test the item first</strong><span>Power on, inspect ports, and verify condition.</span></div>
+        <div><strong>Avoid payment pressure</strong><span>No deposits or shipping requests before inspection.</span></div>
       `;
     } else {
       safetyBanner.innerHTML = `
@@ -1120,6 +1222,7 @@ function renderAll() {
   renderCarFilters();
   renderHousingFilters();
   renderComputerFilters();
+  goodsCategories.forEach(renderGoodsCategory);
   renderDetail();
 }
 
@@ -1172,7 +1275,11 @@ window.addEventListener("hashchange", () => {
 document.querySelector("#home-search")?.addEventListener("submit", (event) => {
   event.preventDefault();
   const query = document.querySelector("#home-query").value.toLowerCase();
-  if (query.includes("mac") || query.includes("computer") || query.includes("laptop")) {
+  if (query.includes("phone") || query.includes("iphone") || query.includes("samsung")) {
+    goToRoute("phones");
+  } else if (query.includes("electronic") || query.includes("speaker") || query.includes("camera") || query.includes("tv")) {
+    goToRoute("electronics");
+  } else if (query.includes("mac") || query.includes("computer") || query.includes("laptop")) {
     goToRoute("computers");
   } else if (query.includes("apartment") || query.includes("brooklyn") || query.includes("rent") || query.includes("br")) {
     goToRoute("housing");
@@ -1301,6 +1408,10 @@ computerSpecSelects.forEach((select, index) => {
 });
 
 computerSortSelect?.addEventListener("change", renderComputerFilters);
+
+goodsCategories.forEach((category) => {
+  goodsSortSelects[category]?.addEventListener("change", () => renderGoodsCategory(category));
+});
 
 document.querySelectorAll(".exclude-box input").forEach((checkbox) => {
   checkbox.addEventListener("change", () => {

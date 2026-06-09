@@ -1823,7 +1823,7 @@ html.dark .compare-card.is-compared {
 
   .primary-nav {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     grid-column: 1 / -1;
     order: 3;
     justify-content: stretch;
@@ -1835,7 +1835,7 @@ html.dark .compare-card.is-compared {
     min-width: 0;
     padding: 9px 2px;
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .nav-actions {

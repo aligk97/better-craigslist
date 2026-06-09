@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "fetch:data": "node scripts/fetch-craigslist.mjs",
     "start": "node server.mjs",
     "check": "node --check app.js && node --check server.mjs"
   }

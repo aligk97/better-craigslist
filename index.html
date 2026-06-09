@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -46,7 +46,9 @@
         <a href="#home" data-route-link="home">Home</a>
         <a href="#cars" data-route-link="cars">Cars</a>
         <a href="#housing" data-route-link="housing">Housing</a>
+        <a href="#electronics" data-route-link="electronics">Electronics</a>
         <a href="#computers" data-route-link="computers">Computers</a>
+        <a href="#phones" data-route-link="phones">Phones</a>
       </nav>
       <div class="nav-actions">
         <button class="btn btn-primary" type="button">
@@ -83,39 +85,22 @@
                   <option>All categories</option>
                   <option>Cars & trucks</option>
                   <option>Apartments</option>
+                  <option>Electronics</option>
                   <option>Computers</option>
+                  <option>Phones</option>
                 </select>
                 <button class="btn btn-primary" type="submit">Search</button>
               </form>
               <div class="trending-row" aria-label="Trending searches">
                 <button type="button" data-route-link="housing">No fee apartments</button>
                 <button type="button" data-route-link="cars">BMW SUV under $20k</button>
+                <button type="button" data-route-link="electronics">Speakers and cameras</button>
                 <button type="button" data-route-link="computers">MacBook under $300</button>
-                <button type="button">Weekend gigs</button>
+                <button type="button" data-route-link="phones">Unlocked phones</button>
               </div>
             </div>
             <div class="hero-visual" aria-label="Featured local listings">
-              <article class="mini-listing">
-                <div class="visual-art art-apartment"></div>
-                <div>
-                  <strong>Brooklyn 1 BR</strong>
-                  <span>$2,350 &middot; No fee</span>
-                </div>
-              </article>
-              <article class="mini-listing offset">
-                <div class="visual-art art-car"></div>
-                <div>
-                  <strong>2018 BMW X3</strong>
-                  <span>$18,900 &middot; VIN verified</span>
-                </div>
-              </article>
-              <article class="mini-listing">
-                <div class="visual-art art-laptop"></div>
-                <div>
-                  <strong>MacBook Pro</strong>
-                  <span>$280 &middot; Best value</span>
-                </div>
-              </article>
+              <article class="mini-listing"><div><strong>Loading Craigslist listings</strong><span>Real listings load from data/listings.json</span></div></article>
             </div>
           </div>
         </div>
@@ -154,15 +139,15 @@
               <h3>Services</h3>
               <p>Trusted local pros for repairs, moving, events, and more.</p>
             </a>
-            <a class="category-card" href="#home">
+            <a class="category-card" href="#electronics" data-route-link="electronics">
               <svg class="icon-lg"><use href="#i-tag"></use></svg>
-              <h3>For sale</h3>
-              <p>Furniture, electronics, tools, clothing, and collectibles.</p>
+              <h3>Electronics</h3>
+              <p>Audio gear, cameras, TVs, gaming gear, and local tech finds.</p>
             </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-map"></use></svg>
-              <h3>Community</h3>
-              <p>Activities, classes, groups, volunteers, and events.</p>
+            <a class="category-card" href="#phones" data-route-link="phones">
+              <svg class="icon-lg"><use href="#i-id"></use></svg>
+              <h3>Phones</h3>
+              <p>Unlocked iPhones, Samsung Galaxy listings, cases, and accessories.</p>
             </a>
             <a class="category-card" href="#home">
               <svg class="icon-lg"><use href="#i-plus"></use></svg>
@@ -185,51 +170,7 @@
             </div>
           </div>
           <div class="listing-grid three-up">
-            <article class="listing-card">
-              <div class="visual-art art-car"></div>
-              <div class="listing-body">
-                <div class="listing-topline">
-                  <span class="price">$18,900</span>
-                  <span class="badge badge-green">&#10003; VIN verified</span>
-                </div>
-                <h3><a href="#detail" data-route-link="detail">2018 BMW X3 xDrive28i</a></h3>
-                <p>Williamsburg, Brooklyn</p>
-                <div class="badge-row">
-                  <span class="badge">&#9733; 4.8 seller</span>
-                  <span class="badge">42k miles</span>
-                </div>
-              </div>
-            </article>
-            <article class="listing-card">
-              <div class="visual-art art-apartment"></div>
-              <div class="listing-body">
-                <div class="listing-topline">
-                  <span class="price">$2,350</span>
-                  <span class="badge badge-green">&#10003; Verified</span>
-                </div>
-                <h3><a href="#housing" data-route-link="housing">Sunny 1 BR near Prospect Park</a></h3>
-                <p>Park Slope, Brooklyn</p>
-                <div class="badge-row">
-                  <span class="badge">No fee</span>
-                  <span class="badge">&#9733; 4.6 landlord</span>
-                </div>
-              </div>
-            </article>
-            <article class="listing-card">
-              <div class="visual-art art-laptop"></div>
-              <div class="listing-body">
-                <div class="listing-topline">
-                  <span class="price">$280</span>
-                  <span class="badge badge-green">Best value</span>
-                </div>
-                <h3><a href="#computers" data-route-link="computers">MacBook Pro 13, 8GB, 256GB</a></h3>
-                <p>Upper West Side</p>
-                <div class="badge-row">
-                  <span class="badge">&#10003; Verified</span>
-                  <span class="badge">&#9733; 4.8</span>
-                </div>
-              </div>
-            </article>
+            <div class="empty-state"><strong>Loading Craigslist listings</strong><span>Real listings are loaded from data/listings.json.</span></div>
           </div>
         </section>
       </section>
@@ -308,51 +249,7 @@
               </select>
             </div>
             <div class="listing-list">
-              <article class="listing-card horizontal">
-                <div class="visual-art art-car"></div>
-                <div class="listing-body">
-                  <div class="listing-topline">
-                    <span class="year-badge">2018</span>
-                    <span class="badge badge-green">&#10003; VIN verified</span>
-                  </div>
-                  <h3><a href="#detail" data-route-link="detail">BMW X3 xDrive28i, clean title</a></h3>
-                  <p>Williamsburg, Brooklyn &middot; 42k miles &middot; Automatic</p>
-                  <div class="listing-bottom">
-                    <span class="price">$18,900</span>
-                    <span class="seller-rating">&#9733; 4.8 seller</span>
-                  </div>
-                </div>
-              </article>
-              <article class="listing-card horizontal">
-                <div class="visual-art art-truck"></div>
-                <div class="listing-body">
-                  <div class="listing-topline">
-                    <span class="year-badge">2017</span>
-                    <span class="badge">&#10003; Verified dealer</span>
-                  </div>
-                  <h3>BMW X5 35i AWD, panoramic roof</h3>
-                  <p>Long Island City &middot; 61k miles &middot; Gas</p>
-                  <div class="listing-bottom">
-                    <span class="price">$20,400</span>
-                    <span class="seller-rating">&#9733; 4.7 seller</span>
-                  </div>
-                </div>
-              </article>
-              <article class="listing-card horizontal">
-                <div class="visual-art art-car silver-car"></div>
-                <div class="listing-body">
-                  <div class="listing-topline">
-                    <span class="year-badge">2016</span>
-                    <span class="badge badge-amber">Price drop</span>
-                  </div>
-                  <h3>BMW 328i sedan, service records</h3>
-                  <p>Astoria, Queens &middot; 54k miles &middot; Rear-wheel drive</p>
-                  <div class="listing-bottom">
-                    <span class="price">$13,600</span>
-                    <span class="seller-rating">&#9733; 4.6 seller</span>
-                  </div>
-                </div>
-              </article>
+              <div class="empty-state"><strong>Loading Craigslist cars</strong><span>Real car listings are loaded from data/listings.json.</span></div>
             </div>
           </section>
         </div>
@@ -549,66 +446,7 @@
               <span class="match-status" id="housing-status">Showing 3 listings</span>
             </div>
             <div class="listing-list">
-              <article class="listing-card horizontal apartment-card">
-                <div class="visual-art art-apartment"></div>
-                <div class="listing-body">
-                  <div class="listing-topline">
-                    <span class="year-badge">1 BR</span>
-                    <span class="badge badge-green">&#10003; Verified landlord</span>
-                  </div>
-                  <h3>Park Slope 1 BR near Prospect Park</h3>
-                  <p>Brooklyn, NY &middot; 720 sq ft &middot; Pet friendly</p>
-                  <div class="badge-row">
-                    <span class="badge">No fee</span>
-                    <span class="badge">Laundry</span>
-                    <span class="badge">Dishwasher</span>
-                  </div>
-                  <div class="listing-bottom">
-                    <span class="price">$2,350/mo</span>
-                    <span class="seller-rating">&#9733; 4.6 landlord</span>
-                  </div>
-                </div>
-              </article>
-              <article class="listing-card horizontal apartment-card">
-                <div class="visual-art art-loft"></div>
-                <div class="listing-body">
-                  <div class="listing-topline">
-                    <span class="year-badge">Studio</span>
-                    <span class="badge">No broker fee</span>
-                  </div>
-                  <h3>Williamsburg loft with river view</h3>
-                  <p>Brooklyn, NY &middot; 560 sq ft &middot; Elevator building</p>
-                  <div class="badge-row">
-                    <span class="badge">Doorman</span>
-                    <span class="badge">Furnished</span>
-                    <span class="badge">Subway 4 min</span>
-                  </div>
-                  <div class="listing-bottom">
-                    <span class="price">$2,450/mo</span>
-                    <span class="seller-rating">&#9733; 4.7 landlord</span>
-                  </div>
-                </div>
-              </article>
-              <article class="listing-card horizontal apartment-card">
-                <div class="visual-art art-townhouse"></div>
-                <div class="listing-body">
-                  <div class="listing-topline">
-                    <span class="year-badge">2 BR</span>
-                    <span class="badge badge-green">&#10003; Verified landlord</span>
-                  </div>
-                  <h3>Astoria 2 BR with private balcony</h3>
-                  <p>Queens, NY &middot; 840 sq ft &middot; Heat included</p>
-                  <div class="badge-row">
-                    <span class="badge">Balcony</span>
-                    <span class="badge">Cats OK</span>
-                    <span class="badge">Storage</span>
-                  </div>
-                  <div class="listing-bottom">
-                    <span class="price">$2,800/mo</span>
-                    <span class="seller-rating">&#9733; 4.5 landlord</span>
-                  </div>
-                </div>
-              </article>
+              <div class="empty-state"><strong>Loading Craigslist housing</strong><span>Real housing listings are loaded from data/listings.json.</span></div>
             </div>
           </section>
         </div>
@@ -679,70 +517,60 @@
               </select>
             </div>
             <div class="listing-list computer-list">
-              <article class="listing-card horizontal compare-card is-compared">
-                <label class="compare-check"><input type="checkbox" checked /> Compare</label>
-                <div class="visual-art art-laptop"></div>
-                <div class="listing-body">
-                  <div class="listing-topline">
-                    <span class="badge badge-green">Best value</span>
-                    <span class="badge">Good condition</span>
-                  </div>
-                  <h3>MacBook Pro 13" Retina</h3>
-                  <p>Apple i5 &middot; 8GB RAM &middot; 256GB SSD &middot; Battery 82%</p>
-                  <div class="badge-row">
-                    <span class="badge">i5</span>
-                    <span class="badge">8GB</span>
-                    <span class="badge">256GB SSD</span>
-                  </div>
-                  <div class="listing-bottom">
-                    <span class="price">$280</span>
-                    <span class="seller-rating">&#9733; 4.8 seller</span>
-                  </div>
-                </div>
-              </article>
-              <article class="listing-card horizontal compare-card is-compared">
-                <label class="compare-check"><input type="checkbox" checked /> Compare</label>
-                <div class="visual-art art-laptop dark-laptop"></div>
-                <div class="listing-body">
-                  <div class="listing-topline">
-                    <span class="badge badge-green">Best value</span>
-                    <span class="badge">Excellent</span>
-                  </div>
-                  <h3>MacBook Air 13" 2017</h3>
-                  <p>Apple i5 &middot; 8GB RAM &middot; 128GB SSD &middot; Clean keyboard</p>
-                  <div class="badge-row">
-                    <span class="badge">i5</span>
-                    <span class="badge">8GB</span>
-                    <span class="badge">128GB SSD</span>
-                  </div>
-                  <div class="listing-bottom">
-                    <span class="price">$240</span>
-                    <span class="seller-rating">&#9733; 4.6 seller</span>
-                  </div>
-                </div>
-              </article>
-              <article class="listing-card horizontal compare-card">
-                <label class="compare-check"><input type="checkbox" /> Compare</label>
-                <div class="visual-art art-laptop light-laptop"></div>
-                <div class="listing-body">
-                  <div class="listing-topline">
-                    <span class="badge">Fair condition</span>
-                    <span class="badge badge-amber">Negotiable</span>
-                  </div>
-                  <h3>MacBook Pro 15" 2015</h3>
-                  <p>Apple i7 &middot; 16GB RAM &middot; 256GB SSD &middot; Charger included</p>
-                  <div class="badge-row">
-                    <span class="badge">i7</span>
-                    <span class="badge">16GB</span>
-                    <span class="badge">256GB SSD</span>
-                  </div>
-                  <div class="listing-bottom">
-                    <span class="price">$300</span>
-                    <span class="seller-rating">&#9733; 4.5 seller</span>
-                  </div>
-                </div>
-              </article>
+              <div class="empty-state"><strong>Loading Craigslist computers</strong><span>Real computer listings are loaded from data/listings.json.</span></div>
             </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="electronics" class="page" data-page="electronics">
+        <div class="container page-head">
+          <div>
+            <p class="eyebrow">Electronics / New York</p>
+            <h1>Browse local electronics from Craigslist.</h1>
+          </div>
+        </div>
+        <div class="container section-block flush">
+          <section class="results-panel">
+            <div class="active-bar">
+              <div class="active-filters">
+                <span class="filter-chip">Craigslist electronics</span>
+                <span class="filter-chip">20 live listings</span>
+              </div>
+              <span class="match-status" id="electronics-status">Showing 0 listings</span>
+              <select aria-label="Sort electronics listings">
+                <option selected>Best match</option>
+                <option>Lowest price</option>
+                <option>Newest</option>
+              </select>
+            </div>
+            <div class="listing-list electronics-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="phones" class="page" data-page="phones">
+        <div class="container page-head">
+          <div>
+            <p class="eyebrow">Phones / New York</p>
+            <h1>Find unlocked phones and mobile gear.</h1>
+          </div>
+        </div>
+        <div class="container section-block flush">
+          <section class="results-panel">
+            <div class="active-bar">
+              <div class="active-filters">
+                <span class="filter-chip">Craigslist phones</span>
+                <span class="filter-chip">20 live listings</span>
+              </div>
+              <span class="match-status" id="phones-status">Showing 0 listings</span>
+              <select aria-label="Sort phones listings">
+                <option selected>Best match</option>
+                <option>Lowest price</option>
+                <option>Newest</option>
+              </select>
+            </div>
+            <div class="listing-list phones-list"></div>
           </section>
         </div>
       </section>
