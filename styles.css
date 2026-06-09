@@ -908,6 +908,14 @@ h3 {
   padding-bottom: 58px;
 }
 
+.section-block.flush:has(.goods-filter-panel) {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  padding-bottom: 58px;
+}
+
 .filter-panel {
   position: sticky;
   top: 92px;
@@ -1779,7 +1787,8 @@ html.dark .compare-card.is-compared {
 
   .hero-grid,
   .detail-grid,
-  .search-layout {
+  .search-layout,
+  .section-block.flush:has(.goods-filter-panel) {
     grid-template-columns: 1fr;
   }
 

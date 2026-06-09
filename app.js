@@ -91,6 +91,19 @@ const goodsSortSelects = Object.fromEntries(goodsCategories.map((category) => [
   category,
   document.querySelector(`#${category} [aria-label='Sort ${category} listings']`)
 ]));
+const goodsFilterState = {
+  electronics: {
+    subcategory: "All electronics",
+    brand: "Any brand",
+    condition: "Any condition"
+  },
+  phones: {
+    itemType: "All phone listings",
+    subcategory: "All phone categories",
+    brand: "Any brand",
+    condition: "Any condition"
+  }
+};
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -663,12 +676,94 @@ function renderComputerFilters() {
 
 function goodsBadges(listing) {
   return [
+    listing.itemType,
     listing.subcategory,
     listing.brand,
     listing.condition,
     listing.storageGb ? `${listing.storageGb}GB` : null,
     listing.unlocked ? "Unlocked" : null
   ].filter(Boolean).slice(0, 4);
+}
+
+function goodsFilterOptions(category) {
+  const rows = categoryListings(category);
+  const subcategoryPrefix = category === "electronics" ? "All electronics" : "All phone categories";
+  return {
+    itemTypes: category === "phones" ? ["All phone listings", ...uniqueSorted(rows, (listing) => listing.itemType)] : [],
+    subcategories: [subcategoryPrefix, ...uniqueSorted(rows, (listing) => listing.subcategory)],
+    brands: ["Any brand", ...uniqueSorted(rows, (listing) => listing.brand)],
+    conditions: ["Any condition", ...uniqueSorted(rows, (listing) => listing.condition)]
+  };
+}
+
+function renderGoodsFilterControls(category) {
+  const state = goodsFilterState[category];
+  const options = goodsFilterOptions(category);
+  const panel = document.querySelector(`#${category} .goods-filter-panel`);
+  if (!state || !panel) return;
+
+  if (category === "phones" && !options.itemTypes.includes(state.itemType)) state.itemType = "All phone listings";
+  if (!options.subcategories.includes(state.subcategory)) state.subcategory = category === "electronics" ? "All electronics" : "All phone categories";
+  if (!options.brands.includes(state.brand)) state.brand = "Any brand";
+  if (!options.conditions.includes(state.condition)) state.condition = "Any condition";
+
+  const itemTypeBlock = category === "phones" ? `
+    <div class="filter-block">
+      <span class="filter-label">Listing type</span>
+      <div class="chip-group" data-goods-filter="${category}" data-goods-key="itemType">
+        ${options.itemTypes.map((value) => `<button class="chip ${state.itemType === value ? "is-selected" : ""}" type="button" data-value="${escapeHtml(value)}">${escapeHtml(value)}</button>`).join("")}
+      </div>
+    </div>
+  ` : "";
+
+  panel.innerHTML = `
+    ${itemTypeBlock}
+    <div class="filter-block">
+      <span class="filter-label">Detailed category</span>
+      <div class="chip-group" data-goods-filter="${category}" data-goods-key="subcategory">
+        ${options.subcategories.map((value) => `<button class="chip ${state.subcategory === value ? "is-selected" : ""}" type="button" data-value="${escapeHtml(value)}">${escapeHtml(value)}</button>`).join("")}
+      </div>
+    </div>
+    <div class="filter-block two-col">
+      <label>Brand
+        <select data-goods-filter="${category}" data-goods-key="brand">
+          ${options.brands.map((value) => `<option value="${escapeHtml(value)}" ${state.brand === value ? "selected" : ""}>${escapeHtml(value)}</option>`).join("")}
+        </select>
+      </label>
+      <label>Condition
+        <select data-goods-filter="${category}" data-goods-key="condition">
+          ${options.conditions.map((value) => `<option value="${escapeHtml(value)}" ${state.condition === value ? "selected" : ""}>${escapeHtml(value)}</option>`).join("")}
+        </select>
+      </label>
+    </div>
+  `;
+}
+
+function matchesGoods(listing, category) {
+  if (listing.category !== category) return false;
+  const state = goodsFilterState[category];
+  if (!state) return true;
+  if (category === "phones" && state.itemType !== "All phone listings" && listing.itemType !== state.itemType) return false;
+  const allSubcategory = category === "electronics" ? "All electronics" : "All phone categories";
+  if (state.subcategory !== allSubcategory && listing.subcategory !== state.subcategory) return false;
+  if (state.brand !== "Any brand" && listing.brand !== state.brand) return false;
+  if (state.condition !== "Any condition" && listing.condition !== state.condition) return false;
+  return true;
+}
+
+function renderGoodsActiveFilters(category) {
+  const container = document.querySelector(`#${category} .goods-active-filters`);
+  const state = goodsFilterState[category];
+  if (!container || !state) return;
+  const allSubcategory = category === "electronics" ? "All electronics" : "All phone categories";
+  const active = [
+    category === "electronics" ? "Craigslist electronics" : "Craigslist phones",
+    category === "phones" && state.itemType !== "All phone listings" ? state.itemType : null,
+    state.subcategory !== allSubcategory ? state.subcategory : null,
+    state.brand !== "Any brand" ? state.brand : null,
+    state.condition !== "Any condition" ? state.condition : null
+  ].filter(Boolean);
+  container.innerHTML = active.map((filter) => `<span class="filter-chip">${escapeHtml(filter)}</span>`).join("");
 }
 
 function goodsCard(listing) {
@@ -698,14 +793,16 @@ function goodsCard(listing) {
 
 function renderGoodsCategory(category) {
   const meta = metaForCategory(category);
+  renderGoodsFilterControls(category);
   const sortValue = goodsSortSelects[category]?.value || "Best match";
-  const matches = sortListings(categoryListings(category), sortValue, category);
+  const matches = sortListings(appState.listings.filter((listing) => matchesGoods(listing, category)), sortValue, category);
   const status = document.querySelector(`#${category}-status`);
   const container = document.querySelector(`#${category} .listing-list`);
   if (status) status.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
   if (container) {
     container.innerHTML = matches.length ? matches.map(goodsCard).join("") : emptyState(`No ${meta.label.toLowerCase()} listings were loaded from Craigslist.`);
   }
+  renderGoodsActiveFilters(category);
 }
 
 function renderHomeListings() {
@@ -927,8 +1024,8 @@ function renderDetail() {
       ];
     } else {
       cards = [
-        { icon: categoryIcon, label: "Category", value: categoryLabel },
-        { icon: "i-tag", label: "Subcategory", value: listing.subcategory || "n/a" },
+        { icon: categoryIcon, label: "Listing type", value: listing.itemType || categoryLabel },
+        { icon: "i-tag", label: "Detailed category", value: listing.subcategory || "n/a" },
         { icon: "i-laptop", label: "Brand", value: listing.brand || "n/a" },
         { icon: "i-shield", label: "Condition", value: listing.condition || "n/a" },
         { icon: "i-id", label: "Storage", value: listing.storageGb ? `${listing.storageGb} GB` : "n/a" },
@@ -1411,6 +1508,27 @@ computerSortSelect?.addEventListener("change", renderComputerFilters);
 
 goodsCategories.forEach((category) => {
   goodsSortSelects[category]?.addEventListener("change", () => renderGoodsCategory(category));
+});
+
+document.addEventListener("click", (event) => {
+  const chip = event.target.closest("[data-goods-filter][data-goods-key] .chip");
+  if (!chip) return;
+  const group = chip.closest("[data-goods-filter][data-goods-key]");
+  const category = group?.dataset.goodsFilter;
+  const key = group?.dataset.goodsKey;
+  if (!category || !key || !goodsFilterState[category]) return;
+  goodsFilterState[category][key] = chip.dataset.value || chip.textContent.trim();
+  renderGoodsCategory(category);
+});
+
+document.addEventListener("change", (event) => {
+  const control = event.target.closest("select[data-goods-filter][data-goods-key]");
+  if (!control) return;
+  const category = control.dataset.goodsFilter;
+  const key = control.dataset.goodsKey;
+  if (!category || !key || !goodsFilterState[category]) return;
+  goodsFilterState[category][key] = control.value;
+  renderGoodsCategory(category);
 });
 
 document.querySelectorAll(".exclude-box input").forEach((checkbox) => {

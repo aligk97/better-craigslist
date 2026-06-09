@@ -38,6 +38,7 @@ const knownMakes = [
 const computerBrands = ["Apple", "Dell", "HP", "Lenovo", "Asus", "Acer", "Microsoft", "Samsung", "LG"];
 const phoneBrands = ["Apple", "iPhone", "Samsung", "Google", "Motorola", "LG", "OnePlus", "Nokia", "TCL", "Moto"];
 const electronicsBrands = ["Sony", "Samsung", "LG", "Bose", "Canon", "Nikon", "Panasonic", "Yamaha", "Denon", "JBL", "Apple", "Dell"];
+const phoneAccessoryPattern = /\b(case|cover|screen protector|protector|charger|charging|cable|cord|adapter|mount|holder|stand|wallet|battery|stylus|strap|airpod|airpods|earbuds|headphones|soundbar|subwoofer)\b/i;
 
 function decodeHtml(value = "") {
   return value
@@ -233,11 +234,13 @@ function normalizeElectronics(listing) {
   const lower = title.toLowerCase();
   return {
     ...listing,
-    subcategory: lower.includes("speaker") || lower.includes("receiver") || lower.includes("amp") ? "Audio"
-      : lower.includes("tv") || lower.includes("oled") || lower.includes("monitor") ? "TV & video"
-        : lower.includes("camera") || lower.includes("lens") ? "Cameras"
-          : lower.includes("xbox") || lower.includes("playstation") || lower.includes("nintendo") ? "Gaming"
-            : "Electronics",
+    subcategory: lower.includes("headphone") || lower.includes("airpod") || lower.includes("earbud") ? "Headphones"
+      : lower.includes("speaker") || lower.includes("receiver") || lower.includes("amplifier") || lower.includes("amp") || lower.includes("soundbar") ? "Audio"
+        : lower.includes("tv") || lower.includes("oled") || lower.includes("monitor") || lower.includes("projector") ? "TV & video"
+          : lower.includes("camera") || lower.includes("lens") || lower.includes("canon") || lower.includes("nikon") ? "Cameras"
+            : lower.includes("xbox") || lower.includes("playstation") || lower.includes("nintendo") ? "Gaming"
+              : lower.includes("charger") || lower.includes("adapter") || lower.includes("cable") ? "Accessories"
+                : "Other electronics",
     brand: firstMatch(title, electronicsBrands),
     condition: inferCondition(title)
   };
@@ -245,10 +248,23 @@ function normalizeElectronics(listing) {
 
 function normalizePhone(listing) {
   const title = listing.title;
+  const lower = title.toLowerCase();
   const brand = firstMatch(title, phoneBrands);
+  const isAccessory = phoneAccessoryPattern.test(title);
+  const itemType = isAccessory ? "Accessory" : "Phone";
   return {
     ...listing,
-    subcategory: "Cell phones",
+    itemType,
+    subcategory: isAccessory
+      ? lower.includes("case") || lower.includes("cover") ? "Cases & covers"
+        : lower.includes("charger") || lower.includes("cable") || lower.includes("adapter") ? "Chargers & cables"
+          : lower.includes("screen protector") || lower.includes("protector") ? "Screen protectors"
+            : lower.includes("airpod") || lower.includes("earbud") || lower.includes("headphone") || lower.includes("soundbar") || lower.includes("subwoofer") ? "Audio accessories"
+              : "Phone accessories"
+      : lower.includes("iphone") ? "iPhone"
+        : lower.includes("samsung") || lower.includes("galaxy") ? "Samsung Galaxy"
+          : lower.includes("pixel") || lower.includes("google") ? "Google Pixel"
+            : "Other phones",
     brand: brand === "iPhone" ? "Apple" : brand === "Moto" ? "Motorola" : brand,
     storageGb: Number(title.match(/\b(32|64|128|256|512|1000)\s?(?:gb|gigs?)\b/i)?.[1]) || null,
     condition: inferCondition(title),
