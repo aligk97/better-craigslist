@@ -913,6 +913,95 @@ h3 {
     linear-gradient(#dbeafe, #c7d2fe);
 }
 
+/* ── Phone & Electronics Visual Arts ── */
+
+.art-smartphone {
+  background:
+    linear-gradient(180deg, #1a1a2e 0 18%, #16213e 18% 55%, #0f3460 55% 75%, #1a1a2e 75% 100%);
+}
+
+.art-smartphone::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 6%;
+  bottom: 8%;
+  background:
+    linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 3px solid #3d3d5c;
+  border-radius: 18px;
+}
+
+.art-smartphone::after {
+  content: "";
+  position: absolute;
+  left: 40%;
+  right: 40%;
+  bottom: 14%;
+  height: 8%;
+  background: #3d3d5c;
+  border-radius: 20px;
+}
+
+.art-sim {
+  background:
+    linear-gradient(180deg, #e8f0fe 0 25%, #fce4ec 25% 50%, #e8f0fe 50% 75%, #fce4ec 75% 100%);
+}
+
+.art-sim::before {
+  content: "";
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 20%;
+  bottom: 20%;
+  background:
+    linear-gradient(135deg, #e8f5fb, #fff3e0);
+  border: 3px solid #b0bec5;
+  border-radius: 10px;
+}
+
+.art-sim::after {
+  content: "";
+  position: absolute;
+  left: 40%;
+  right: 40%;
+  top: 15%;
+  height: 8%;
+  background: #b0bec5;
+  border-radius: 4px;
+}
+
+.art-watch {
+  background:
+    linear-gradient(180deg, #2c3e50 0 20%, #34495e 20% 60%, #2c3e50 60% 100%);
+}
+
+.art-watch::before {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 12%;
+  bottom: 12%;
+  background:
+    linear-gradient(135deg, #4a6a8a, #7ba9cf);
+  border: 4px solid #5d6d7e;
+  border-radius: 16px;
+}
+
+.art-watch::after {
+  content: "";
+  position: absolute;
+  left: 45%;
+  right: 45%;
+  top: 4%;
+  height: 8%;
+  background: #5d6d7e;
+  border-radius: 6px;
+}
+
 .page-head {
   display: flex;
   align-items: end;
@@ -994,6 +1083,56 @@ h3 {
   background: var(--nav-hover);
   border-color: #bfb7f3;
   box-shadow: inset 0 0 0 1px #bfb7f3;
+}
+
+/* ── Range inputs for min/max filters ── */
+
+.range-group {
+  gap: 6px;
+}
+
+.range-inputs {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 6px;
+  align-items: center;
+}
+
+.range-input {
+  width: 100%;
+  height: 42px;
+  padding: 0 10px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  font-weight: 700;
+  -moz-appearance: textfield;
+}
+
+.range-input::-webkit-inner-spin-button,
+.range-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.range-input::placeholder {
+  color: var(--muted);
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.range-input:focus {
+  border-color: #bfb7f3;
+  box-shadow: 0 0 0 2px rgba(187, 90, 234, 0.15);
+}
+
+.range-sep {
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 14px;
 }
 
 .swatch-grid {
@@ -1781,6 +1920,51 @@ html.dark .art-dashboard {
     linear-gradient(#2e334a 0 55%, #191b28 55% 100%);
 }
 
+html.dark .art-smartphone {
+  background:
+    linear-gradient(180deg, #0d0d1a 0 18%, #0f1a2e 18% 55%, #092040 55% 75%, #0d0d1a 75% 100%);
+}
+
+html.dark .art-smartphone::before {
+  background:
+    linear-gradient(135deg, #1a1a3e, #162150);
+  border-color: #2a2a50;
+}
+
+html.dark .art-smartphone::after {
+  background: #2a2a50;
+}
+
+html.dark .art-sim {
+  background:
+    linear-gradient(180deg, #1a2235 0 25%, #2a1a25 25% 50%, #1a2235 50% 75%, #2a1a25 75% 100%);
+}
+
+html.dark .art-sim::before {
+  background:
+    linear-gradient(135deg, #1a2a3e, #2a2015);
+  border-color: #3a4050;
+}
+
+html.dark .art-sim::after {
+  background: #3a4050;
+}
+
+html.dark .art-watch {
+  background:
+    linear-gradient(180deg, #1a2235 0 20%, #1e2a3e 20% 60%, #1a2235 60% 100%);
+}
+
+html.dark .art-watch::before {
+  background:
+    linear-gradient(135deg, #3a5a7a, #5a7a9a);
+  border-color: #3a4a5a;
+}
+
+html.dark .art-watch::after {
+  background: #3a4a5a;
+}
+
 html.dark .art-wheel {
   background:
     radial-gradient(circle at 50% 50%, #3a3d55 0 12%, #2a2d45 13% 37%, #2e3148 38% 42%, #2a2d45 43% 55%, transparent 56%),
@@ -1871,7 +2055,7 @@ html.dark .compare-card.is-compared {
 
   .primary-nav {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     grid-column: 1 / -1;
     order: 3;
     justify-content: stretch;

@@ -24,6 +24,12 @@
       <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></symbol>
       <symbol id="i-id" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 10h4M8 14h8"/><path d="M16.5 9.5h.01"/></symbol>
       <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 15a8 8 0 1 1 16 0"/><path d="m12 15 4-4"/><path d="M12 19h.01"/></symbol>
+      <symbol id="i-smartphone" viewBox="0 0 24 24"><path d="M7 3h10v18H7z"/><path d="M11 18h2"/></symbol>
+      <symbol id="i-headphones" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><path d="M4 14h2v6H4z"/><path d="M18 14h2v6h-2z"/></symbol>
+      <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></symbol>
+      <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M18 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></symbol>
+      <symbol id="i-sim" viewBox="0 0 24 24"><path d="M5 22V8l6-6h8v20z"/><path d="M11 2v6H5"/></symbol>
+      <symbol id="i-watch" viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M9 3h6v4H9zM9 17v4h6v-4z"/></symbol>
       <symbol id="i-fuel" viewBox="0 0 24 24"><path d="M5 4h8v17H5z"/><path d="M13 9h2a3 3 0 0 1 3 3v6a2 2 0 0 0 4 0v-6l-3-3"/><path d="M8 8h2"/></symbol>
       <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
       <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
@@ -47,6 +53,8 @@
         <a href="#cars" data-route-link="cars">Cars</a>
         <a href="#housing" data-route-link="housing">Housing</a>
         <a href="#computers" data-route-link="computers">Computers</a>
+        <a href="#electronics" data-route-link="electronics">Electronics</a>
+        <a href="#phones" data-route-link="phones">Phones</a>
       </nav>
       <div class="nav-actions">
         <button class="btn btn-primary" type="button">
@@ -84,6 +92,8 @@
                   <option>Cars & trucks</option>
                   <option>Apartments</option>
                   <option>Computers</option>
+                  <option>Electronics</option>
+                  <option>Phones</option>
                 </select>
                 <button class="btn btn-primary" type="submit">Search</button>
               </form>
@@ -91,7 +101,8 @@
                 <button type="button" data-route-link="housing">No fee apartments</button>
                 <button type="button" data-route-link="cars">BMW SUV under $20k</button>
                 <button type="button" data-route-link="computers">MacBook under $300</button>
-                <button type="button">Weekend gigs</button>
+                <button type="button" data-route-link="electronics">Bose headphones</button>
+                <button type="button" data-route-link="phones">iPhones under $500</button>
               </div>
             </div>
             <div class="hero-visual" aria-label="Featured local listings">
@@ -143,31 +154,17 @@
               <h3>Computers</h3>
               <p>Laptops, desktops, monitors, components, and accessories.</p>
             </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-briefcase"></use></svg>
-              <h3>Jobs</h3>
-              <p>Full-time, part-time, contract, and local hiring posts.</p>
+            <a class="category-card" href="#electronics" data-route-link="electronics">
+              <svg class="icon-lg"><use href="#i-headphones"></use></svg>
+              <h3>Electronics</h3>
+              <p>TVs, speakers, headphones, audio gear, and accessories.</p>
             </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-shield"></use></svg>
-              <h3>Services</h3>
-              <p>Trusted local pros for repairs, moving, events, and more.</p>
+            <a class="category-card" href="#phones" data-route-link="phones">
+              <svg class="icon-lg"><use href="#i-smartphone"></use></svg>
+              <h3>Phones</h3>
+              <p>iPhones, Samsung Galaxy, cases, chargers, and accessories.</p>
             </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-tag"></use></svg>
-              <h3>For sale</h3>
-              <p>Furniture, electronics, tools, clothing, and collectibles.</p>
-            </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-map"></use></svg>
-              <h3>Community</h3>
-              <p>Activities, classes, groups, volunteers, and events.</p>
-            </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-plus"></use></svg>
-              <h3>Gigs</h3>
-              <p>Quick work, creative projects, crews, and local tasks.</p>
-            </a>
+
           </div>
         </section>
 
@@ -272,14 +269,21 @@
                 <button class="chip" type="button" data-value="Wagon">Wagon</button>
               </div>
             </div>
-            <div class="filter-block">
-              <label for="car-year">Year</label>
-              <select id="car-year">
-                <option value="Any year" selected>Any year</option>
-                <option value="Before 2020">Before 2020</option>
-                <option value="2020 or newer">2020 or newer</option>
-                <option value="2016 or newer">2016 or newer</option>
-              </select>
+            <div class="filter-block range-group">
+              <span class="filter-label">Year range</span>
+              <div class="range-inputs">
+                <input type="number" id="car-year-from" class="range-input" min="1990" max="2030" placeholder="From" aria-label="Year from" />
+                <span class="range-sep">–</span>
+                <input type="number" id="car-year-to" class="range-input" min="1990" max="2030" placeholder="To" aria-label="Year to" />
+              </div>
+            </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Price range</span>
+              <div class="range-inputs">
+                <input type="number" id="car-price-min" class="range-input" min="0" step="500" placeholder="Min $" aria-label="Price min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="car-price-max" class="range-input" min="0" step="500" placeholder="Max $" aria-label="Price max" />
+              </div>
             </div>
             <div class="filter-block">
               <span class="filter-label">Color</span>
@@ -518,13 +522,13 @@
                 <button class="chip" type="button" data-housing-filter="4+ BR">4+</button>
               </div>
             </div>
-            <div class="filter-block">
-              <span class="filter-label">Monthly rent</span>
-              <select id="housing-price">
-                <option value="Any price" selected>Any price</option>
-                <option value="Under $2,500">Under $2,500</option>
-                <option value="Under $3,000">Under $3,000</option>
-              </select>
+            <div class="filter-block range-group">
+              <span class="filter-label">Rent range</span>
+              <div class="range-inputs">
+                <input type="number" id="housing-rent-min" class="range-input" min="0" step="100" placeholder="Min $" aria-label="Rent min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="housing-rent-max" class="range-input" min="0" step="100" placeholder="Max $" aria-label="Rent max" />
+              </div>
             </div>
             <div class="filter-block">
               <span class="filter-label">Furnished</span>
@@ -649,8 +653,23 @@
                 <button class="chip" type="button">16"</button>
               </div>
             </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Year range</span>
+              <div class="range-inputs">
+                <input type="number" id="computer-year-from" class="range-input" min="2000" max="2030" placeholder="From" aria-label="Year from" />
+                <span class="range-sep">–</span>
+                <input type="number" id="computer-year-to" class="range-input" min="2000" max="2030" placeholder="To" aria-label="Year to" />
+              </div>
+            </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Price range</span>
+              <div class="range-inputs">
+                <input type="number" id="computer-price-min" class="range-input" min="0" step="50" placeholder="Min $" aria-label="Price min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="computer-price-max" class="range-input" min="0" step="50" placeholder="Max $" aria-label="Price max" />
+              </div>
+            </div>
             <div class="filter-block select-grid">
-              <label>Year<select><option selected>Any year</option><option>2015+</option><option>2018+</option><option>2020+</option></select></label>
               <label>RAM<select><option selected>Any RAM</option><option>8GB+</option><option>16GB+</option></select></label>
               <label>Storage<select><option selected>Any storage</option><option>256GB SSD+</option><option>512GB SSD+</option></select></label>
               <label>Condition<select><option selected>Any condition</option><option>Good+</option><option>Excellent</option><option>Open box</option></select></label>
@@ -742,6 +761,143 @@
                 </div>
               </article>
             </div>
+          </section>
+        </div>
+      </section>
+      <section id="electronics" class="page" data-page="electronics">
+        <div class="container page-head">
+          <div>
+            <p class="eyebrow">Electronics</p>
+            <h1>TVs, audio, headphones, and more.</h1>
+          </div>
+          <select class="sort-select" aria-label="Sort electronics">
+            <option selected>Best value</option>
+            <option>Lowest price</option>
+            <option>Newest</option>
+          </select>
+        </div>
+        <div class="container search-layout">
+          <aside class="filter-panel" aria-label="Electronics filters">
+            <div class="filter-block">
+              <span class="filter-label">Category</span>
+              <div class="chip-group" id="electronics-subcategory-group">
+                <button class="chip" type="button">Audio</button>
+                <button class="chip" type="button">Headphones</button>
+                <button class="chip" type="button">TV &amp; video</button>
+                <button class="chip" type="button">Other electronics</button>
+              </div>
+            </div>
+            <div class="filter-block">
+              <label for="electronics-brand">Brand</label>
+              <select id="electronics-brand">
+                <option selected>Any brand</option>
+                <option>Apple</option>
+                <option>Bose</option>
+                <option>LG</option>
+                <option>Yamaha</option>
+              </select>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Condition</span>
+              <div class="chip-group two-col">
+                <button class="chip" type="button" data-electronics-condition="New">New</button>
+                <button class="chip" type="button" data-electronics-condition="Used - Good">Good</button>
+                <button class="chip" type="button" data-electronics-condition="Used - Fair">Fair</button>
+                <button class="chip" type="button" data-electronics-condition="Open box">Open box</button>
+              </div>
+            </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Price range</span>
+              <div class="range-inputs">
+                <input type="number" id="electronics-price-min" class="range-input" min="0" step="25" placeholder="Min $" aria-label="Price min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="electronics-price-max" class="range-input" min="0" step="25" placeholder="Max $" aria-label="Price max" />
+              </div>
+            </div>
+          </aside>
+          <section class="results-panel">
+            <div class="active-bar">
+              <div id="electronics-active-filters" class="active-filters" aria-label="Active electronics filters"></div>
+              <span class="match-status" id="electronics-status">Showing 20 listings</span>
+            </div>
+            <div class="listing-list" id="electronics-listing-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="phones" class="page" data-page="phones">
+        <div class="container page-head">
+          <div>
+            <p class="eyebrow">Phones</p>
+            <h1>iPhones, Samsung, and accessories.</h1>
+          </div>
+          <select class="sort-select" aria-label="Sort phones">
+            <option selected>Best value</option>
+            <option>Lowest price</option>
+            <option>Newest</option>
+          </select>
+        </div>
+        <div class="container search-layout">
+          <aside class="filter-panel" aria-label="Phone filters">
+            <div class="filter-block">
+              <span class="filter-label">Type</span>
+              <div class="chip-group" id="phones-subcategory-group">
+                <button class="chip" type="button">iPhone</button>
+                <button class="chip" type="button">Samsung Galaxy</button>
+                <button class="chip" type="button">Cases &amp; covers</button>
+                <button class="chip" type="button">Accessories</button>
+                <button class="chip" type="button">Other phones</button>
+              </div>
+            </div>
+            <div class="filter-block">
+              <label for="phones-brand">Brand</label>
+              <select id="phones-brand">
+                <option selected>Any brand</option>
+                <option>Apple</option>
+                <option>Samsung</option>
+                <option>Motorola</option>
+                <option>LG</option>
+              </select>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Storage</span>
+              <div class="chip-group">
+                <button class="chip" type="button" data-phones-storage="64">64GB</button>
+                <button class="chip" type="button" data-phones-storage="128">128GB</button>
+                <button class="chip" type="button" data-phones-storage="256">256GB</button>
+                <button class="chip" type="button" data-phones-storage="512">512GB</button>
+              </div>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Unlocked</span>
+              <div class="chip-group two-col">
+                <button class="chip" type="button" data-phones-unlocked="true">Unlocked</button>
+                <button class="chip" type="button" data-phones-unlocked="false">Carrier</button>
+              </div>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Condition</span>
+              <div class="chip-group">
+                <button class="chip" type="button" data-phones-condition="New">New</button>
+                <button class="chip" type="button" data-phones-condition="Good">Good</button>
+                <button class="chip" type="button" data-phones-condition="Fair">Fair</button>
+              </div>
+            </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Price range</span>
+              <div class="range-inputs">
+                <input type="number" id="phones-price-min" class="range-input" min="0" step="25" placeholder="Min $" aria-label="Price min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="phones-price-max" class="range-input" min="0" step="25" placeholder="Max $" aria-label="Price max" />
+              </div>
+            </div>
+          </aside>
+          <section class="results-panel">
+            <div class="active-bar">
+              <div id="phones-active-filters" class="active-filters" aria-label="Active phone filters"></div>
+              <span class="match-status" id="phones-status">Showing 20 listings</span>
+            </div>
+            <div class="listing-list" id="phones-listing-list"></div>
           </section>
         </div>
       </section>

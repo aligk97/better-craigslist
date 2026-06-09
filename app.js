@@ -4,26 +4,8 @@ const routeLinks = Array.from(document.querySelectorAll("[data-route-link]"));
 const fallbackData = {
   generatedAt: "2026-06-09",
   mode: "embedded-seed",
-  source: "Embedded seed from Craigslist New York search results; run the local server for live refresh.",
-  listings: [
-    { id: "car-7939679011", category: "cars", title: "2019 BMW X3 - Great Deal!-new jersey", price: 16495, location: "Woodside", url: "https://newyork.craigslist.org/jsy/ctd/d/woodside-2019-bmw-x3-great-deal-new/7939679011.html", image: "https://images.craigslist.org/01414_hFwmJPd8ZQr_0ew0aS_600x450.jpg", year: 2019, make: "BMW", model: "X3", body: "SUV", mileage: 96139, transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7939358963", category: "cars", title: "2008 BMW X3 3.0si AWD 4dr SUV", price: 4600, location: "Trenton", url: "https://newyork.craigslist.org/brx/ctd/d/trenton-2008-bmw-x3-30si-awd-4dr-suv/7939358963.html", image: "https://images.craigslist.org/00O0O_kIrb7fk3h8z_0dI0ah_600x450.jpg", year: 2008, make: "BMW", model: "X3", body: "SUV", transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7939275196", category: "cars", title: "An Impressive 2019 BMW X3 with 96,139 Miles-long island", price: 15900, location: "Freeport", url: "https://newyork.craigslist.org/lgi/ctd/d/roosevelt-an-impressive-2019-bmw-x3/7939275196.html", image: null, year: 2019, make: "BMW", model: "X3", body: "SUV", mileage: 96139, transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7939066504", category: "cars", title: "2019 BMW X5 xDrive40i AWD Fully Loaded (Camera, Panorama, Navi)", price: 20990, location: "Brooklyn", url: "https://newyork.craigslist.org/brk/cto/d/brooklyn-2019-bmw-x5-xdrive40i-awd/7939066504.html", image: null, year: 2019, make: "BMW", model: "X5", body: "SUV", transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7938805789", category: "cars", title: "BMW X3 2014", price: 7500, location: "Nassau County", url: "https://newyork.craigslist.org/lgi/cto/d/melville-bmw-x3-2014/7938805789.html", image: null, year: 2014, make: "BMW", model: "X3", body: "SUV", transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "car-7938716285", category: "cars", title: "2020 BMW X3 M40i", price: 24995, location: "Floral Park", url: "https://newyork.craigslist.org/brk/ctd/d/floral-park-2020-bmw-x3-m40i/7938716285.html", image: null, year: 2020, make: "BMW", model: "X3", body: "SUV", transmission: "Automatic", fuel: "Gas", drive: "AWD", titleStatus: "Clean" },
-    { id: "housing-7939394454", category: "housing", listingType: "For rent", title: "2 Bed/1 Bath Basement Appartment available in Brooklyn", price: 1800, location: "Kensington", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-bed-bath-basement-appartment/7939394454.html", image: null, bedrooms: 2, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["Basement", "Brooklyn"] },
-    { id: "housing-7939342197", category: "housing", listingType: "For rent", title: "A Brooklyn 1-Bed With Comfort, Convenience, and a Little Extra Space", price: 2495, location: "Brooklyn", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-brooklyn-bed-with-comfort/7939342197.html", image: null, bedrooms: 1, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["Extra space", "Transit"] },
-    { id: "housing-7939064569", category: "housing", listingType: "For rent", title: "Amazing Bright Large 1 BR Bensonhurst / Bath Beach NO Fee", price: 2156, location: "Bensonhurst / Bath Beach", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-amazing-bright-large-br/7939064569.html", image: null, bedrooms: 1, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["No fee", "Bright", "Large"] },
-    { id: "housing-7939061463", category: "housing", listingType: "For rent", title: "Cozy 1 Bedroom | Prime Flatbush Brooklyn Location", price: 1964, location: "Flatbush", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-cozy-bedroom-prime-flatbush/7939061463.html", image: null, bedrooms: 1, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["Prime location", "Flatbush"] },
-    { id: "housing-7938719015", category: "housing", listingType: "For rent", title: "Renovated Studio 1 Block to Brooklyn College - Separate Eat-In Kitchen", price: 1600, location: "Flatbush", url: "https://newyork.craigslist.org/brk/apa/d/brooklyn-renovated-studio-block-to/7938719015.html", image: null, bedrooms: 0, bathrooms: 1, furnished: false, leaseTerm: "1 year+", amenities: ["Renovated", "Eat-in kitchen"] },
-    { id: "computer-7910839552", category: "computers", subcategory: "Laptops", title: "MacBook Air Early 2015", price: 100, location: "Bedford Hills", url: "https://newyork.craigslist.org/wch/sys/d/bedford-hills-macbook-air-early-2015/7910839552.html", image: "https://images.craigslist.org/00N0N_fqw41Jmgnln_0CI0t2_600x450.jpg", brand: "Apple", year: 2015, screen: 13, ramGb: 8, storageGb: 128, condition: "Good" },
-    { id: "computer-7939700366", category: "computers", subcategory: "Laptops", title: "Macbook Pro 15 Touch Bar 2.7ghz i7 processor 16 500GB", price: 200, location: "Brooklyn", url: "https://newyork.craigslist.org/brk/sys/d/staten-island-macbook-pro-15-touch-bar/7939700366.html", image: "https://images.craigslist.org/00x0x_kguRKCy7oPA_0pO0ew_600x450.jpg", brand: "Apple", year: 2016, screen: 15, ramGb: 16, storageGb: 500, condition: "Good" },
-    { id: "computer-7938258973", category: "computers", subcategory: "Accessories", title: "NEW Case MacBook Air 15 inch 2024 2023 M3 M2 Model A3114 A2941", price: 12, location: "Ridgewood 11385 Queens", url: "https://newyork.craigslist.org/que/sys/d/ridgewood-new-case-macbook-air-15-inch/7938258973.html", image: "https://images.craigslist.org/00g0g_lJXrRjwIdYH_08w0ak_600x450.jpg", brand: "Apple", year: 2024, screen: 15, ramGb: null, storageGb: null, condition: "Open box" },
-    { id: "computer-7939653842", category: "computers", subcategory: "Laptops", title: "MacBook Pro 13", price: 290, location: "New York", url: "https://newyork.craigslist.org/mnh/sys/d/new-york-macbook-pro-13/7939653842.html", image: "https://images.craigslist.org/00f0f_lm7NSjDsRQ5_0t20CI_600x450.jpg", brand: "Apple", year: null, screen: 13, ramGb: null, storageGb: null, condition: "Good" },
-    { id: "computer-7939646209", category: "computers", subcategory: "Laptops", title: "Apple Macbook Pro 16 - A2141 - 6-core i7, 16G, 512G - works well!", price: 270, location: "Bushwick", url: "https://newyork.craigslist.org/brk/sys/d/brooklyn-apple-macbook-pro-16-core-i7/7939646209.html", image: "https://images.craigslist.org/00i0i_22jAxlCUK1s_0CI0t2_600x450.jpg", brand: "Apple", year: 2019, screen: 16, ramGb: 16, storageGb: 512, condition: "Good" },
-    { id: "computer-7939623274", category: "computers", subcategory: "Laptops", title: "Macbook Air 13 2015 i5 SSD", price: 120, location: "Staten Island", url: "https://newyork.craigslist.org/stn/sys/d/staten-island-macbook-air-i5-ssd/7939623274.html", image: "https://images.craigslist.org/00D0D_5Pa8t6J0ud1_0jm0o9_600x450.jpg", brand: "Apple", year: 2015, screen: 13, ramGb: 8, storageGb: 128, condition: "Good" }
-  ]
+  source: "Embedded seed from Craigslist New York search results; data/listings.json is the primary source.",
+  listings: []
 };
 
 const appState = {
@@ -41,7 +23,6 @@ let carModelsByMake = {
 let carFilterSets = {
   makes: ["Any make", "BMW", "Toyota", "Honda", "Ford"],
   models: ["Any model", "X3", "X5", "Civic", "Rogue", "GLC 300"],
-  years: ["Any year", "Before 2020", "2020 or newer", "2016 or newer"],
   colors: ["Black", "White", "Silver", "Blue", "Red", "Green", "Tan", "Gray"],
   bodies: ["SUV", "Sedan", "Wagon"]
 };
@@ -50,15 +31,22 @@ const carFilters = new Set([]);
 const carActiveFilters = document.querySelector("#car-active-filters");
 const carMakeSelect = document.querySelector("#car-make");
 const carModelSelect = document.querySelector("#car-model");
-const carYearSelect = document.querySelector("#car-year");
+const carYearFrom = document.querySelector("#car-year-from");
+const carYearTo = document.querySelector("#car-year-to");
+const carPriceMin = document.querySelector("#car-price-min");
+const carPriceMax = document.querySelector("#car-price-max");
 const carSortSelect = document.querySelector("#cars [aria-label='Sort car listings']");
+
+// Range filter state
+const carRangeFilters = { yearFrom: null, yearTo: null, priceMin: null, priceMax: null };
 
 const housingDefaults = [];
 const housingActiveFilters = document.querySelector("#housing-active-filters");
-const housingPrice = document.querySelector("#housing-price");
+const housingRentMin = document.querySelector("#housing-rent-min");
+const housingRentMax = document.querySelector("#housing-rent-max");
 const housingLocation = document.querySelector("#housing-location");
 const housingSortSelect = document.querySelector(".sort-select");
-const housingKnownPrices = ["Under $2,500", "Under $3,000", "Any price"];
+const housingRanges = { rentMin: null, rentMax: null };
 const housingListingTypes = ["For rent", "For sale", "Short-term"];
 const housingBedroomValues = ["Studio", "1 BR", "2 BR", "3 BR", "4+ BR"];
 const housingFurnishedValues = ["Furnished", "Unfurnished"];
@@ -77,11 +65,13 @@ const computerFilters = {
   tab: null,
   brand: "Any brand",
   screen: "Any size",
-  year: "Any year",
+  yearFrom: null,
+  yearTo: null,
+  priceMin: null,
+  priceMax: null,
   ram: "Any RAM",
   storage: "Any storage",
   condition: "Any condition",
-  maxPrice: Infinity,
   excludes: {
     Cases: false,
     Keyboards: false,
@@ -91,6 +81,10 @@ const computerFilters = {
 
 const computerBrandSelect = document.querySelector("#computer-brand");
 const computerSortSelect = document.querySelector("#computers [aria-label='Sort computer listings']");
+const computerYearFrom = document.querySelector("#computer-year-from");
+const computerYearTo = document.querySelector("#computer-year-to");
+const computerPriceMin = document.querySelector("#computer-price-min");
+const computerPriceMax = document.querySelector("#computer-price-max");
 const computerSpecSelects = Array.from(document.querySelectorAll("#computers .select-grid select"));
 const computerTabs = document.querySelector(".computer-tabs");
 const computerScreenGroup = document.querySelector("#computers .filter-panel .chip-group");
@@ -197,7 +191,7 @@ function bestMatchScore(listing, category) {
     if (listing.price && listing.price <= 2500) score += 5;
     if (textIncludes(listing, "Brooklyn")) score += 4;
   }
-  if (category === "computers") {
+  if (category === "computers" || category === "electronics" || category === "phones") {
     score += valueScore(listing);
   }
   return score;
@@ -282,6 +276,8 @@ function deriveFilterOptionsFromData() {
   const cars = categoryListings("cars");
   const housing = categoryListings("housing");
   const computers = categoryListings("computers");
+  const electronics = categoryListings("electronics");
+  const phones = categoryListings("phones");
 
   const makes = uniqueSorted(cars, (listing) => listing.make);
   const models = uniqueSorted(cars, (listing) => listing.model);
@@ -307,6 +303,18 @@ function deriveFilterOptionsFromData() {
     tabs: Array.from(new Set([...baseComputerTabs, ...uniqueSorted(computers, (listing) => listing.subcategory)])),
     brands: ["Any brand", ...uniqueSorted(computers, (listing) => listing.brand)],
     screens: ["Any size", ...uniqueSorted(computers, (listing) => listing.screen ? `${listing.screen}"` : "")]
+  };
+
+  electronicsFilterSets = {
+    subcategories: uniqueSorted(electronics, (l) => l.subcategory),
+    brands: ["Any brand", ...uniqueSorted(electronics, (l) => l.brand)],
+    conditions: uniqueSorted(electronics, (l) => l.condition)
+  };
+
+  phoneFilterSets = {
+    subcategories: uniqueSorted(phones, (l) => l.subcategory),
+    brands: ["Any brand", ...uniqueSorted(phones, (l) => l.brand)],
+    storages: uniqueSorted(phones, (l) => l.storageGb ? String(l.storageGb) : null)
   };
 }
 
@@ -352,10 +360,12 @@ function updateCarModelOptions(make) {
 
 function syncCarControls() {
   const activeMake = Array.from(carFilters).find((filter) => carFilterSets.makes.includes(filter)) || "Any make";
-  const activeYear = Array.from(carFilters).find((filter) => carFilterSets.years.includes(filter)) || "Any year";
   if (carMakeSelect) setSelectOptions(carMakeSelect, carFilterSets.makes, activeMake);
   updateCarModelOptions(activeMake);
-  if (carYearSelect) carYearSelect.value = activeYear;
+  if (carYearFrom) carYearFrom.value = carRangeFilters.yearFrom ?? "";
+  if (carYearTo) carYearTo.value = carRangeFilters.yearTo ?? "";
+  if (carPriceMin) carPriceMin.value = carRangeFilters.priceMin ?? "";
+  if (carPriceMax) carPriceMax.value = carRangeFilters.priceMax ?? "";
   renderCarBodyOptions();
   document.querySelectorAll("[data-car-group='body'] .chip").forEach((chip) => {
     chip.classList.toggle("is-selected", carFilters.has(chip.dataset.value));
@@ -368,16 +378,19 @@ function syncCarControls() {
 function matchesCar(listing) {
   if (listing.category !== "cars") return false;
   for (const filter of carFilters) {
-    if (filter === "Any make" || filter === "Any model" || filter === "Any year") continue;
+    if (filter === "Any make" || filter === "Any model") continue;
     if (carFilterSets.makes.includes(filter) && lower(listing.make) !== lower(filter) && !textIncludes(listing, filter)) return false;
     if (carFilterSets.models.includes(filter) && lower(listing.model) !== lower(filter) && !textIncludes(listing, filter)) return false;
     if (carFilterSets.bodies.includes(filter) && lower(listing.body) !== lower(filter) && !textIncludes(listing, filter)) return false;
     if (carFilterSets.colors.includes(filter) && listing.color && lower(listing.color) !== lower(filter)) return false;
     if (carFilterSets.colors.includes(filter) && !listing.color && !textIncludes(listing, filter)) return false;
-    if (filter === "Before 2020" && listing.year && listing.year >= 2020) return false;
-    if (filter === "2020 or newer" && listing.year && listing.year < 2020) return false;
-    if (filter === "2016 or newer" && listing.year && listing.year < 2016) return false;
   }
+  // Year range
+  if (carRangeFilters.yearFrom && listing.year && listing.year < carRangeFilters.yearFrom) return false;
+  if (carRangeFilters.yearTo && listing.year && listing.year > carRangeFilters.yearTo) return false;
+  // Price range
+  if (carRangeFilters.priceMin !== null && listing.price && listing.price < carRangeFilters.priceMin) return false;
+  if (carRangeFilters.priceMax !== null && listing.price && listing.price > carRangeFilters.priceMax) return false;
   return true;
 }
 
@@ -402,10 +415,17 @@ function carCard(listing) {
 function renderCarFilters() {
   if (!carActiveFilters) return;
   syncCarControls();
-  carActiveFilters.innerHTML = Array.from(carFilters)
-    .filter((filter) => !["Any make", "Any model", "Any year"].includes(filter))
-    .map((filter) => filterChip(filter, "car"))
-    .join("");
+  const rangeChips = [];
+  if (carRangeFilters.yearFrom !== null) rangeChips.push(`Year ≥ ${carRangeFilters.yearFrom}`);
+  if (carRangeFilters.yearTo !== null) rangeChips.push(`Year ≤ ${carRangeFilters.yearTo}`);
+  if (carRangeFilters.priceMin !== null) rangeChips.push(`Min $${carRangeFilters.priceMin}`);
+  if (carRangeFilters.priceMax !== null) rangeChips.push(`Max $${carRangeFilters.priceMax}`);
+  carActiveFilters.innerHTML = [
+    ...Array.from(carFilters)
+      .filter((filter) => !["Any make", "Any model"].includes(filter))
+      .map((filter) => filterChip(filter, "car")),
+    ...rangeChips.map((chip) => `<span class="filter-chip">${escapeHtml(chip)}</span>`)
+  ].join("");
   const matches = sortListings(appState.listings.filter(matchesCar), carSortSelect?.value || "Best match", "cars");
   const container = document.querySelector("#cars .listing-list");
   if (container) {
@@ -421,10 +441,8 @@ function syncHousingControls() {
   document.querySelectorAll("[data-housing-filter]").forEach((control) => {
     control.classList.toggle("is-selected", housingFilters.has(control.dataset.housingFilter));
   });
-  if (housingPrice) {
-    const activePrice = housingKnownPrices.find((price) => housingFilters.has(price));
-    housingPrice.value = activePrice || "Any price";
-  }
+  if (housingRentMin) housingRentMin.value = housingRanges.rentMin ?? "";
+  if (housingRentMax) housingRentMax.value = housingRanges.rentMax ?? "";
 }
 
 function bedroomLabel(value) {
@@ -432,12 +450,6 @@ function bedroomLabel(value) {
   if (value === 1) return "1 BR";
   if (value && value >= 4) return "4+ BR";
   return value ? `${value} BR` : "BR n/a";
-}
-
-function priceLimitFromFilter(filter) {
-  if (!String(filter).startsWith("Under")) return null;
-  const amount = String(filter).replace(/[^\d]/g, "");
-  return amount ? Number(amount) : null;
 }
 
 function normalizedLease(value) {
@@ -448,22 +460,22 @@ function isKnownHousingFilter(filter) {
   return housingListingTypes.includes(filter)
     || housingBedroomValues.includes(filter)
     || housingFurnishedValues.includes(filter)
-    || housingLeaseValues.includes(filter)
-    || housingKnownPrices.includes(filter);
+    || housingLeaseValues.includes(filter);
 }
 
 function matchesHousing(listing) {
   if (listing.category !== "housing") return false;
   for (const filter of housingFilters) {
-    const priceLimit = priceLimitFromFilter(filter);
     if (housingListingTypes.includes(filter) && listing.listingType && lower(listing.listingType) !== lower(filter)) return false;
     if (housingBedroomValues.includes(filter) && bedroomLabel(listing.bedrooms) !== filter) return false;
-    if (priceLimit && listing.price && listing.price > priceLimit) return false;
     if (filter === "Furnished" && listing.furnished !== true) return false;
     if (filter === "Unfurnished" && listing.furnished === true) return false;
     if (housingLeaseValues.includes(filter) && listing.leaseTerm && normalizedLease(listing.leaseTerm) !== normalizedLease(filter)) return false;
     if (!isKnownHousingFilter(filter) && !textIncludes(listing, filter)) return false;
   }
+  // Rent range
+  if (housingRanges.rentMin !== null && listing.price && listing.price < housingRanges.rentMin) return false;
+  if (housingRanges.rentMax !== null && listing.price && listing.price > housingRanges.rentMax) return false;
   return true;
 }
 
@@ -494,7 +506,13 @@ function housingCard(listing) {
 function renderHousingFilters() {
   if (!housingActiveFilters) return;
   syncHousingControls();
-  housingActiveFilters.innerHTML = Array.from(housingFilters).map((filter) => filterChip(filter, "housing")).join("");
+  const rangeChips = [];
+  if (housingRanges.rentMin !== null) rangeChips.push(`Min $${housingRanges.rentMin}`);
+  if (housingRanges.rentMax !== null) rangeChips.push(`Max $${housingRanges.rentMax}`);
+  housingActiveFilters.innerHTML = [
+    ...Array.from(housingFilters).map((filter) => filterChip(filter, "housing")),
+    ...rangeChips.map((chip) => `<span class="filter-chip">${escapeHtml(chip)}</span>`)
+  ].join("");
   saveHousingFilters();
   const matches = sortListings(appState.listings.filter(matchesHousing), housingSortSelect?.value || "Best match", "housing");
   const container = document.querySelector("#housing .listing-list");
@@ -537,12 +555,15 @@ function matchesComputer(listing) {
   if (computerFilters.tab && listing.subcategory && lower(listing.subcategory) !== lower(computerFilters.tab)) return false;
   if (computerFilters.brand && computerFilters.brand !== "Any brand" && lower(listing.brand) !== lower(computerFilters.brand) && !textIncludes(listing, computerFilters.brand)) return false;
   if ((computerFilters.brand === "Apple") && !textIncludes(listing, "MacBook") && !textIncludes(listing, "Apple")) return false;
-  if (listing.price && listing.price > computerFilters.maxPrice) return false;
   if (excludedComputer(listing)) return false;
   const selectedScreen = screenNumber(computerFilters.screen);
   if (selectedScreen && listing.screen && listing.screen !== selectedScreen) return false;
-  const selectedYear = specMin(computerFilters.year);
-  if (selectedYear && listing.year && listing.year < selectedYear) return false;
+  // Year range
+  if (computerFilters.yearFrom && listing.year && listing.year < computerFilters.yearFrom) return false;
+  if (computerFilters.yearTo && listing.year && listing.year > computerFilters.yearTo) return false;
+  // Price range
+  if (computerFilters.priceMin !== null && listing.price && listing.price < computerFilters.priceMin) return false;
+  if (computerFilters.priceMax !== null && listing.price && listing.price > computerFilters.priceMax) return false;
   const selectedRam = specMin(computerFilters.ram);
   if (selectedRam && listing.ramGb && listing.ramGb < selectedRam) return false;
   const selectedStorage = specMin(computerFilters.storage);
@@ -605,16 +626,17 @@ function updateCompareState() {
 
 function renderComputerActiveFilters() {
   if (!computerActiveFilters) return;
-  const priceLabel = Number.isFinite(computerFilters.maxPrice) ? `Under $${computerFilters.maxPrice}` : null;
   const active = [
     computerFilters.tab,
     computerFilters.brand !== "Any brand" ? computerFilters.brand : null,
     computerFilters.screen !== "Any size" ? computerFilters.screen : null,
-    computerFilters.year !== "Any year" ? computerFilters.year : null,
+    computerFilters.yearFrom ? `Year ≥ ${computerFilters.yearFrom}` : null,
+    computerFilters.yearTo ? `Year ≤ ${computerFilters.yearTo}` : null,
+    computerFilters.priceMin !== null ? `Min $${computerFilters.priceMin}` : null,
+    computerFilters.priceMax !== null ? `Max $${computerFilters.priceMax}` : null,
     computerFilters.ram !== "Any RAM" ? computerFilters.ram : null,
     computerFilters.storage !== "Any storage" ? computerFilters.storage : null,
     computerFilters.condition !== "Any condition" ? computerFilters.condition : null,
-    priceLabel,
     ...Object.entries(computerFilters.excludes)
       .filter(([, enabled]) => enabled)
       .map(([label]) => `No ${label.toLowerCase()}`)
@@ -640,6 +662,262 @@ function renderComputerFilters() {
   renderComputerActiveFilters();
 }
 
+/* ── Electronics ── */
+
+let electronicsFilterSets = {
+  subcategories: ["Audio", "Headphones", "TV & video", "Other electronics"],
+  brands: ["Any brand", "Apple", "Bose", "LG", "Yamaha"],
+  conditions: ["New", "Used - Good", "Used - Fair", "Open box"]
+};
+
+const electronicsFilters = {
+  subcategory: null,
+  brand: "Any brand",
+  condition: null,
+  priceMin: null,
+  priceMax: null
+};
+
+const electronicsBrandSelect = document.querySelector("#electronics-brand");
+const electronicsPriceMin = document.querySelector("#electronics-price-min");
+const electronicsPriceMax = document.querySelector("#electronics-price-max");
+const electronicsSortSelect = document.querySelector("#electronics .sort-select");
+const electronicsActiveFilters = document.querySelector("#electronics-active-filters");
+const electronicsSubcategoryGroup = document.querySelector("#electronics-subcategory-group");
+
+// Electronics matching
+function matchesElectronics(listing) {
+  if (listing.category !== "electronics") return false;
+  
+  // Subcategory
+  if (electronicsFilters.subcategory && listing.subcategory && 
+      lower(listing.subcategory) !== lower(electronicsFilters.subcategory)) return false;
+  
+  // Brand
+  if (electronicsFilters.brand !== "Any brand" && listing.brand && 
+      lower(listing.brand) !== lower(electronicsFilters.brand) && !textIncludes(listing, electronicsFilters.brand)) return false;
+  
+  // Condition
+  if (electronicsFilters.condition && listing.condition) {
+    if (lower(listing.condition) !== lower(electronicsFilters.condition)) return false;
+  }
+  if (electronicsFilters.condition && !listing.condition) return false;
+  
+  // Price range
+  if (electronicsFilters.priceMin !== null && listing.price && listing.price < electronicsFilters.priceMin) return false;
+  if (electronicsFilters.priceMax !== null && listing.price && listing.price > electronicsFilters.priceMax) return false;
+  
+  return true;
+}
+
+function electronicsCard(listing) {
+  const subcat = listing.subcategory || "Other";
+  const artMap = {
+    "Audio": "art-wheel",
+    "Headphones": "art-laptop",
+    "TV & video": "art-dashboard",
+    "Other electronics": "art-suv"
+  };
+  const art = artMap[subcat] || "art-laptop";
+  return `
+    <article class="listing-card horizontal" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="electronics">
+      <div class="visual-art ${photoClass(listing, art)}"${photoStyle(listing)}></div>
+      <div class="listing-body">
+        <div class="listing-topline">
+          <span class="badge badge-green">${escapeHtml(subcat)}</span>
+          ${listing.brand ? `<span class="badge">${escapeHtml(listing.brand)}</span>` : ''}
+        </div>
+        <h3>${escapeHtml(listing.title)}</h3>
+        <p>${escapeHtml([listing.location, listing.condition].filter(Boolean).join(" · "))}</p>
+        <div class="listing-bottom">
+          <span class="price">${formatPrice(listing.price)}</span>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function syncElectronicsControls() {
+  // Subcategory chips
+  if (electronicsSubcategoryGroup) {
+    electronicsSubcategoryGroup.innerHTML = electronicsFilterSets.subcategories
+      .map((sub) => `<button class="chip ${sub === electronicsFilters.subcategory ? "is-selected" : ""}" type="button" data-electronics-sub="${escapeHtml(sub)}">${escapeHtml(sub)}</button>`)
+      .join("");
+  }
+  // Brand select
+  if (electronicsBrandSelect) {
+    setSelectOptions(electronicsBrandSelect, electronicsFilterSets.brands, electronicsFilters.brand);
+  }
+  // Condition chips
+  document.querySelectorAll("[data-electronics-condition]").forEach((chip) => {
+    chip.classList.toggle("is-selected", chip.dataset.electronicsCondition === electronicsFilters.condition);
+  });
+  // Price range inputs
+  if (electronicsPriceMin) electronicsPriceMin.value = electronicsFilters.priceMin ?? "";
+  if (electronicsPriceMax) electronicsPriceMax.value = electronicsFilters.priceMax ?? "";
+}
+
+function renderElectronicsActiveFilters() {
+  if (!electronicsActiveFilters) return;
+  const active = [];
+  if (electronicsFilters.subcategory) active.push(electronicsFilters.subcategory);
+  if (electronicsFilters.brand !== "Any brand") active.push(electronicsFilters.brand);
+  if (electronicsFilters.condition) active.push(electronicsFilters.condition);
+  if (electronicsFilters.priceMin !== null) active.push(`Min $${electronicsFilters.priceMin}`);
+  if (electronicsFilters.priceMax !== null) active.push(`Max $${electronicsFilters.priceMax}`);
+  electronicsActiveFilters.innerHTML = active.map((f) => `<span class="filter-chip">${escapeHtml(f)}</span>`).join("");
+}
+
+function renderElectronicsFilters() {
+  syncElectronicsControls();
+  const matches = sortListings(appState.listings.filter(matchesElectronics), electronicsSortSelect?.value || "Best value", "electronics");
+  const statusEl = document.querySelector("#electronics-status");
+  if (statusEl) statusEl.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
+  const container = document.querySelector("#electronics-listing-list");
+  if (container) {
+    container.innerHTML = matches.length ? matches.map(electronicsCard).join("") : emptyState("Try a different category or remove some filters.");
+  }
+  renderElectronicsActiveFilters();
+}
+
+/* ── Phones ── */
+
+let phoneFilterSets = {
+  subcategories: ["iPhone", "Samsung Galaxy", "Cases & covers", "Accessories", "Other phones"],
+  brands: ["Any brand", "Apple", "Samsung", "Motorola", "LG"],
+  storages: ["64", "128", "256", "512"]
+};
+
+const phoneFilters = {
+  subcategory: null,
+  brand: "Any brand",
+  storage: null,
+  unlocked: null,
+  condition: null,
+  priceMin: null,
+  priceMax: null
+};
+
+const phoneBrandSelect = document.querySelector("#phones-brand");
+const phonePriceMin = document.querySelector("#phones-price-min");
+const phonePriceMax = document.querySelector("#phones-price-max");
+const phoneSortSelect = document.querySelector("#phones .sort-select");
+const phoneActiveFilters = document.querySelector("#phones-active-filters");
+const phoneSubcategoryGroup = document.querySelector("#phones-subcategory-group");
+
+// Phones matching
+function matchesPhones(listing) {
+  if (listing.category !== "phones") return false;
+  
+  // Subcategory
+  if (phoneFilters.subcategory && listing.subcategory) {
+    const matchSub = phoneFilters.subcategory === "Accessories"
+      ? ["Cases & covers", "Audio accessories", "Phone accessories"].some(s => lower(listing.subcategory) === lower(s))
+      : lower(listing.subcategory) === lower(phoneFilters.subcategory);
+    if (!matchSub) return false;
+  }
+  if (phoneFilters.subcategory && !listing.subcategory) return false;
+  
+  // Brand
+  if (phoneFilters.brand !== "Any brand" && listing.brand && 
+      lower(listing.brand) !== lower(phoneFilters.brand)) return false;
+  
+  // Storage
+  if (phoneFilters.storage && listing.storageGb && listing.storageGb < Number(phoneFilters.storage)) return false;
+  if (phoneFilters.storage && !listing.storageGb) return false;
+  
+  // Unlocked
+  if (phoneFilters.unlocked !== null && listing.unlocked !== undefined && listing.unlocked !== phoneFilters.unlocked) return false;
+  
+  // Condition
+  if (phoneFilters.condition && listing.condition && lower(listing.condition) !== lower(phoneFilters.condition)) return false;
+  if (phoneFilters.condition && !listing.condition) return false;
+  
+  // Price range
+  if (phoneFilters.priceMin !== null && listing.price && listing.price < phoneFilters.priceMin) return false;
+  if (phoneFilters.priceMax !== null && listing.price && listing.price > phoneFilters.priceMax) return false;
+  
+  return true;
+}
+
+function phoneCard(listing) {
+  const subcat = listing.subcategory || "Phone";
+  const isCase = /\b(case|cover)\b/i.test(listing.title || "");
+  const isAccessory = listing.itemType === "Accessory" || /\b(charger|cable|adapter|stand)\b/i.test(listing.title || "");
+  const isPhone = listing.itemType === "Phone" || /iPhone|Galaxy|Moto/i.test(listing.title || "");
+  const art = isPhone ? "art-smartphone" : isCase ? "art-watch" : "art-sim";
+  return `
+    <article class="listing-card horizontal" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="phones">
+      <div class="visual-art ${photoClass(listing, art)}"${photoStyle(listing)}></div>
+      <div class="listing-body">
+        <div class="listing-topline">
+          <span class="badge badge-green">${escapeHtml(subcat)}</span>
+          ${listing.unlocked ? '<span class="badge">Unlocked</span>' : ''}
+        </div>
+        <h3>${escapeHtml(listing.title)}</h3>
+        <p>${escapeHtml([listing.location, listing.brand, listing.condition, listing.storageGb ? `${listing.storageGb}GB` : null].filter(Boolean).join(" · "))}</p>
+        <div class="listing-bottom">
+          <span class="price">${formatPrice(listing.price)}</span>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function syncPhoneControls() {
+  // Subcategory chips
+  if (phoneSubcategoryGroup) {
+    phoneSubcategoryGroup.innerHTML = phoneFilterSets.subcategories
+      .map((sub) => `<button class="chip ${sub === phoneFilters.subcategory ? "is-selected" : ""}" type="button" data-phones-sub="${escapeHtml(sub)}">${escapeHtml(sub)}</button>`)
+      .join("");
+  }
+  // Brand select
+  if (phoneBrandSelect) {
+    setSelectOptions(phoneBrandSelect, phoneFilterSets.brands, phoneFilters.brand);
+  }
+  // Storage chips
+  document.querySelectorAll("[data-phones-storage]").forEach((chip) => {
+    chip.classList.toggle("is-selected", chip.dataset.phonesStorage === phoneFilters.storage);
+  });
+  // Unlocked chips
+  document.querySelectorAll("[data-phones-unlocked]").forEach((chip) => {
+    chip.classList.toggle("is-selected", String(chip.dataset.phonesUnlocked) === String(phoneFilters.unlocked));
+  });
+  // Condition chips
+  document.querySelectorAll("[data-phones-condition]").forEach((chip) => {
+    chip.classList.toggle("is-selected", chip.dataset.phonesCondition === phoneFilters.condition);
+  });
+  // Price range inputs
+  if (phonePriceMin) phonePriceMin.value = phoneFilters.priceMin ?? "";
+  if (phonePriceMax) phonePriceMax.value = phoneFilters.priceMax ?? "";
+}
+
+function renderPhonesActiveFilters() {
+  if (!phoneActiveFilters) return;
+  const active = [];
+  if (phoneFilters.subcategory) active.push(phoneFilters.subcategory);
+  if (phoneFilters.brand !== "Any brand") active.push(phoneFilters.brand);
+  if (phoneFilters.storage) active.push(`${phoneFilters.storage}GB`);
+  if (phoneFilters.unlocked === true) active.push("Unlocked");
+  if (phoneFilters.unlocked === false) active.push("Carrier");
+  if (phoneFilters.condition) active.push(phoneFilters.condition);
+  if (phoneFilters.priceMin !== null) active.push(`Min $${phoneFilters.priceMin}`);
+  if (phoneFilters.priceMax !== null) active.push(`Max $${phoneFilters.priceMax}`);
+  phoneActiveFilters.innerHTML = active.map((f) => `<span class="filter-chip">${escapeHtml(f)}</span>`).join("");
+}
+
+function renderPhonesFilters() {
+  syncPhoneControls();
+  const matches = sortListings(appState.listings.filter(matchesPhones), phoneSortSelect?.value || "Best value", "phones");
+  const statusEl = document.querySelector("#phones-status");
+  if (statusEl) statusEl.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
+  const container = document.querySelector("#phones-listing-list");
+  if (container) {
+    container.innerHTML = matches.length ? matches.map(phoneCard).join("") : emptyState("Try a different type or remove some filters.");
+  }
+  renderPhonesActiveFilters();
+}
+
 function renderHomeListings() {
   const container = document.querySelector("#home .listing-grid");
   if (!container) return;
@@ -649,7 +927,8 @@ function renderHomeListings() {
     sortListings(appState.listings.filter((item) => item.category === "computers" && !excludedComputer(item)), "Best value", "computers")[0]
   ].filter(Boolean);
   container.innerHTML = picks.map((listing) => {
-    const art = listing.category === "housing" ? "art-apartment" : listing.category === "computers" ? "art-laptop" : "art-car";
+    const artMap = { housing: "art-apartment", computers: "art-laptop", electronics: "art-wheel", phones: "art-smartphone", cars: "art-car" };
+    const art = artMap[listing.category] || "art-car";
     return `
       <article class="listing-card" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="${escapeHtml(listing.category)}">
         <div class="visual-art ${photoClass(listing, art)}"${photoStyle(listing)}></div>
@@ -677,7 +956,8 @@ function renderMiniListings() {
     sortListings(appState.listings.filter((item) => item.category === "computers" && !excludedComputer(item)), "Best value", "computers")[0]
   ].filter(Boolean);
   mini.innerHTML = picks.map((listing, index) => {
-    const art = listing.category === "housing" ? "art-apartment" : listing.category === "computers" ? "art-laptop" : "art-car";
+    const artMap = { housing: "art-apartment", computers: "art-laptop", electronics: "art-wheel", phones: "art-smartphone", cars: "art-car" };
+    const art = artMap[listing.category] || "art-car";
     return `
       <article class="mini-listing ${index === 1 ? "offset" : ""}" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="${escapeHtml(listing.category)}">
         <div class="visual-art ${photoClass(listing, art)}"${photoStyle(listing)}></div>
@@ -742,6 +1022,12 @@ function buildGalleryPhotos(listing) {
   } else if (cat === "computers") {
     const arts = ["art-laptop", "dark-laptop", "light-laptop", "art-dashboard", "art-wheel"];
     arts.forEach((artClass) => photos.push({ type: "deco", url: artClass }));
+  } else if (cat === "electronics") {
+    const arts = ["art-laptop", "art-wheel", "art-dashboard", "art-suv", "art-smartphone"];
+    arts.forEach((artClass) => photos.push({ type: "deco", url: artClass }));
+  } else if (cat === "phones") {
+    const arts = ["art-smartphone", "art-sim", "art-watch", "art-dashboard", "art-wheel"];
+    arts.forEach((artClass) => photos.push({ type: "deco", url: artClass }));
   }
   return photos;
 }
@@ -761,17 +1047,22 @@ function renderDetail() {
   if (breadcrumbLink) {
     breadcrumbLink.href = `#${category}`;
     breadcrumbLink.setAttribute("data-route-link", category);
-    const label = category === "housing" ? "housing" : category === "computers" ? "computers" : "cars";
+    const labelMap = { housing: "housing", computers: "computers", electronics: "electronics", phones: "phones", cars: "cars" };
+    const label = labelMap[category] || "cars";
     breadcrumbLink.innerHTML = `<svg class="icon-sm"><use href="#i-x" style="transform: rotate(135deg)"></use></svg> Back to ${label}`;
   }
 
   // Category labels
-  const categoryLabel = category === "housing" ? "Housing / apartments"
-    : category === "computers" ? "Electronics / computers"
-    : "Cars & trucks";
-  const categoryIcon = category === "housing" ? "i-home"
-    : category === "computers" ? "i-laptop"
-    : "i-car";
+  const categoryLabelMap = {
+    housing: "Housing / apartments",
+    computers: "Electronics / computers",
+    electronics: "Electronics / audio & video",
+    phones: "Phones / mobile devices",
+    cars: "Cars & trucks"
+  };
+  const categoryLabel = categoryLabelMap[category] || "Listings";
+  const categoryIconMap = { housing: "i-home", computers: "i-laptop", electronics: "i-headphones", phones: "i-smartphone", cars: "i-car" };
+  const categoryIcon = categoryIconMap[category] || "i-tag";
 
   // Title & price section
   const title = document.querySelector("#detail-title");
@@ -803,6 +1094,10 @@ function renderDetail() {
         listing.storageGb ? `${listing.storageGb}GB` : null,
         listing.condition
       ];
+    } else if (category === "electronics") {
+      specs = [listing.subcategory, listing.brand, listing.condition];
+    } else if (category === "phones") {
+      specs = [listing.subcategory, listing.brand, listing.condition, listing.storageGb ? `${listing.storageGb}GB` : null, listing.unlocked ? "Unlocked" : null];
     }
     muted.textContent = specs.filter(Boolean).join(" · ") || "Details parsed from listing";
   }
@@ -810,7 +1105,7 @@ function renderDetail() {
   // Vehicle details grid (adapt icons/cards per category)
   const detailCardGrid = document.querySelector("#detail-card-grid");
   const detailCardHeading = document.querySelector("#detail-card-heading");
-  if (detailCardHeading) detailCardHeading.textContent = category === "cars" ? "Vehicle details" : category === "housing" ? "Apartment details" : "Product specs";
+  if (detailCardHeading) detailCardHeading.textContent = category === "cars" ? "Vehicle details" : category === "housing" ? "Apartment details" : category === "phones" ? "Phone specs" : "Product specs";
   if (detailCardGrid) {
     let cards = [];
     if (category === "cars") {
@@ -846,6 +1141,24 @@ function renderDetail() {
         { icon: "i-tag", label: "Subcategory", value: listing.subcategory || "n/a" },
         { icon: "i-map", label: "Location", value: listing.location || "n/a" }
       ];
+    } else if (category === "electronics") {
+      cards = [
+        { icon: "i-headphones", label: "Type", value: listing.subcategory || "n/a" },
+        { icon: "i-tag", label: "Brand", value: listing.brand || "n/a" },
+        { icon: "i-shield", label: "Condition", value: listing.condition || "n/a" },
+        { icon: "i-check", label: "Price", value: formatPrice(listing.price) },
+        { icon: "i-map", label: "Location", value: listing.location || "n/a" },
+        { icon: "i-tag", label: "Category", value: "Electronics" }
+      ];
+    } else if (category === "phones") {
+      cards = [
+        { icon: "i-smartphone", label: "Type", value: listing.subcategory || "n/a" },
+        { icon: "i-tag", label: "Brand", value: listing.brand || "n/a" },
+        { icon: "i-id", label: "Storage", value: listing.storageGb ? `${listing.storageGb} GB` : "n/a" },
+        { icon: "i-sim", label: "Unlocked", value: listing.unlocked ? "Yes" : (listing.unlocked === false ? "Carrier" : "n/a") },
+        { icon: "i-shield", label: "Condition", value: listing.condition || "n/a" },
+        { icon: "i-map", label: "Location", value: listing.location || "n/a" }
+      ];
     }
     detailCardGrid.innerHTML = cards.map((card) => `
       <div class="detail-card">
@@ -860,12 +1173,18 @@ function renderDetail() {
   const vinLabel = document.querySelector("#detail-vin-label");
   const vinText = document.querySelector("#detail-vin-text");
   const historySection = document.querySelector(".vehicle-history");
-  if (vinLabel) vinLabel.textContent = `Listing ID: ${listing.id.replace(/^(car|housing|computer)-/, "")}`;
+  if (vinLabel) vinLabel.textContent = `Listing ID: ${listing.id.replace(/^(car|housing|computer|electronics|phones)-/, "")}`;
   if (vinText) {
     if (category === "cars") {
       vinText.textContent = "VIN and vehicle history are not included in Craigslist search results. Open the original listing to verify before contacting the seller.";
     } else if (category === "housing") {
       vinText.textContent = "Lease terms, deposit requirements, and broker fees should be verified directly with the landlord or agent via the original listing.";
+    } else if (category === "computers") {
+      vinText.textContent = "Serial number, warranty status, and full specifications should be confirmed with the seller via the original listing.";
+    } else if (category === "electronics") {
+      vinText.textContent = "Model number, condition, and accessories should be confirmed with the seller via the original listing.";
+    } else if (category === "phones") {
+      vinText.textContent = "IMEI/ESN, carrier unlock status, and battery health should be confirmed with the seller via the original listing.";
     } else {
       vinText.textContent = "Serial number, warranty status, and full specifications should be confirmed with the seller via the original listing.";
     }
@@ -918,6 +1237,11 @@ function renderDetail() {
     } else if (category === "housing") {
       const amenitiesList = (listing.amenities || []).join(", ");
       sellerNoteText.textContent = `This ${listing.bedrooms !== undefined ? `${listing.bedrooms}-bedroom` : ""} ${listing.listingType || "apartment"} in ${listing.location || "New York"} is available for ${listing.leaseTerm || "lease"}. ${listing.furnished ? "Furnished unit. " : ""}${amenitiesList ? `Amenities include ${amenitiesList}. ` : ""}Contact the landlord to schedule a viewing and verify lease terms.`;
+    } else if (category === "electronics") {
+      sellerNoteText.textContent = `This ${listing.brand || ""} ${listing.subcategory || "electronic device"} is in ${listing.condition || "good"} condition. ${listing.subcategory === "Headphones" ? "Includes original accessories where available. " : ""}${listing.subcategory === "Audio" ? "Test with your own source before purchase. " : ""}${listing.subcategory === "TV & video" ? "Verify screen condition and included cables. " : ""}Open the original listing to verify details and contact the seller.`;
+    } else if (category === "phones") {
+      const unlockInfo = listing.unlocked ? "Fully unlocked and ready for any carrier. " : (listing.unlocked === false ? "Carrier-locked; verify compatibility with your provider. " : "");
+      sellerNoteText.textContent = `This ${listing.brand || ""} ${listing.subcategory || "phone"}${listing.storageGb ? ` with ${listing.storageGb}GB storage` : ""} is in ${listing.condition || "good"} condition. ${unlockInfo}Open the original listing to confirm IMEI/ESN, battery health, and contact the seller.`;
     } else {
       sellerNoteText.textContent = `This ${listing.brand || ""} ${listing.subcategory || "device"} (${listing.year || "year n/a"}) is in ${listing.condition || "good"} condition with ${listing.ramGb || ""}${listing.ramGb ? "GB RAM, " : ""}${listing.storageGb ? `${listing.storageGb}GB storage` : "storage available"}. Open the original listing to verify specs and contact the seller.`;
     }
@@ -972,6 +1296,20 @@ function renderDetail() {
         listing.ramGb ? `${listing.ramGb}GB` : null,
         listing.storageGb ? `${listing.storageGb}GB` : null
       ];
+    } else if (category === "electronics") {
+      chips = [
+        listing.subcategory || null,
+        listing.brand || null,
+        listing.condition || null
+      ];
+    } else if (category === "phones") {
+      chips = [
+        listing.subcategory || null,
+        listing.brand || null,
+        listing.storageGb ? `${listing.storageGb}GB` : null,
+        listing.unlocked ? "Unlocked" : null,
+        listing.condition || null
+      ];
     }
     chips = chips.filter(Boolean);
     if (!chips.length) chips.push("Verified listing");
@@ -992,6 +1330,18 @@ function renderDetail() {
         <div><strong>Meet in a public place</strong><span>Use a cafe or transit station.</span></div>
         <div><strong>Test before you buy</strong><span>Boot up, check screen, test keyboard.</span></div>
         <div><strong>Use cash in person</strong><span>Avoid wiring money or deposits.</span></div>
+      `;
+    } else if (category === "electronics") {
+      safetyBanner.innerHTML = `
+        <div><strong>Test before buying</strong><span>Check speakers, screens, and inputs.</span></div>
+        <div><strong>Meet in a public place</strong><span>Use a cafe or well-lit street.</span></div>
+        <div><strong>Verify authenticity</strong><span>Check serial numbers for brand items.</span></div>
+      `;
+    } else if (category === "phones") {
+      safetyBanner.innerHTML = `
+        <div><strong>Verify IMEI/ESN</strong><span>Check it's not blacklisted or stolen.</span></div>
+        <div><strong>Test before buying</strong><span>Check screen, cameras, buttons, battery.</span></div>
+        <div><strong>Meet at carrier store</strong><span>Verify unlock status in person.</span></div>
       `;
     } else {
       safetyBanner.innerHTML = `
@@ -1112,6 +1462,8 @@ function renderAll() {
   renderCarFilters();
   renderHousingFilters();
   renderComputerFilters();
+  renderElectronicsFilters();
+  renderPhonesFilters();
   renderDetail();
 }
 
@@ -1168,6 +1520,10 @@ document.querySelector("#home-search")?.addEventListener("submit", (event) => {
     goToRoute("computers");
   } else if (query.includes("apartment") || query.includes("brooklyn") || query.includes("rent") || query.includes("br")) {
     goToRoute("housing");
+  } else if (query.includes("tv") || query.includes("speaker") || query.includes("headphone") || query.includes("audio") || query.includes("electronics")) {
+    goToRoute("electronics");
+  } else if (query.includes("iphone") || query.includes("phone") || query.includes("samsung") || query.includes("cell")) {
+    goToRoute("phones");
   } else {
     goToRoute("cars");
   }
@@ -1184,12 +1540,18 @@ carModelSelect?.addEventListener("change", (event) => {
   renderCarFilters();
 });
 
-carYearSelect?.addEventListener("change", (event) => {
-  replaceFilterGroup(carFilters, carFilterSets.years, event.target.value, ["Any year"]);
-  renderCarFilters();
-});
-
 carSortSelect?.addEventListener("change", renderCarFilters);
+
+// Car range filter inputs
+[carYearFrom, carYearTo, carPriceMin, carPriceMax].forEach((el) => {
+  el?.addEventListener("change", () => {
+    carRangeFilters.yearFrom = carYearFrom?.value ? Number(carYearFrom.value) : null;
+    carRangeFilters.yearTo = carYearTo?.value ? Number(carYearTo.value) : null;
+    carRangeFilters.priceMin = carPriceMin?.value ? Number(carPriceMin.value) : null;
+    carRangeFilters.priceMax = carPriceMax?.value ? Number(carPriceMax.value) : null;
+    renderCarFilters();
+  });
+});
 
 document.querySelector("[data-car-group='body']")?.addEventListener("click", (event) => {
   const chip = event.target.closest(".chip");
@@ -1243,12 +1605,16 @@ document.querySelector("#housing")?.addEventListener("click", (event) => {
   renderHousingFilters();
 });
 
-housingPrice?.addEventListener("change", (event) => {
-  replaceFilterGroup(housingFilters, housingKnownPrices, event.target.value, ["Any price"]);
-  renderHousingFilters();
-});
-
 housingSortSelect?.addEventListener("change", renderHousingFilters);
+
+// Housing rent range inputs
+[housingRentMin, housingRentMax].forEach((el) => {
+  el?.addEventListener("change", () => {
+    housingRanges.rentMin = housingRentMin?.value ? Number(housingRentMin.value) : null;
+    housingRanges.rentMax = housingRentMax?.value ? Number(housingRentMax.value) : null;
+    renderHousingFilters();
+  });
+});
 
 housingLocation?.addEventListener("keydown", (event) => {
   if (event.key !== "Enter") return;
@@ -1306,6 +1672,17 @@ computerSpecSelects.forEach((select, index) => {
 
 computerSortSelect?.addEventListener("change", renderComputerFilters);
 
+// Computer year/price range inputs
+[computerYearFrom, computerYearTo, computerPriceMin, computerPriceMax].forEach((el) => {
+  el?.addEventListener("change", () => {
+    computerFilters.yearFrom = computerYearFrom?.value ? Number(computerYearFrom.value) : null;
+    computerFilters.yearTo = computerYearTo?.value ? Number(computerYearTo.value) : null;
+    computerFilters.priceMin = computerPriceMin?.value ? Number(computerPriceMin.value) : null;
+    computerFilters.priceMax = computerPriceMax?.value ? Number(computerPriceMax.value) : null;
+    renderComputerFilters();
+  });
+});
+
 document.querySelectorAll(".exclude-box input").forEach((checkbox) => {
   checkbox.addEventListener("change", () => {
     const label = checkbox.closest("label")?.textContent.trim();
@@ -1323,6 +1700,84 @@ document.querySelector("#computers .listing-list")?.addEventListener("change", (
 });
 
 
+
+/* ── Electronics Event Listeners ── */
+
+document.querySelector("#electronics")?.addEventListener("click", (event) => {
+  const subChip = event.target.closest("[data-electronics-sub]");
+  if (subChip) {
+    const value = subChip.dataset.electronicsSub;
+    electronicsFilters.subcategory = electronicsFilters.subcategory === value ? null : value;
+    renderElectronicsFilters();
+  }
+  const condChip = event.target.closest("[data-electronics-condition]");
+  if (condChip) {
+    const value = condChip.dataset.electronicsCondition;
+    electronicsFilters.condition = electronicsFilters.condition === value ? null : value;
+    renderElectronicsFilters();
+  }
+});
+
+electronicsBrandSelect?.addEventListener("change", (event) => {
+  electronicsFilters.brand = event.target.value;
+  renderElectronicsFilters();
+});
+
+electronicsSortSelect?.addEventListener("change", renderElectronicsFilters);
+
+// Electronics price range inputs
+[electronicsPriceMin, electronicsPriceMax].forEach((el) => {
+  el?.addEventListener("change", () => {
+    electronicsFilters.priceMin = electronicsPriceMin?.value ? Number(electronicsPriceMin.value) : null;
+    electronicsFilters.priceMax = electronicsPriceMax?.value ? Number(electronicsPriceMax.value) : null;
+    renderElectronicsFilters();
+  });
+});
+
+/* ── Phones Event Listeners ── */
+
+document.querySelector("#phones")?.addEventListener("click", (event) => {
+  const subChip = event.target.closest("[data-phones-sub]");
+  if (subChip) {
+    const value = subChip.dataset.phonesSub;
+    phoneFilters.subcategory = phoneFilters.subcategory === value ? null : value;
+    renderPhonesFilters();
+  }
+  const storageChip = event.target.closest("[data-phones-storage]");
+  if (storageChip) {
+    const value = storageChip.dataset.phonesStorage;
+    phoneFilters.storage = phoneFilters.storage === value ? null : value;
+    renderPhonesFilters();
+  }
+  const unlockedChip = event.target.closest("[data-phones-unlocked]");
+  if (unlockedChip) {
+    const value = unlockedChip.dataset.phonesUnlocked;
+    phoneFilters.unlocked = String(phoneFilters.unlocked) === value ? null : value === "true";
+    renderPhonesFilters();
+  }
+  const condChip = event.target.closest("[data-phones-condition]");
+  if (condChip) {
+    const value = condChip.dataset.phonesCondition;
+    phoneFilters.condition = phoneFilters.condition === value ? null : value;
+    renderPhonesFilters();
+  }
+});
+
+phoneBrandSelect?.addEventListener("change", (event) => {
+  phoneFilters.brand = event.target.value;
+  renderPhonesFilters();
+});
+
+phoneSortSelect?.addEventListener("change", renderPhonesFilters);
+
+// Phones price range inputs
+[phonePriceMin, phonePriceMax].forEach((el) => {
+  el?.addEventListener("change", () => {
+    phoneFilters.priceMin = phonePriceMin?.value ? Number(phonePriceMin.value) : null;
+    phoneFilters.priceMax = phonePriceMax?.value ? Number(phonePriceMax.value) : null;
+    renderPhonesFilters();
+  });
+});
 
 // Keyboard navigation for detail gallery (only when lightbox is NOT open)
 document.addEventListener("keydown", (event) => {
