@@ -16,6 +16,337 @@ const appState = {
   compareIds: new Set(["computer-7910839552", "computer-7939653842"])
 };
 
+/* ── Global Search State ── */
+
+const searchResults = {
+  query: "",
+  category: "All categories",
+  results: [],
+  parsed: { keywords: [], maxPrice: null, minPrice: null, locations: [] }
+};
+
+/** Parse a search query into structured tokens */
+function parseSearchQuery(query) {
+  const q = query.trim();
+  const tokens = { keywords: [], maxPrice: null, minPrice: null, locations: [] };
+  if (!q) return tokens;
+
+  // Extract price hints like "under $300", "under 300", "<$300", "<300", "max $500"
+  const underMatch = q.match(/\bunder\s+\$?(\d+(?:,\d{3})*(?:\.\d+)?)\b/i);
+  if (underMatch) tokens.maxPrice = Number(underMatch[1].replace(/,/g, ""));
+
+  const lessThanMatch = q.match(/<\s*\$?(\d+(?:,\d{3})*(?:\.\d+)?)\b/);
+  if (lessThanMatch && !tokens.maxPrice) tokens.maxPrice = Number(lessThanMatch[1].replace(/,/g, ""));
+
+  const maxMatch = q.match(/\bmax\s+\$?(\d+(?:,\d{3})*(?:\.\d+)?)\b/i);
+  if (maxMatch && !tokens.maxPrice) tokens.maxPrice = Number(maxMatch[1].replace(/,/g, ""));
+
+  // Extract min price like "over $500", "min $500", ">$500", "from $500"
+  const overMatch = q.match(/\bover\s+\$?(\d+(?:,\d{3})*(?:\.\d+)?)\b/i);
+  if (overMatch) tokens.minPrice = Number(overMatch[1].replace(/,/g, ""));
+
+  const greaterThanMatch = q.match(/>\s*\$?(\d+(?:,\d{3})*(?:\.\d+)?)\b/);
+  if (greaterThanMatch && !tokens.minPrice) tokens.minPrice = Number(greaterThanMatch[1].replace(/,/g, ""));
+
+  const minMatch = q.match(/\bmin\s+\$?(\d+(?:,\d{3})*(?:\.\d+)?)\b/i);
+  if (minMatch && !tokens.minPrice) tokens.minPrice = Number(minMatch[1].replace(/,/g, ""));
+
+  // Extract price range like "$200-$500", "$200 to $500"
+  const rangeMatch = q.match(/\$?(\d{2,6})\s*(?:-|–|to)\s*\$?(\d{2,6})\b/i);
+  if (rangeMatch && !tokens.maxPrice && !tokens.minPrice) {
+    tokens.minPrice = Number(rangeMatch[1].replace(/,/g, ""));
+    tokens.maxPrice = Number(rangeMatch[2].replace(/,/g, ""));
+  }
+
+  // Extract known locations (New York neighborhoods)
+  const locationPatterns = [
+    "brooklyn", "manhattan", "queens", "bronx", "staten island",
+    "williamsburg", "astoria", "park slope", "bushwick", "midtown",
+    "upper east side", "upper west side", "chelsea", "soho", "fidi",
+    "financial district", "east village", "west village", "gramercy",
+    "ridgewood", "flatbush", "kensington", "coney island", "maspeth",
+    "bensonhurst", "crown heights", "bed stuy", "bedford", "clinton hill",
+    "prospect", "new york", "long island", "stamford"
+  ];
+  
+  const lowerQ = q.toLowerCase();
+  for (const loc of locationPatterns) {
+    if (lowerQ.includes(loc)) {
+      tokens.locations.push(loc);
+    }
+  }
+
+  // Everything else is a keyword — remove price/location tokens first
+  let keywords = q
+    .replace(/\bunder\s+\$?\d+(?:,\d{3})*(?:\.\d+)?\b/gi, "")
+    .replace(/<\s*\$?\d+(?:,\d{3})*(?:\.\d+)?\b/g, "")
+    .replace(/\bmax\s+\$?\d+(?:,\d{3})*(?:\.\d+)?\b/gi, "")
+    .replace(/\bover\s+\$?\d+(?:,\d{3})*(?:\.\d+)?\b/gi, "")
+    .replace(/>\s*\$?\d+(?:,\d{3})*(?:\.\d+)?\b/g, "")
+    .replace(/\bmin\s+\$?\d+(?:,\d{3})*(?:\.\d+)?\b/gi, "")
+    .replace(/\$?\d{2,6}\s*(?:-|–|to)\s*\$?\d{2,6}\b/g, "")
+    .replace(/\$\d+(?:,\d{3})*(?:\.\d+)?/g, "")
+  ;
+
+  tokens.keywords = keywords
+    .split(/\s+/)
+    .map((k) => k.replace(/[^a-zA-Z0-9.#+\-&']/g, "").trim())
+    .filter((k) => k.length >= 2);
+
+  return tokens;
+}
+
+/** Score a listing against parsed search tokens. Returns a relevance score. */
+function searchScore(listing, parsed) {
+  let score = 0;
+  const { keywords, maxPrice, minPrice, locations } = parsed;
+
+  // ── Price matching ──
+  if (maxPrice !== null && listing.price && listing.price > 0) {
+    if (listing.price <= maxPrice) score += 15;
+    // Bonus for being well under the max
+    if (listing.price <= maxPrice * 0.5) score += 5;
+  }
+  if (minPrice !== null && listing.price && listing.price > 0) {
+    if (listing.price >= minPrice) score += 10;
+  }
+
+  // ── Location matching ──
+  const listingText = `${listing.title} ${listing.location || ""}`.toLowerCase();
+  for (const loc of locations) {
+    if (listingText.includes(loc)) score += 20;
+  }
+
+  // ── Keyword matching against all listing properties ──
+  const searchable = [
+    listing.title,
+    listing.location,
+    listing.brand,
+    listing.make,
+    listing.model,
+    listing.subcategory,
+    listing.condition,
+    listing.body,
+    listing.transmission,
+    listing.fuel,
+    listing.drive,
+    listing.listingType,
+    listing.leaseTerm,
+    ...(listing.amenities || []),
+    listing.category
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  for (const kw of keywords) {
+    const lowerKw = kw.toLowerCase();
+    // Direct match in title = high score
+    if (listing.title?.toLowerCase().includes(lowerKw)) score += 25;
+    // Match in other structured fields
+    else if (listing.brand?.toLowerCase().includes(lowerKw)) score += 20;
+    else if (listing.make?.toLowerCase().includes(lowerKw)) score += 20;
+    else if (listing.model?.toLowerCase().includes(lowerKw)) score += 18;
+    else if (listing.subcategory?.toLowerCase().includes(lowerKw)) score += 15;
+    else if (listing.condition?.toLowerCase().includes(lowerKw)) score += 12;
+    else if (listing.body?.toLowerCase().includes(lowerKw)) score += 12;
+    else if (listing.category?.toLowerCase().includes(lowerKw)) score += 10;
+    else if (listing.location?.toLowerCase().includes(lowerKw)) score += 8;
+    // Partial/fuzzy match in full text
+    else if (searchable.includes(lowerKw)) score += 5;
+  }
+
+  // ── Boost for category relevance ──
+  // If the query strongly suggests a category
+  const catHints = {
+    cars: ["bmw", "audi", "mercedes", "toyota", "honda", "ford", "car", "truck", "suv", "sedan", "coupe", "vin", "mileage", "transmission", "awd", "fwd", "4wd", "v6", "v8"],
+    housing: ["apartment", "rent", "lease", "bedroom", "studio", "bath", "condo", "duplex", "loft", "no fee", "landlord", "brooklyn", "manhattan", "queens"],
+    computers: ["macbook", "laptop", "desktop", "monitor", "ram", "ssd", "gb", "intel", "amd", "chromebook", "apple", "dell", "hp", "lenovo", "asus"],
+    electronics: ["speaker", "headphone", "tv", "audio", "amplifier", "receiver", "bose", "sonos", "yamaha", "airpods", "kindle"],
+    phones: ["iphone", "samsung", "galaxy", "unlocked", "cell", "mobile", "smartphone", "moto", "pixel", "phone case"]
+  };
+
+  for (const kw of keywords) {
+    const lowerKw = kw.toLowerCase();
+    for (const [cat, hints] of Object.entries(catHints)) {
+      if (hints.some((h) => lowerKw.includes(h) || h.includes(lowerKw))) {
+        if (listing.category === cat) score += 8;
+      }
+    }
+  }
+
+  return score;
+}
+
+/** Perform a full-text search across all listings */
+function performSearch(query, category = "All categories") {
+  const parsed = parseSearchQuery(query);
+  
+  let listings = appState.listings;
+  
+  // Filter by category if not "All"
+  if (category !== "All categories") {
+    const catMap = {
+      "Cars & trucks": "cars",
+      "Apartments": "housing",
+      "Computers": "computers",
+      "Electronics": "electronics",
+      "Phones": "phones"
+    };
+    const mapped = catMap[category];
+    if (mapped) listings = listings.filter((l) => l.category === mapped);
+  }
+
+  // Score each listing
+  const scored = listings
+    .map((listing) => ({
+      listing,
+      score: searchScore(listing, parsed)
+    }))
+    .filter((item) => item.score > 0);
+
+  // Sort by score descending
+  scored.sort((a, b) => b.score - a.score);
+
+  searchResults.query = query;
+  searchResults.category = category;
+  searchResults.parsed = parsed;
+  searchResults.results = scored;
+
+  return scored;
+}
+
+const categoryLabelMap = {
+  housing: "Housing / apartments",
+  computers: "Electronics / computers",
+  electronics: "Electronics / audio & video",
+  phones: "Phones / mobile devices",
+  cars: "Cars & trucks"
+};
+
+function categoryArt(listing) {
+  const arts = {
+    cars: "art-car",
+    housing: "art-apartment",
+    computers: "art-laptop",
+    electronics: "art-wheel",
+    phones: "art-smartphone"
+  };
+  return arts[listing.category] || "art-car";
+}
+
+function searchResultCard(scoredItem) {
+  const { listing, score } = scoredItem;
+  return `
+    <article class="listing-card horizontal" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="${escapeHtml(listing.category)}">
+      <div class="visual-art ${photoClass(listing, categoryArt(listing))}"${photoStyle(listing)}></div>
+      <div class="listing-body">
+        <div class="listing-topline">
+          <span class="badge badge-green">${escapeHtml(categoryLabelMap[listing.category] || listing.category)}</span>
+          <span class="badge">${escapeHtml(listing.location || "New York")}</span>
+        </div>
+        <h3>${escapeHtml(listing.title)}</h3>
+        <p>${escapeHtml(listingSubtitle(listing))}</p>
+        <div class="badge-row">
+          ${listingBadges(listing)}
+        </div>
+        <div class="listing-bottom">
+          <span class="price">${formatPrice(listing.price, listing.category === "housing" ? "/mo" : "")}</span>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function listingSubtitle(listing) {
+  const cat = listing.category;
+  if (cat === "cars") {
+    return [listing.make, listing.model, listing.body, listing.transmission, listing.fuel]
+      .filter(Boolean).join(" · ");
+  }
+  if (cat === "housing") {
+    const beds = listing.bedrooms !== undefined ? `${listing.bedrooms} BR` : null;
+    return [beds, listing.listingType, listing.leaseTerm].filter(Boolean).join(" · ");
+  }
+  if (cat === "computers") {
+    return [listing.brand, listing.subcategory, listing.screen ? `${listing.screen}"` : null]
+      .filter(Boolean).join(" · ");
+  }
+  if (cat === "electronics") {
+    return [listing.subcategory, listing.brand, listing.condition].filter(Boolean).join(" · ");
+  }
+  if (cat === "phones") {
+    return [listing.subcategory, listing.brand, listing.storageGb ? `${listing.storageGb}GB` : null]
+      .filter(Boolean).join(" · ");
+  }
+  return listing.subcategory || listing.category || "";
+}
+
+function listingBadges(listing) {
+  const badges = [];
+  const cat = listing.category;
+  if (cat === "cars") {
+    if (listing.year) badges.push(`<span class="badge">${listing.year}</span>`);
+    if (listing.mileage) badges.push(`<span class="badge">${Math.round(listing.mileage / 1000)}k mi</span>`);
+    if (listing.titleStatus === "Clean") badges.push(`<span class="badge badge-green">Clean title</span>`);
+  }
+  if (cat === "housing") {
+    const amens = (listing.amenities || []).slice(0, 3);
+    amens.forEach((a) => badges.push(`<span class="badge">${escapeHtml(a)}</span>`));
+    if (listing.bathrooms) badges.push(`<span class="badge">${listing.bathrooms} bath</span>`);
+  }
+  if (cat === "computers") {
+    if (listing.ramGb) badges.push(`<span class="badge">${listing.ramGb}GB</span>`);
+    if (listing.storageGb) badges.push(`<span class="badge">${listing.storageGb}GB</span>`);
+    if (listing.condition) badges.push(`<span class="badge">${escapeHtml(listing.condition)}</span>`);
+  }
+  if (cat === "electronics" && listing.condition) {
+    badges.push(`<span class="badge">${escapeHtml(listing.condition)}</span>`);
+  }
+  if (cat === "phones") {
+    if (listing.storageGb) badges.push(`<span class="badge">${listing.storageGb}GB</span>`);
+    if (listing.unlocked) badges.push(`<span class="badge badge-green">Unlocked</span>`);
+    if (listing.condition) badges.push(`<span class="badge">${escapeHtml(listing.condition)}</span>`);
+  }
+  return badges.join("");
+}
+
+function renderSearchResults() {
+  const container = document.querySelector("#search-listing-list");
+  const heading = document.querySelector("#search-heading");
+  const status = document.querySelector("#search-status");
+  const eyebrow = document.querySelector("#search-eyebrow");
+
+  if (!container) return;
+
+  const scored = searchResults.results || [];
+  
+  if (eyebrow) {
+    eyebrow.textContent = searchResults.category !== "All categories"
+      ? `Search · ${searchResults.category}`
+      : "Search results";
+  }
+
+  if (heading) {
+    heading.textContent = scored.length
+      ? `Results for "${searchResults.query}"`
+      : `No results for "${searchResults.query}"`;
+  }
+
+  if (status) {
+    status.textContent = scored.length
+      ? `Showing ${scored.length} result${scored.length !== 1 ? "s" : ""}`
+      : "";
+  }
+
+  if (!scored.length) {
+    container.innerHTML = emptyState("Try different keywords, adjust your price range, or browse a specific category.");
+    return;
+  }
+
+  container.innerHTML = scored.map(searchResultCard).join("");
+}
+
 let carModelsByMake = {
   "Any make": ["Any model"]
 };
@@ -1518,18 +1849,16 @@ window.addEventListener("hashchange", () => {
 
 document.querySelector("#home-search")?.addEventListener("submit", (event) => {
   event.preventDefault();
-  const query = document.querySelector("#home-query").value.toLowerCase();
-  if (query.includes("mac") || query.includes("computer") || query.includes("laptop")) {
-    goToRoute("computers");
-  } else if (query.includes("apartment") || query.includes("brooklyn") || query.includes("rent") || query.includes("br")) {
-    goToRoute("housing");
-  } else if (query.includes("tv") || query.includes("speaker") || query.includes("headphone") || query.includes("audio") || query.includes("electronics")) {
-    goToRoute("electronics");
-  } else if (query.includes("iphone") || query.includes("phone") || query.includes("samsung") || query.includes("cell")) {
-    goToRoute("phones");
-  } else {
-    goToRoute("cars");
-  }
+  const query = document.querySelector("#home-query").value.trim();
+  const categorySelect = document.querySelector("#home-search select");
+  const category = categorySelect?.value || "All categories";
+  
+  if (!query) return;
+  
+  // Perform the search
+  performSearch(query, category);
+  renderSearchResults();
+  goToRoute("search");
 });
 
 carMakeSelect?.addEventListener("change", (event) => {
