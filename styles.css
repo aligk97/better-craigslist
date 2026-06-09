@@ -573,6 +573,17 @@ h3 {
   border-radius: var(--radius);
 }
 
+.real-photo {
+  background-image: var(--photo), linear-gradient(#cfe9f5 0 63%, #c0ded2 63% 74%, #4a5568 74% 100%);
+  background-position: center;
+  background-size: cover;
+}
+
+.real-photo::before,
+.real-photo::after {
+  display: none;
+}
+
 .listing-card > .visual-art {
   border-radius: 0;
 }
@@ -844,6 +855,33 @@ h3 {
   justify-content: space-between;
   gap: 14px;
   margin-bottom: 14px;
+}
+
+.data-status,
+.empty-state {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  color: #0f5132;
+  background: var(--green-soft);
+  border: 1px solid #b8e6d0;
+  border-radius: var(--radius);
+}
+
+.data-status span,
+.empty-state span {
+  color: var(--muted);
+}
+
+.empty-state {
+  display: grid;
+  min-height: 160px;
+  align-content: center;
+  color: var(--ink);
+  background: var(--surface);
+  border-color: var(--line);
 }
 
 .active-filters {
