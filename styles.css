@@ -1692,7 +1692,9 @@ html.dark .theme-toggle .icon-moon {
 
 /* ── Dark mode visual-art overrides ── */
 
-html.dark .visual-art {
+/* Only apply fallback background to non-photo visual-art elements.
+   The shorthand `background` would wipe out background-image on real photos. */
+html.dark .visual-art:not(.real-photo) {
   background: #1e2035;
 }
 
@@ -1711,9 +1713,9 @@ html.dark .art-car::after,
 html.dark .art-truck::after,
 html.dark .silver-car::after {
   background:
-    radial-gradient(circle at 30% 70%, #2a2d45 0 10px, #1b1d27 11px 15px, transparent 16px),
-    radial-gradient(circle at 71% 70%, #2a2d45 0 10px, #1b1d27 11px 15px, transparent 16px),
-    linear-gradient(110deg, transparent 0 41%, rgba(255, 255, 255, 0.25) 42% 55%, transparent 56%);
+    radial-gradient(circle at 30% 70%, #17151f 0 10px, #9ba0b8 11px 15px, transparent 16px),
+    radial-gradient(circle at 71% 70%, #17151f 0 10px, #9ba0b8 11px 15px, transparent 16px),
+    linear-gradient(110deg, transparent 0 41%, rgba(255, 255, 255, 0.35) 42% 55%, transparent 56%);
 }
 
 html.dark .art-suv {
@@ -1723,9 +1725,9 @@ html.dark .art-suv {
 
 html.dark .art-suv::after {
   background:
-    radial-gradient(circle at 28% 71%, #2a2d45 0 12px, #1b1d27 13px 17px, transparent 18px),
-    radial-gradient(circle at 73% 71%, #2a2d45 0 12px, #1b1d27 13px 17px, transparent 18px),
-    linear-gradient(105deg, transparent 0 44%, rgba(255, 255, 255, 0.2) 45% 57%, transparent 58%);
+    radial-gradient(circle at 28% 71%, #17151f 0 12px, #9ba0b8 13px 17px, transparent 18px),
+    radial-gradient(circle at 73% 71%, #17151f 0 12px, #9ba0b8 13px 17px, transparent 18px),
+    linear-gradient(105deg, transparent 0 44%, rgba(255, 255, 255, 0.3) 45% 57%, transparent 58%);
 }
 
 html.dark .art-apartment,
@@ -1738,7 +1740,9 @@ html.dark .art-townhouse {
 html.dark .art-apartment::after,
 html.dark .art-loft::after,
 html.dark .art-townhouse::after {
-  background: rgba(239, 235, 245, 0.15);
+  background: rgba(239, 235, 245, 0.25);
+  height: 6px;
+  bottom: 23%;
 }
 
 html.dark .art-apartment::before {
@@ -1755,14 +1759,15 @@ html.dark .light-laptop {
 html.dark .art-laptop::before,
 html.dark .dark-laptop::before,
 html.dark .light-laptop::before {
-  border-color: #2a2d45;
+  background: linear-gradient(135deg, #4a6a8a, #7ba9cf);
+  border-color: #3d405a;
 }
 
 html.dark .art-laptop::after,
 html.dark .dark-laptop::after,
 html.dark .light-laptop::after {
-  background: #2e3148;
-  border-color: #2a2d45;
+  background: #555a78;
+  border-color: #3d405a;
 }
 
 html.dark .art-dashboard {
