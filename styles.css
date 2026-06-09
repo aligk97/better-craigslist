@@ -686,11 +686,7 @@ h3 {
 }
 
 .real-photo {
-  background-image: var(--photo);
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #f0f2f5;
+  background: var(--photo) center / contain no-repeat #f0f2f5 !important;
 }
 
 .detail-art.real-photo {
@@ -699,7 +695,7 @@ h3 {
 
 .real-photo::before,
 .real-photo::after {
-  display: none;
+  display: none !important;
 }
 
 .listing-card > .visual-art {
@@ -1673,7 +1669,7 @@ html.dark .visual-art:not(.real-photo) {
 }
 
 html.dark .real-photo {
-  background-color: #1e2035;
+  background: var(--photo) center / contain no-repeat #1e2035 !important;
 }
 
 html.dark .art-car,

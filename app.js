@@ -155,12 +155,15 @@ function filterChip(label, scope) {
 }
 
 function photoClass(listing, fallbackClass) {
-  if (!listing.image) return fallbackClass;
+  const hasImage = listing.image || (listing.images && listing.images.length);
+  if (!hasImage) return fallbackClass;
   return `real-photo ${fallbackClass}`;
 }
 
+
 function photoStyle(listing) {
-  return listing.image ? ` style="--photo: url('${escapeHtml(listing.image)}')"` : "";
+  const src = listing.image || (listing.images && listing.images[0]);
+  return src ? ` style="--photo: url('${escapeHtml(src)}')"` : "";
 }
 
 function emptyState(message) {
