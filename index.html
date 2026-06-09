@@ -126,7 +126,6 @@
               <p class="eyebrow">Browse</p>
               <h2>Popular categories</h2>
             </div>
-            <a class="text-link" href="#cars" data-route-link="cars">View all listings</a>
           </div>
           <div class="category-grid">
             <a class="category-card" href="#housing" data-route-link="housing">
@@ -185,14 +184,14 @@
             </div>
           </div>
           <div class="listing-grid three-up">
-            <article class="listing-card">
+            <article class="listing-card" data-detail-id="car-7939679011" data-detail-category="cars">
               <div class="visual-art art-car"></div>
               <div class="listing-body">
                 <div class="listing-topline">
                   <span class="price">$18,900</span>
                   <span class="badge badge-green">&#10003; VIN verified</span>
                 </div>
-                <h3><a href="#detail" data-route-link="detail">2018 BMW X3 xDrive28i</a></h3>
+                <h3>2018 BMW X3 xDrive28i</h3>
                 <p>Williamsburg, Brooklyn</p>
                 <div class="badge-row">
                   <span class="badge">&#9733; 4.8 seller</span>
@@ -200,14 +199,14 @@
                 </div>
               </div>
             </article>
-            <article class="listing-card">
+            <article class="listing-card" data-detail-id="housing-7939342197" data-detail-category="housing">
               <div class="visual-art art-apartment"></div>
               <div class="listing-body">
                 <div class="listing-topline">
                   <span class="price">$2,350</span>
                   <span class="badge badge-green">&#10003; Verified</span>
                 </div>
-                <h3><a href="#housing" data-route-link="housing">Sunny 1 BR near Prospect Park</a></h3>
+                <h3>Sunny 1 BR near Prospect Park</h3>
                 <p>Park Slope, Brooklyn</p>
                 <div class="badge-row">
                   <span class="badge">No fee</span>
@@ -215,14 +214,14 @@
                 </div>
               </div>
             </article>
-            <article class="listing-card">
+            <article class="listing-card" data-detail-id="computer-7910839552" data-detail-category="computers">
               <div class="visual-art art-laptop"></div>
               <div class="listing-body">
                 <div class="listing-topline">
                   <span class="price">$280</span>
                   <span class="badge badge-green">Best value</span>
                 </div>
-                <h3><a href="#computers" data-route-link="computers">MacBook Pro 13, 8GB, 256GB</a></h3>
+                <h3>MacBook Pro 13, 8GB, 256GB</h3>
                 <p>Upper West Side</p>
                 <div class="badge-row">
                   <span class="badge">&#10003; Verified</span>
@@ -308,14 +307,14 @@
               </select>
             </div>
             <div class="listing-list">
-              <article class="listing-card horizontal">
+              <article class="listing-card horizontal" data-detail-id="car-7939679011" data-detail-category="cars">
                 <div class="visual-art art-car"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
                     <span class="year-badge">2018</span>
                     <span class="badge badge-green">&#10003; VIN verified</span>
                   </div>
-                  <h3><a href="#detail" data-route-link="detail">BMW X3 xDrive28i, clean title</a></h3>
+                  <h3>BMW X3 xDrive28i, clean title</h3>
                   <p>Williamsburg, Brooklyn &middot; 42k miles &middot; Automatic</p>
                   <div class="listing-bottom">
                     <span class="price">$18,900</span>
@@ -323,7 +322,7 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal">
+              <article class="listing-card horizontal" data-detail-id="car-7939066504" data-detail-category="cars">
                 <div class="visual-art art-truck"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -338,7 +337,7 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal">
+              <article class="listing-card horizontal" data-detail-id="car-7938716285" data-detail-category="cars">
                 <div class="visual-art art-car silver-car"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -549,7 +548,7 @@
               <span class="match-status" id="housing-status">Showing 3 listings</span>
             </div>
             <div class="listing-list">
-              <article class="listing-card horizontal apartment-card">
+              <article class="listing-card horizontal apartment-card" data-detail-id="housing-7939394454" data-detail-category="housing">
                 <div class="visual-art art-apartment"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -569,7 +568,7 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal apartment-card">
+              <article class="listing-card horizontal apartment-card" data-detail-id="housing-7939342197" data-detail-category="housing">
                 <div class="visual-art art-loft"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -589,7 +588,7 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal apartment-card">
+              <article class="listing-card horizontal apartment-card" data-detail-id="housing-7939064569" data-detail-category="housing">
                 <div class="visual-art art-townhouse"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -679,8 +678,8 @@
               </select>
             </div>
             <div class="listing-list computer-list">
-              <article class="listing-card horizontal compare-card is-compared">
-                <label class="compare-check"><input type="checkbox" checked /> Compare</label>
+              <article class="listing-card horizontal compare-card is-compared" data-detail-id="computer-7910839552" data-detail-category="computers">
+                <label class="compare-check" onclick="event.stopPropagation()"><input type="checkbox" checked /> Compare</label>
                 <div class="visual-art art-laptop"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -700,8 +699,8 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal compare-card is-compared">
-                <label class="compare-check"><input type="checkbox" checked /> Compare</label>
+              <article class="listing-card horizontal compare-card is-compared" data-detail-id="computer-7939700366" data-detail-category="computers">
+                <label class="compare-check" onclick="event.stopPropagation()"><input type="checkbox" checked /> Compare</label>
                 <div class="visual-art art-laptop dark-laptop"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -721,8 +720,8 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal compare-card">
-                <label class="compare-check"><input type="checkbox" /> Compare</label>
+              <article class="listing-card horizontal compare-card" data-detail-id="computer-7939646209" data-detail-category="computers">
+                <label class="compare-check" onclick="event.stopPropagation()"><input type="checkbox" /> Compare</label>
                 <div class="visual-art art-laptop light-laptop"></div>
                 <div class="listing-body">
                   <div class="listing-topline">

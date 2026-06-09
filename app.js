@@ -382,20 +382,17 @@ function matchesCar(listing) {
 }
 
 function carCard(listing) {
-  const sourceBadge = appState.data.mode === "live" ? "Live Craigslist" : "Seeded Craigslist";
   return `
-    <article class="listing-card horizontal">
+    <article class="listing-card horizontal" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="cars">
       <div class="visual-art ${photoClass(listing, listing.body === "Truck" ? "art-truck" : listing.color === "Silver" ? "silver-car" : "art-car")}"${photoStyle(listing)}></div>
       <div class="listing-body">
         <div class="listing-topline">
           <span class="year-badge">${escapeHtml(listing.year || "Year n/a")}</span>
-          <span class="badge badge-green">${sourceBadge}</span>
         </div>
-        <h3><a href="#detail" data-detail-id="${escapeHtml(listing.id)}">${escapeHtml(listing.title)}</a></h3>
+        <h3>${escapeHtml(listing.title)}</h3>
         <p>${escapeHtml([listing.location, listing.mileage ? `${listing.mileage.toLocaleString()} miles` : null, listing.transmission, listing.body].filter(Boolean).join(" · "))}</p>
         <div class="listing-bottom">
           <span class="price">${formatPrice(listing.price)}</span>
-          <a class="seller-rating" href="${escapeHtml(listing.url || "#")}" target="_blank" rel="noreferrer">Open source</a>
         </div>
       </div>
     </article>
@@ -474,21 +471,20 @@ function housingCard(listing) {
   const amenities = (listing.amenities || []).slice(0, 3);
   const noFee = lower(listing.title).includes("no fee") || amenities.some((item) => lower(item).includes("no fee"));
   return `
-    <article class="listing-card horizontal apartment-card">
+    <article class="listing-card horizontal apartment-card" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="housing">
       <div class="visual-art ${photoClass(listing, listing.bedrooms === 0 ? "art-loft" : listing.bedrooms >= 2 ? "art-townhouse" : "art-apartment")}"${photoStyle(listing)}></div>
       <div class="listing-body">
         <div class="listing-topline">
           <span class="year-badge">${bedroomLabel(listing.bedrooms)}</span>
-          <span class="badge ${noFee ? "badge-green" : ""}">${noFee ? "No fee" : "Craigslist source"}</span>
+          ${noFee ? '<span class="badge badge-green">No fee</span>' : ''}
         </div>
-        <h3><a href="#detail" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="housing">${escapeHtml(listing.title)}</a></h3>
+        <h3>${escapeHtml(listing.title)}</h3>
         <p>${escapeHtml([listing.location, listing.bathrooms ? `${listing.bathrooms} bath` : null, listing.leaseTerm].filter(Boolean).join(" · "))}</p>
         <div class="badge-row">
           ${amenities.map((item) => `<span class="badge">${escapeHtml(item)}</span>`).join("")}
         </div>
         <div class="listing-bottom">
           <span class="price">${formatPrice(listing.price, "/mo")}</span>
-          <a class="seller-rating" href="${escapeHtml(listing.url || "#")}" target="_blank" rel="noreferrer">Open source</a>
         </div>
       </div>
     </article>
@@ -571,22 +567,21 @@ function computerCard(listing) {
   const compared = appState.compareIds.has(listing.id);
   const bestValue = valueScore(listing) > 0.04 || listing.price <= 200;
   return `
-    <article class="listing-card horizontal compare-card ${compared ? "is-compared" : ""}">
-      <label class="compare-check"><input type="checkbox" ${compared ? "checked" : ""} data-compare-id="${escapeHtml(listing.id)}" /> Compare</label>
+    <article class="listing-card horizontal compare-card ${compared ? "is-compared" : ""}" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="computers">
+      <label class="compare-check" onclick="event.stopPropagation()"><input type="checkbox" ${compared ? "checked" : ""} data-compare-id="${escapeHtml(listing.id)}" /> Compare</label>
       <div class="visual-art ${photoClass(listing, listing.subcategory === "Accessories" ? "light-laptop" : "art-laptop")}"${photoStyle(listing)}></div>
       <div class="listing-body">
         <div class="listing-topline">
-          <span class="badge ${bestValue ? "badge-green" : ""}">${bestValue ? "Best value" : "Craigslist source"}</span>
+          ${bestValue ? '<span class="badge badge-green">Best value</span>' : ''}
           <span class="badge">${escapeHtml(listing.condition || "Condition n/a")}</span>
         </div>
-        <h3><a href="#detail" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="computers">${escapeHtml(listing.title)}</a></h3>
+        <h3>${escapeHtml(listing.title)}</h3>
         <p>${escapeHtml([listing.brand, ...computerSpecs(listing)].filter(Boolean).join(" · "))}</p>
         <div class="badge-row">
           ${computerSpecs(listing).slice(0, 3).map((item) => `<span class="badge">${escapeHtml(item)}</span>`).join("")}
         </div>
         <div class="listing-bottom">
           <span class="price">${formatPrice(listing.price)}</span>
-          <a class="seller-rating" href="${escapeHtml(listing.url || "#")}" target="_blank" rel="noreferrer">Open source</a>
         </div>
       </div>
     </article>
@@ -661,12 +656,10 @@ function renderHomeListings() {
         <div class="listing-body">
           <div class="listing-topline">
             <span class="price">${formatPrice(listing.price, listing.category === "housing" ? "/mo" : "")}</span>
-            <span class="badge badge-green">${appState.data.mode === "live" || appState.data.mode === "mixed-live" ? "Live" : "Real seed"}</span>
           </div>
           <h3>${escapeHtml(listing.title)}</h3>
           <p>${escapeHtml(listing.location)}</p>
           <div class="badge-row">
-            <span class="badge">Craigslist source</span>
             <span class="badge">${escapeHtml(listing.category)}</span>
           </div>
         </div>
