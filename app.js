@@ -1640,7 +1640,13 @@ housingActiveFilters?.addEventListener("click", (event) => {
 computerTabs?.addEventListener("click", (event) => {
   const tab = event.target.closest("button");
   if (!tab) return;
-  computerFilters.tab = tab.textContent.trim();
+  const value = tab.textContent.trim();
+  // Toggle: if already selected, deselect it
+  if (computerFilters.tab === value) {
+    computerFilters.tab = null;
+  } else {
+    computerFilters.tab = value;
+  }
   renderComputerFilters();
 });
 
