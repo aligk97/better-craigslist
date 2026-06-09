@@ -686,11 +686,11 @@ h3 {
 }
 
 .real-photo {
-  background: var(--photo) center / contain no-repeat #f0f2f5 !important;
+  background: var(--photo) center / cover no-repeat #f0f2f5 !important;
 }
 
 .detail-art.real-photo {
-  background-size: contain;
+  background-size: contain !important;
 }
 
 .real-photo::before,
@@ -1669,7 +1669,7 @@ html.dark .visual-art:not(.real-photo) {
 }
 
 html.dark .real-photo {
-  background: var(--photo) center / contain no-repeat #1e2035 !important;
+  background: var(--photo) center / cover no-repeat #1e2035 !important;
 }
 
 html.dark .art-car,

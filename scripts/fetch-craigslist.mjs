@@ -81,6 +81,73 @@ function parseSearchResults(html, category) {
   }).filter((listing) => listing.title && listing.url);
 }
 
+function uniqueImages(urls) {
+  return Array.from(new Set(urls.filter(Boolean).map((url) => decodeHtml(url))))
+    .filter((url) => /^https:\/\/images\.craigslist\.org\/.+\.(jpg|jpeg|webp|png)$/i.test(url));
+}
+
+function parseListingImages(html) {
+  const images = [];
+  const imgListSource = html.match(/var\s+imgList\s*=\s*(\[[\s\S]*?\]);/)?.[1];
+  if (imgListSource) {
+    try {
+      const imgList = JSON.parse(imgListSource);
+      imgList.forEach((image) => {
+        images.push(image.url);
+      });
+    } catch {
+      // Fall through to regex extraction below.
+    }
+  }
+
+  const ogImage = html.match(/<meta\s+property="og:image"\s+content="([^"]+)"/i)?.[1];
+  if (ogImage) images.unshift(ogImage);
+
+  for (const match of html.matchAll(/https:\/\/images\.craigslist\.org\/[^"' <>)]+/g)) {
+    const url = match[0].replace(/&quot;.*$/, "");
+    if (/_600x450\.(jpg|jpeg|webp|png)$/i.test(url)) images.push(url);
+  }
+
+  return uniqueImages(images);
+}
+
+async function fetchListingImages(listing) {
+  if (!listing.url) return listing;
+  try {
+    const response = await fetch(listing.url, {
+      headers: {
+        "accept": "text/html,application/xhtml+xml",
+        "user-agent": "Mozilla/5.0 (compatible; BetterCraigslistDataBot/1.0)"
+      }
+    });
+    if (!response.ok) return listing;
+    const html = await response.text();
+    const images = parseListingImages(html);
+    if (!images.length) return listing;
+    return {
+      ...listing,
+      image: images[0],
+      images
+    };
+  } catch {
+    return listing;
+  }
+}
+
+async function mapWithConcurrency(items, limit, mapper) {
+  const results = new Array(items.length);
+  let index = 0;
+  async function worker() {
+    while (index < items.length) {
+      const currentIndex = index;
+      index += 1;
+      results[currentIndex] = await mapper(items[currentIndex], currentIndex);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
+
 function normalizeListing(listing) {
   if (listing.category === "cars") return normalizeCar(listing);
   if (listing.category === "housing") return normalizeHousing(listing);
@@ -210,7 +277,7 @@ async function fetchCategory(category, config) {
   if (listings.length < config.limit) {
     throw new Error(`${category} produced ${listings.length}/${config.limit} listings`);
   }
-  return listings;
+  return mapWithConcurrency(listings, 5, fetchListingImages);
 }
 
 const allListings = [];
