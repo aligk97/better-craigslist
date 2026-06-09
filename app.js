@@ -62,7 +62,7 @@ let computerFilterSets = {
 };
 
 const computerFilters = {
-  tab: null,
+  tabs: new Set(),
   brand: "Any brand",
   screen: "Any size",
   yearFrom: null,
@@ -338,7 +338,7 @@ function renderHousingNeighborhoodOptions() {
 function renderComputerOptionControls() {
   if (computerTabs) {
     computerTabs.innerHTML = computerFilterSets.tabs
-      .map((tab) => `<button class="${tab === computerFilters.tab ? "is-selected" : ""}" type="button">${escapeHtml(tab)}</button>`)
+      .map((tab) => `<button class="${computerFilters.tabs.has(tab) ? "is-selected" : ""}" type="button">${escapeHtml(tab)}</button>`)
       .join("");
   }
   if (!computerFilterSets.brands.includes(computerFilters.brand)) computerFilters.brand = "Any brand";
@@ -552,7 +552,10 @@ function excludedComputer(listing) {
 
 function matchesComputer(listing) {
   if (listing.category !== "computers") return false;
-  if (computerFilters.tab && listing.subcategory && lower(listing.subcategory) !== lower(computerFilters.tab)) return false;
+  if (computerFilters.tabs.size > 0 && listing.subcategory) {
+    const match = Array.from(computerFilters.tabs).some((tab) => lower(listing.subcategory) === lower(tab));
+    if (!match) return false;
+  }
   if (computerFilters.brand && computerFilters.brand !== "Any brand" && lower(listing.brand) !== lower(computerFilters.brand) && !textIncludes(listing, computerFilters.brand)) return false;
   if ((computerFilters.brand === "Apple") && !textIncludes(listing, "MacBook") && !textIncludes(listing, "Apple")) return false;
   if (excludedComputer(listing)) return false;
@@ -612,7 +615,7 @@ function computerCard(listing) {
 function syncComputerControls() {
   renderComputerOptionControls();
   document.querySelectorAll(".computer-tabs button").forEach((tab) => {
-    tab.classList.toggle("is-selected", tab.textContent.trim() === computerFilters.tab);
+    tab.classList.toggle("is-selected", computerFilters.tabs.has(tab.textContent.trim()));
   });
   if (computerBrandSelect) computerBrandSelect.value = computerFilters.brand;
   document.querySelectorAll("#computers .chip-group .chip").forEach((chip) => {
@@ -627,7 +630,7 @@ function updateCompareState() {
 function renderComputerActiveFilters() {
   if (!computerActiveFilters) return;
   const active = [
-    computerFilters.tab,
+    ...Array.from(computerFilters.tabs),
     computerFilters.brand !== "Any brand" ? computerFilters.brand : null,
     computerFilters.screen !== "Any size" ? computerFilters.screen : null,
     computerFilters.yearFrom ? `Year ≥ ${computerFilters.yearFrom}` : null,
@@ -1641,11 +1644,11 @@ computerTabs?.addEventListener("click", (event) => {
   const tab = event.target.closest("button");
   if (!tab) return;
   const value = tab.textContent.trim();
-  // Toggle: if already selected, deselect it
-  if (computerFilters.tab === value) {
-    computerFilters.tab = null;
+  // Toggle: if already selected, remove it; otherwise add it
+  if (computerFilters.tabs.has(value)) {
+    computerFilters.tabs.delete(value);
   } else {
-    computerFilters.tab = value;
+    computerFilters.tabs.add(value);
   }
   renderComputerFilters();
 });
