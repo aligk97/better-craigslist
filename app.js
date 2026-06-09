@@ -33,20 +33,16 @@ const appState = {
   compareIds: new Set(["computer-7910839552", "computer-7939653842"])
 };
 
-const carModelsByMake = {
-  "Any make": ["Any model"],
-  BMW: ["Any model", "X3", "X5", "3 Series", "5 Series"],
-  Toyota: ["Any model", "RAV4", "Tacoma", "FJ Cruiser"],
-  Honda: ["Any model", "Civic", "Accord", "CR-V"],
-  Ford: ["Any model", "Mustang", "Transit", "F450"]
+let carModelsByMake = {
+  "Any make": ["Any model"]
 };
 
-const carFilterSets = {
+let carFilterSets = {
   makes: ["Any make", "BMW", "Toyota", "Honda", "Ford"],
-  models: ["Any model", "X3", "X5", "3 Series", "5 Series", "RAV4", "Tacoma", "FJ Cruiser", "Civic", "Accord", "CR-V", "Mustang", "Transit", "F450"],
+  models: ["Any model", "X3", "X5", "Civic", "Rogue", "GLC 300"],
   years: ["Any year", "Before 2020", "2020 or newer", "2016 or newer"],
   colors: ["Black", "White", "Silver", "Blue", "Red", "Green", "Tan", "Gray"],
-  bodies: ["SUV", "Sedan", "Truck", "Coupe", "Wagon"]
+  bodies: ["SUV", "Sedan", "Wagon"]
 };
 
 const carFilters = new Set(["BMW", "X3", "SUV", "Before 2020"]);
@@ -67,8 +63,15 @@ const housingListingTypes = ["For rent", "For sale", "Short-term"];
 const housingBedroomValues = ["Studio", "1 BR", "2 BR", "3 BR", "4+ BR"];
 const housingFurnishedValues = ["Furnished", "Unfurnished"];
 const housingLeaseValues = ["Short-term lease", "Month-to-month", "1 year+"];
-const housingNeighborhoods = ["Brooklyn", "Williamsburg", "Park Slope", "Astoria", "Flatbush", "Kensington", "Bensonhurst", "Bath Beach"];
+let housingNeighborhoods = ["Brooklyn", "Williamsburg", "Park Slope", "Astoria", "Flatbush", "Kensington", "Bensonhurst", "Bath Beach"];
 const housingFilters = new Set(readHousingFilters());
+
+const baseComputerTabs = ["Laptops", "Desktops", "Monitors", "Components", "Accessories"];
+let computerFilterSets = {
+  tabs: baseComputerTabs,
+  brands: ["Any brand", "Apple", "Dell", "HP", "Lenovo"],
+  screens: ["Any size", "13\"", "14\"", "15\"", "16\""]
+};
 
 const computerFilters = {
   tab: "Laptops",
@@ -89,6 +92,9 @@ const computerFilters = {
 const computerBrandSelect = document.querySelector("#computer-brand");
 const computerSortSelect = document.querySelector("#computers [aria-label='Sort computer listings']");
 const computerSpecSelects = Array.from(document.querySelectorAll("#computers .select-grid select"));
+const computerTabs = document.querySelector(".computer-tabs");
+const computerScreenGroup = document.querySelector("#computers .filter-panel .chip-group");
+const computerActiveFilters = document.querySelector("#computers .active-filters");
 const compareButton = document.querySelector("#compare-button");
 
 function escapeHtml(value) {
@@ -238,20 +244,131 @@ function normalizeLocation(value) {
   return clean.split(",")[0].trim();
 }
 
+function categoryListings(category) {
+  return appState.listings.filter((listing) => listing.category === category);
+}
+
+function uniqueSorted(items, readValue) {
+  return Array.from(new Set(items.map(readValue).filter(Boolean).map(String)))
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
+}
+
+function topValues(items, readValue, limit = 10) {
+  const counts = new Map();
+  items.map(readValue).filter(Boolean).map(String).forEach((value) => {
+    counts.set(value, (counts.get(value) || 0) + 1);
+  });
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], undefined, { numeric: true, sensitivity: "base" }))
+    .slice(0, limit)
+    .map(([value]) => value);
+}
+
+function setSelectOptions(select, options, preferredValue) {
+  if (!select) return "";
+  const safeOptions = options.length ? options : [preferredValue].filter(Boolean);
+  const previousValue = select.value;
+  const nextValue = safeOptions.includes(preferredValue)
+    ? preferredValue
+    : safeOptions.includes(previousValue)
+      ? previousValue
+      : safeOptions[0];
+  select.innerHTML = safeOptions
+    .map((option) => `<option value="${escapeHtml(option)}">${escapeHtml(option)}</option>`)
+    .join("");
+  select.value = nextValue;
+  return nextValue;
+}
+
+function buttonList(values, selectedValue, extraAttributes = "") {
+  return values
+    .map((value) => `
+      <button class="chip ${value === selectedValue ? "is-selected" : ""}" type="button" ${extraAttributes} data-value="${escapeHtml(value)}">
+        ${escapeHtml(value.replace(" BR", ""))}
+      </button>
+    `)
+    .join("");
+}
+
+function deriveFilterOptionsFromData() {
+  const cars = categoryListings("cars");
+  const housing = categoryListings("housing");
+  const computers = categoryListings("computers");
+
+  const makes = uniqueSorted(cars, (listing) => listing.make);
+  const models = uniqueSorted(cars, (listing) => listing.model);
+  const bodies = uniqueSorted(cars, (listing) => listing.body);
+
+  carFilterSets = {
+    ...carFilterSets,
+    makes: ["Any make", ...makes],
+    models: ["Any model", ...models],
+    bodies: bodies.length ? bodies : carFilterSets.bodies
+  };
+
+  carModelsByMake = {
+    "Any make": ["Any model", ...models]
+  };
+  makes.forEach((make) => {
+    carModelsByMake[make] = ["Any model", ...uniqueSorted(cars.filter((listing) => listing.make === make), (listing) => listing.model)];
+  });
+
+  housingNeighborhoods = uniqueSorted(housing, (listing) => normalizeLocation(listing.location || ""));
+
+  computerFilterSets = {
+    tabs: Array.from(new Set([...baseComputerTabs, ...uniqueSorted(computers, (listing) => listing.subcategory)])),
+    brands: ["Any brand", ...uniqueSorted(computers, (listing) => listing.brand)],
+    screens: ["Any size", ...uniqueSorted(computers, (listing) => listing.screen ? `${listing.screen}"` : "")]
+  };
+}
+
+function renderCarBodyOptions() {
+  const group = document.querySelector("[data-car-group='body']");
+  if (!group) return;
+  group.innerHTML = carFilterSets.bodies
+    .map((body) => `<button class="chip ${carFilters.has(body) ? "is-selected" : ""}" type="button" data-value="${escapeHtml(body)}">${escapeHtml(body)}</button>`)
+    .join("");
+}
+
+function renderHousingNeighborhoodOptions() {
+  const quickLinks = document.querySelector("#housing .quick-links");
+  if (!quickLinks) return;
+  const values = topValues(categoryListings("housing"), (listing) => normalizeLocation(listing.location || ""), 9);
+  quickLinks.innerHTML = values
+    .map((value) => `<button type="button" data-housing-filter="${escapeHtml(value)}">${escapeHtml(value)}</button>`)
+    .join("");
+}
+
+function renderComputerOptionControls() {
+  if (computerTabs) {
+    computerTabs.innerHTML = computerFilterSets.tabs
+      .map((tab) => `<button class="${tab === computerFilters.tab ? "is-selected" : ""}" type="button">${escapeHtml(tab)}</button>`)
+      .join("");
+  }
+  if (!computerFilterSets.brands.includes(computerFilters.brand)) computerFilters.brand = "Any brand";
+  computerFilters.brand = setSelectOptions(computerBrandSelect, computerFilterSets.brands, computerFilters.brand) || computerFilters.brand;
+  if (!computerFilterSets.screens.includes(computerFilters.screen)) computerFilters.screen = computerFilterSets.screens.includes("13\"") ? "13\"" : "Any size";
+  if (computerScreenGroup) {
+    computerScreenGroup.innerHTML = buttonList(computerFilterSets.screens, computerFilters.screen);
+  }
+}
+
 function updateCarModelOptions(make) {
   if (!carModelSelect) return;
   const options = carModelsByMake[make] || carModelsByMake["Any make"];
   carModelSelect.innerHTML = options.map((model) => `<option value="${escapeHtml(model)}">${escapeHtml(model)}</option>`).join("");
   const activeModel = Array.from(carFilters).find((filter) => carFilterSets.models.includes(filter));
+  if (activeModel && !options.includes(activeModel)) carFilters.delete(activeModel);
   carModelSelect.value = options.includes(activeModel) ? activeModel : "Any model";
 }
 
 function syncCarControls() {
   const activeMake = Array.from(carFilters).find((filter) => carFilterSets.makes.includes(filter)) || "Any make";
   const activeYear = Array.from(carFilters).find((filter) => carFilterSets.years.includes(filter)) || "Any year";
-  if (carMakeSelect) carMakeSelect.value = activeMake;
+  if (carMakeSelect) setSelectOptions(carMakeSelect, carFilterSets.makes, activeMake);
   updateCarModelOptions(activeMake);
   if (carYearSelect) carYearSelect.value = activeYear;
+  renderCarBodyOptions();
   document.querySelectorAll("[data-car-group='body'] .chip").forEach((chip) => {
     chip.classList.toggle("is-selected", carFilters.has(chip.dataset.value));
   });
@@ -264,10 +381,10 @@ function matchesCar(listing) {
   if (listing.category !== "cars") return false;
   for (const filter of carFilters) {
     if (filter === "Any make" || filter === "Any model" || filter === "Any year") continue;
-    if (carFilterSets.makes.includes(filter) && listing.make !== filter && !textIncludes(listing, filter)) return false;
-    if (carFilterSets.models.includes(filter) && listing.model !== filter && !textIncludes(listing, filter)) return false;
-    if (carFilterSets.bodies.includes(filter) && listing.body !== filter && !textIncludes(listing, filter)) return false;
-    if (carFilterSets.colors.includes(filter) && listing.color && listing.color !== filter) return false;
+    if (carFilterSets.makes.includes(filter) && lower(listing.make) !== lower(filter) && !textIncludes(listing, filter)) return false;
+    if (carFilterSets.models.includes(filter) && lower(listing.model) !== lower(filter) && !textIncludes(listing, filter)) return false;
+    if (carFilterSets.bodies.includes(filter) && lower(listing.body) !== lower(filter) && !textIncludes(listing, filter)) return false;
+    if (carFilterSets.colors.includes(filter) && listing.color && lower(listing.color) !== lower(filter)) return false;
     if (carFilterSets.colors.includes(filter) && !listing.color && !textIncludes(listing, filter)) return false;
     if (filter === "Before 2020" && listing.year && listing.year >= 2020) return false;
     if (filter === "2020 or newer" && listing.year && listing.year < 2020) return false;
@@ -314,6 +431,7 @@ function renderCarFilters() {
 }
 
 function syncHousingControls() {
+  renderHousingNeighborhoodOptions();
   document.querySelectorAll("[data-housing-filter]").forEach((control) => {
     control.classList.toggle("is-selected", housingFilters.has(control.dataset.housingFilter));
   });
@@ -330,17 +448,35 @@ function bedroomLabel(value) {
   return value ? `${value} BR` : "BR n/a";
 }
 
+function priceLimitFromFilter(filter) {
+  if (!String(filter).startsWith("Under")) return null;
+  const amount = String(filter).replace(/[^\d]/g, "");
+  return amount ? Number(amount) : null;
+}
+
+function normalizedLease(value) {
+  return lower(value).replace(" lease", "").trim();
+}
+
+function isKnownHousingFilter(filter) {
+  return housingListingTypes.includes(filter)
+    || housingBedroomValues.includes(filter)
+    || housingFurnishedValues.includes(filter)
+    || housingLeaseValues.includes(filter)
+    || housingKnownPrices.includes(filter);
+}
+
 function matchesHousing(listing) {
   if (listing.category !== "housing") return false;
   for (const filter of housingFilters) {
-    if (housingListingTypes.includes(filter) && listing.listingType && listing.listingType !== filter) return false;
+    const priceLimit = priceLimitFromFilter(filter);
+    if (housingListingTypes.includes(filter) && listing.listingType && lower(listing.listingType) !== lower(filter)) return false;
     if (housingBedroomValues.includes(filter) && bedroomLabel(listing.bedrooms) !== filter) return false;
-    if (filter === "Under $2,500" && listing.price && listing.price > 2500) return false;
-    if (filter === "Under $3,000" && listing.price && listing.price > 3000) return false;
+    if (priceLimit && listing.price && listing.price > priceLimit) return false;
     if (filter === "Furnished" && listing.furnished !== true) return false;
     if (filter === "Unfurnished" && listing.furnished === true) return false;
-    if (housingLeaseValues.includes(filter) && listing.leaseTerm && listing.leaseTerm !== filter) return false;
-    if (housingNeighborhoods.includes(filter) && !textIncludes(listing, filter)) return false;
+    if (housingLeaseValues.includes(filter) && listing.leaseTerm && normalizedLease(listing.leaseTerm) !== normalizedLease(filter)) return false;
+    if (!isKnownHousingFilter(filter) && !textIncludes(listing, filter)) return false;
   }
   return true;
 }
@@ -391,6 +527,17 @@ function specMin(value) {
   return Number(String(value).match(/\d+/)?.[0] || 0);
 }
 
+function conditionRank(value) {
+  const ranks = {
+    fair: 1,
+    good: 2,
+    "very good": 3,
+    excellent: 4,
+    "open box": 5
+  };
+  return ranks[lower(value)] || 0;
+}
+
 function excludedComputer(listing) {
   const title = lower(listing.title);
   return (computerFilters.excludes.Cases && /\b(case|cover|sleeve|bag|stand|dock|adapter)\b/.test(title))
@@ -400,9 +547,9 @@ function excludedComputer(listing) {
 
 function matchesComputer(listing) {
   if (listing.category !== "computers") return false;
-  if (computerFilters.tab && listing.subcategory && listing.subcategory !== computerFilters.tab) return false;
-  if (computerFilters.brand && computerFilters.brand !== "Any brand" && listing.brand !== computerFilters.brand && !textIncludes(listing, computerFilters.brand)) return false;
-  if (!textIncludes(listing, "MacBook")) return false;
+  if (computerFilters.tab && listing.subcategory && lower(listing.subcategory) !== lower(computerFilters.tab)) return false;
+  if (computerFilters.brand && computerFilters.brand !== "Any brand" && lower(listing.brand) !== lower(computerFilters.brand) && !textIncludes(listing, computerFilters.brand)) return false;
+  if ((computerFilters.brand === "Any brand" || computerFilters.brand === "Apple") && !textIncludes(listing, "MacBook") && !textIncludes(listing, "Apple")) return false;
   if (listing.price && listing.price > computerFilters.maxPrice) return false;
   if (excludedComputer(listing)) return false;
   const selectedScreen = screenNumber(computerFilters.screen);
@@ -413,7 +560,8 @@ function matchesComputer(listing) {
   if (selectedRam && listing.ramGb && listing.ramGb < selectedRam) return false;
   const selectedStorage = specMin(computerFilters.storage);
   if (selectedStorage && listing.storageGb && listing.storageGb < selectedStorage) return false;
-  if (computerFilters.condition === "Excellent" && listing.condition !== "Excellent" && listing.condition !== "Open box") return false;
+  if (computerFilters.condition === "Good+" && listing.condition && conditionRank(listing.condition) < conditionRank("Good")) return false;
+  if (computerFilters.condition === "Excellent" && listing.condition && conditionRank(listing.condition) < conditionRank("Excellent")) return false;
   if (computerFilters.condition === "Open box" && listing.condition !== "Open box") return false;
   return true;
 }
@@ -455,6 +603,7 @@ function computerCard(listing) {
 }
 
 function syncComputerControls() {
+  renderComputerOptionControls();
   document.querySelectorAll(".computer-tabs button").forEach((tab) => {
     tab.classList.toggle("is-selected", tab.textContent.trim() === computerFilters.tab);
   });
@@ -466,6 +615,25 @@ function syncComputerControls() {
 
 function updateCompareState() {
   if (compareButton) compareButton.textContent = `Compare (${appState.compareIds.size})`;
+}
+
+function renderComputerActiveFilters() {
+  if (!computerActiveFilters) return;
+  const active = [
+    computerFilters.tab,
+    computerFilters.brand !== "Any brand" ? computerFilters.brand : null,
+    computerFilters.brand === "Apple" || computerFilters.brand === "Any brand" ? "MacBook" : null,
+    computerFilters.screen !== "Any size" ? computerFilters.screen : null,
+    computerFilters.year,
+    computerFilters.ram,
+    computerFilters.storage,
+    computerFilters.condition,
+    `Under $${computerFilters.maxPrice}`,
+    ...Object.entries(computerFilters.excludes)
+      .filter(([, enabled]) => enabled)
+      .map(([label]) => `No ${label.toLowerCase()}`)
+  ].filter(Boolean);
+  computerActiveFilters.innerHTML = active.map((filter) => `<span class="filter-chip">${escapeHtml(filter)}</span>`).join("");
 }
 
 function renderComputerFilters() {
@@ -480,7 +648,9 @@ function renderComputerFilters() {
     container.innerHTML = matches.length ? matches.map(computerCard).join("") : emptyState("Try a different screen size or disable an exclude option.");
   }
   updateCompareState();
-  sourceStatus("#computers .results-panel", `${matches.length} MacBook results filtered locally from ${appState.listings.filter((item) => item.category === "computers").length} records.`);
+  renderComputerActiveFilters();
+  const queryLabel = computerFilters.brand === "Apple" || computerFilters.brand === "Any brand" ? "MacBook" : `${computerFilters.brand} laptop`;
+  sourceStatus("#computers .results-panel", `${matches.length} ${queryLabel} results filtered locally from ${appState.listings.filter((item) => item.category === "computers").length} records.`);
 }
 
 function renderHomeListings() {
@@ -590,25 +760,24 @@ function renderAll() {
 }
 
 async function loadListings() {
-  const isHttp = window.location.protocol.startsWith("http");
-  if (isHttp) {
-    try {
-      const response = await fetch("/api/listings", { cache: "no-store" });
-      if (response.ok) {
-        const payload = await response.json();
-        if (Array.isArray(payload.listings) && payload.listings.length) return payload;
-      }
-    } catch {
-      // Fall through to local JSON or embedded seed.
+  const normalizePayload = (payload, fallbackMode = "seed") => {
+    if (Array.isArray(payload) && payload.length) {
+      return { generatedAt: "local", mode: fallbackMode, source: "Local listings.json", listings: payload };
     }
+    if (Array.isArray(payload?.listings) && payload.listings.length) return payload;
+    return null;
+  };
+  const isHttp = window.location.protocol.startsWith("http");
+  const sources = isHttp ? ["/api/listings", "data/listings.json"] : ["data/listings.json"];
+  for (const source of sources) {
     try {
-      const response = await fetch("data/listings.json", { cache: "no-store" });
+      const response = await fetch(source, { cache: "no-store" });
       if (response.ok) {
-        const payload = await response.json();
-        if (Array.isArray(payload.listings) && payload.listings.length) return payload;
+        const payload = normalizePayload(await response.json(), source.includes("api") ? "live" : "seed");
+        if (payload) return payload;
       }
     } catch {
-      // Fall through to embedded seed.
+      // Fall through to the next source or embedded seed.
     }
   }
   return fallbackData;
@@ -662,11 +831,11 @@ carYearSelect?.addEventListener("change", (event) => {
 
 carSortSelect?.addEventListener("change", renderCarFilters);
 
-document.querySelectorAll("[data-car-group='body'] .chip").forEach((chip) => {
-  chip.addEventListener("click", () => {
-    replaceFilterGroup(carFilters, carFilterSets.bodies, chip.dataset.value);
-    renderCarFilters();
-  });
+document.querySelector("[data-car-group='body']")?.addEventListener("click", (event) => {
+  const chip = event.target.closest(".chip");
+  if (!chip) return;
+  replaceFilterGroup(carFilters, carFilterSets.bodies, chip.dataset.value);
+  renderCarFilters();
 });
 
 document.querySelectorAll("[data-car-group='color'] .swatch").forEach((swatch) => {
@@ -687,25 +856,25 @@ carActiveFilters?.addEventListener("click", (event) => {
   renderCarFilters();
 });
 
-document.querySelectorAll("[data-housing-filter]").forEach((control) => {
-  control.addEventListener("click", () => {
-    const value = control.dataset.housingFilter;
-    if (housingListingTypes.includes(value)) {
-      replaceFilterGroup(housingFilters, housingListingTypes, value);
-    } else if (housingBedroomValues.includes(value)) {
-      replaceFilterGroup(housingFilters, housingBedroomValues, value);
-    } else if (housingFurnishedValues.includes(value)) {
-      if (housingFilters.has(value)) housingFilters.delete(value);
-      else replaceFilterGroup(housingFilters, housingFurnishedValues, value);
-    } else if (housingLeaseValues.includes(value)) {
-      replaceFilterGroup(housingFilters, housingLeaseValues, value);
-    } else if (housingFilters.has(value)) {
-      housingFilters.delete(value);
-    } else {
-      housingFilters.add(value);
-    }
-    renderHousingFilters();
-  });
+document.querySelector("#housing")?.addEventListener("click", (event) => {
+  const control = event.target.closest("[data-housing-filter]");
+  if (!control) return;
+  const value = control.dataset.housingFilter;
+  if (housingListingTypes.includes(value)) {
+    replaceFilterGroup(housingFilters, housingListingTypes, value);
+  } else if (housingBedroomValues.includes(value)) {
+    replaceFilterGroup(housingFilters, housingBedroomValues, value);
+  } else if (housingFurnishedValues.includes(value)) {
+    if (housingFilters.has(value)) housingFilters.delete(value);
+    else replaceFilterGroup(housingFilters, housingFurnishedValues, value);
+  } else if (housingLeaseValues.includes(value)) {
+    replaceFilterGroup(housingFilters, housingLeaseValues, value);
+  } else if (housingFilters.has(value)) {
+    housingFilters.delete(value);
+  } else {
+    housingFilters.add(value);
+  }
+  renderHousingFilters();
 });
 
 housingPrice?.addEventListener("change", (event) => {
@@ -736,11 +905,11 @@ housingActiveFilters?.addEventListener("click", (event) => {
   renderHousingFilters();
 });
 
-document.querySelectorAll(".computer-tabs button").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    computerFilters.tab = tab.textContent.trim();
-    renderComputerFilters();
-  });
+computerTabs?.addEventListener("click", (event) => {
+  const tab = event.target.closest("button");
+  if (!tab) return;
+  computerFilters.tab = tab.textContent.trim();
+  renderComputerFilters();
 });
 
 computerBrandSelect?.addEventListener("change", (event) => {
@@ -748,11 +917,11 @@ computerBrandSelect?.addEventListener("change", (event) => {
   renderComputerFilters();
 });
 
-document.querySelectorAll("#computers .chip-group .chip").forEach((chip) => {
-  chip.addEventListener("click", () => {
-    computerFilters.screen = chip.textContent.trim();
-    renderComputerFilters();
-  });
+computerScreenGroup?.addEventListener("click", (event) => {
+  const chip = event.target.closest(".chip");
+  if (!chip) return;
+  computerFilters.screen = chip.dataset.value || chip.textContent.trim();
+  renderComputerFilters();
 });
 
 computerSpecSelects.forEach((select, index) => {
@@ -791,6 +960,7 @@ document.querySelectorAll(".thumb").forEach((thumb) => {
 loadListings().then((payload) => {
   appState.data = payload;
   appState.listings = payload.listings;
+  deriveFilterOptionsFromData();
   renderAll();
   goToRoute(currentRoute());
 });
