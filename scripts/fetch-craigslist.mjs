@@ -38,6 +38,7 @@ const knownMakes = [
 const computerBrands = ["Apple", "Dell", "HP", "Lenovo", "Asus", "Acer", "Microsoft", "Samsung", "LG"];
 const phoneBrands = ["Apple", "iPhone", "Samsung", "Google", "Motorola", "LG", "OnePlus", "Nokia", "TCL", "Moto"];
 const electronicsBrands = ["Sony", "Samsung", "LG", "Bose", "Canon", "Nikon", "Panasonic", "Yamaha", "Denon", "JBL", "Apple", "Dell"];
+const computerAccessoryPattern = /\b(case|cover|sleeve|bag|keyboard|mouse|trackpad|charger|charging|adapter|cable|cord|dock|hub|stand|speaker|headphone|earbud|parts|repair|for parts|locked|display assembly|battery|fan|shredder)\b/i;
 const phoneAccessoryPattern = /\b(case|cover|screen protector|protector|charger|charging|cable|cord|adapter|mount|holder|stand|wallet|battery|stylus|strap|airpod|airpods|earbuds|headphones|soundbar|subwoofer)\b/i;
 
 function decodeHtml(value = "") {
@@ -213,13 +214,34 @@ function normalizeHousing(listing) {
 function normalizeComputer(listing) {
   const title = listing.title;
   const lower = title.toLowerCase();
+  const isAudio = /\b(speaker|headphone|earbud)\b/i.test(title);
+  const isRepair = /\b(parts?|repair|for parts|locked|display assembly|battery|fan)\b/i.test(title);
+  const isInput = /\b(keyboard|mouse|trackpad)\b/i.test(title);
+  const isCase = /\b(case|cover|sleeve|bag)\b/i.test(title);
+  const isCable = /\b(charger|charging|adapter|cable|cord)\b/i.test(title);
+  const isDock = /\b(dock|hub|stand)\b/i.test(title);
+  const isOffice = /\b(shredder|printer|scanner)\b/i.test(title);
+  const isMonitor = /\bmonitor\b/i.test(title)
+    || (!isCable && /\b(lcd|led)\b.*\b(display|screen)\b|\b(display|screen)\b.*\b(lcd|led)\b/i.test(title));
+  const subcategory = isAudio ? "Speakers & audio"
+    : isRepair ? "Parts & repair"
+      : isInput ? "Keyboards & mice"
+        : isCase ? "Cases & sleeves"
+          : isCable ? "Chargers & adapters"
+            : isDock ? "Docks & stands"
+              : isOffice ? "Office equipment"
+                : isMonitor ? "Monitors"
+                  : lower.includes("desktop") || lower.includes("imac") || lower.includes("tower") || lower.includes("pc built") ? "Desktops"
+                    : lower.includes("chromebook") || lower.includes("macbook") || lower.includes("laptop") || lower.includes("notebook") ? "Laptops"
+                      : lower.includes("gpu") || lower.includes("graphics") || lower.includes("motherboard") || lower.includes("ram") || lower.includes("ssd") || lower.includes("hard drive") || lower.includes("processor") || lower.includes("cpu") ? "Components"
+                        : "Other computer gear";
+  const itemType = ["Laptops", "Desktops", "Monitors", "Components"].includes(subcategory) && !computerAccessoryPattern.test(title)
+    ? "Computer"
+    : "Accessory";
   return {
     ...listing,
-    subcategory: lower.includes("monitor") || lower.includes("display") ? "Monitors"
-      : lower.includes("desktop") || lower.includes("imac") || lower.includes("tower") ? "Desktops"
-        : lower.includes("keyboard") || lower.includes("case") || lower.includes("charger") || lower.includes("adapter") ? "Accessories"
-          : lower.includes("ram") || lower.includes("ssd") || lower.includes("gpu") || lower.includes("motherboard") ? "Components"
-            : "Laptops",
+    itemType,
+    subcategory,
     brand: firstMatch(title, computerBrands),
     year: Number(title.match(/\b(20[0-3]\d|19[9]\d)\b/)?.[1]) || null,
     screen: Number(title.match(/\b(11|12|13|14|15|16|17|19|20|21|22|24|27|32)(?:\s?\"|\s?inch|\s?in\b)/i)?.[1]) || null,

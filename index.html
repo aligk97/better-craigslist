@@ -455,20 +455,28 @@
       <section id="computers" class="page" data-page="computers">
         <div class="container page-head">
           <div>
-            <p class="eyebrow">Computers / MacBook search</p>
-            <h1>Find what you need, skip the clutter.</h1>
+            <p class="eyebrow">Computers / accessories</p>
+            <h1>Find the right computer gear without mixing categories.</h1>
           </div>
           <button id="compare-button" class="btn btn-primary" type="button">Compare (2)</button>
         </div>
         <div class="container computer-tabs" role="tablist" aria-label="Computer categories">
+          <button class="is-selected" type="button">All computer categories</button>
           <button type="button">Laptops</button>
           <button type="button">Desktops</button>
           <button type="button">Monitors</button>
           <button type="button">Components</button>
-          <button type="button">Accessories</button>
         </div>
         <div class="container search-layout">
           <aside class="filter-panel" aria-label="Computer filters">
+            <div id="computer-item-type-block" class="filter-block">
+              <span class="filter-label">Listing type</span>
+              <div class="chip-group" data-computer-filter="itemType">
+                <button class="chip is-selected" type="button" data-value="Computer">Computer</button>
+                <button class="chip" type="button" data-value="Accessory">Accessory</button>
+                <button class="chip" type="button" data-value="All computer listings">All computer listings</button>
+              </div>
+            </div>
             <div class="filter-block">
               <label for="computer-brand">Brand</label>
               <select id="computer-brand">
@@ -481,7 +489,7 @@
             </div>
             <div class="filter-block">
               <span class="filter-label">Screen size</span>
-              <div class="chip-group">
+              <div class="chip-group" data-computer-filter="screen">
                 <button class="chip" type="button">13"</button>
                 <button class="chip" type="button">14"</button>
                 <button class="chip" type="button">15"</button>
@@ -504,10 +512,8 @@
           <section class="results-panel">
             <div class="active-bar">
               <div class="active-filters">
-                <span class="filter-chip">Apple</span>
-                <span class="filter-chip">MacBook</span>
-                <span class="filter-chip">Under $300</span>
-                <span class="filter-chip">Accessories excluded</span>
+                <span class="filter-chip">Computer</span>
+                <span class="filter-chip">Detailed categories</span>
               </div>
               <span class="match-status" id="computers-status">Showing 5 listings</span>
               <select aria-label="Sort computer listings">

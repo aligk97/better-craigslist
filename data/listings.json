@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-06-09T21:10:48.128Z",
+  "generatedAt": "2026-06-09T21:24:16.390Z",
   "mode": "craigslist-live-snapshot-categorized",
-  "source": "Fetched from Craigslist New York search result pages and categorized into detailed electronics and phone listing types.",
+  "source": "Fetched from Craigslist New York search result pages and categorized into detailed electronics, phone, and computer listing types.",
   "sourceUrls": {
     "cars": "https://newyork.craigslist.org/search/cta",
     "housing": "https://newyork.craigslist.org/search/apa",
@@ -1726,7 +1726,8 @@
         "https://images.craigslist.org/00S0S_drWI5MtMPP3_0CI0t2_600x450.jpg",
         "https://images.craigslist.org/00h0h_9FpO94a2U9g_0CI0t2_600x450.jpg",
         "https://images.craigslist.org/00H0H_fxifZvwzhia_0CI0t2_600x450.jpg"
-      ]
+      ],
+      "itemType": "Computer"
     },
     {
       "id": "computers-7910285738",
@@ -1748,7 +1749,8 @@
         "https://images.craigslist.org/01616_j5FGj4ao4Bn_0CI0t2_600x450.jpg",
         "https://images.craigslist.org/00404_bnDCleB5yDk_0t20CI_600x450.jpg",
         "https://images.craigslist.org/00c0c_8ubHxKNspYi_0t20CI_600x450.jpg"
-      ]
+      ],
+      "itemType": "Computer"
     },
     {
       "id": "computers-7909838933",
@@ -1758,7 +1760,7 @@
       "location": "11224",
       "url": "https://newyork.craigslist.org/brk/sys/d/speaker-for-pc-or-notebook-usb/7909838933.html",
       "image": "https://images.craigslist.org/00Q0Q_OQi905kZrL_0CI0t2_600x450.jpg",
-      "subcategory": "Laptops",
+      "subcategory": "Speakers & audio",
       "brand": null,
       "year": null,
       "screen": null,
@@ -1769,7 +1771,8 @@
         "https://images.craigslist.org/00Q0Q_OQi905kZrL_0CI0t2_600x450.jpg",
         "https://images.craigslist.org/00a0a_c6RfK9rWdSj_0CI0t2_600x450.jpg",
         "https://images.craigslist.org/00909_1ppSJpmkuPu_0CI0t2_600x450.jpg"
-      ]
+      ],
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7926587742",
@@ -1797,7 +1800,8 @@
         "https://images.craigslist.org/00v0v_5AQN45z4E6u_0CI0CI_600x450.jpg",
         "https://images.craigslist.org/00J0J_TN4geUyUyf_0CI0CI_600x450.jpg",
         "https://images.craigslist.org/00O0O_2rE8jCerLni_0CI0CI_600x450.jpg"
-      ]
+      ],
+      "itemType": "Computer"
     },
     {
       "id": "computers-7939897206",
@@ -1807,7 +1811,7 @@
       "location": "Astoria",
       "url": "https://newyork.craigslist.org/que/sys/d/astoria-apple-15-inch-macbook-air-m3/7939897206.html",
       "image": "https://images.craigslist.org/00404_8bmabV65EYB_0t20CI_600x450.jpg",
-      "subcategory": "Components",
+      "subcategory": "Laptops",
       "brand": "Apple",
       "year": null,
       "screen": 15,
@@ -1827,7 +1831,8 @@
         "https://images.craigslist.org/00X0X_44Q2G08MAM3_0t20CI_600x450.jpg",
         "https://images.craigslist.org/00O0O_jDijEbNy5jm_0CI0t2_600x450.jpg",
         "https://images.craigslist.org/00E0E_exw3woEl4BX_0CI0t2_600x450.jpg"
-      ]
+      ],
+      "itemType": "Computer"
     },
     {
       "id": "computers-7939895898",
@@ -1847,7 +1852,8 @@
       "images": [
         "https://images.craigslist.org/00L0L_8m7nApdHnwH_0Ao0CI_600x450.jpg",
         "https://images.craigslist.org/00p0p_ajMr7rczFg8_0lM0t2_600x450.jpg"
-      ]
+      ],
+      "itemType": "Computer"
     },
     {
       "id": "computers-7933047627",
@@ -1857,7 +1863,7 @@
       "location": "Upper East Side",
       "url": "https://newyork.craigslist.org/mnh/sys/d/new-york-apple-laptop-computer-sell-for/7933047627.html",
       "image": "https://images.craigslist.org/00606_9OpW2gtLCm2_0zn0t2_600x450.jpg",
-      "subcategory": "Laptops",
+      "subcategory": "Parts & repair",
       "brand": "Apple",
       "year": null,
       "screen": null,
@@ -1869,7 +1875,8 @@
         "https://images.craigslist.org/00s0s_hPPOweoymkH_0Aw0t2_600x450.jpg",
         "https://images.craigslist.org/00T0T_98wdMJCJwxA_0CI0sY_600x450.jpg",
         "https://images.craigslist.org/00q0q_lujjC1U7gAs_0ww0oo_600x450.jpg"
-      ]
+      ],
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7933044837",
@@ -1879,7 +1886,7 @@
       "location": "Upper East Side",
       "url": "https://newyork.craigslist.org/mnh/sys/d/new-york-two-brand-new-noctua-nf-a14/7933044837.html",
       "image": "https://images.craigslist.org/00s0s_3tWdmGxOv4Z_0CI0t2_600x450.jpg",
-      "subcategory": "Laptops",
+      "subcategory": "Other computer gear",
       "brand": null,
       "year": null,
       "screen": null,
@@ -1889,7 +1896,8 @@
       "images": [
         "https://images.craigslist.org/00s0s_3tWdmGxOv4Z_0CI0t2_600x450.jpg",
         "https://images.craigslist.org/00z0z_2IOwkI9fpAZ_0oo0ww_600x450.jpg"
-      ]
+      ],
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7916771416",
@@ -1899,7 +1907,7 @@
       "location": "Brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-fellowes-automax-500cl-500/7916771416.html",
       "image": "https://images.craigslist.org/00i0i_5Ds6iZDAvmM_084084_600x450.jpg",
-      "subcategory": "Laptops",
+      "subcategory": "Office equipment",
       "brand": null,
       "year": null,
       "screen": null,
@@ -1911,7 +1919,8 @@
         "https://images.craigslist.org/00B0B_dMy5semBC0t_084084_600x450.jpg",
         "https://images.craigslist.org/01414_afiTyK0up3B_084084_600x450.jpg",
         "https://images.craigslist.org/00f0f_eZuHVx3d4Gj_084084_600x450.jpg"
-      ]
+      ],
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7918304818",
@@ -1932,7 +1941,8 @@
         "https://images.craigslist.org/00b0b_4RgI5RtKryv_0bY0cU_600x450.jpg",
         "https://images.craigslist.org/00c0c_kM2mbd3WyVH_03i084_600x450.jpg",
         "https://images.craigslist.org/00U0U_jaYnBAOvw1M_0aE0aE_600x450.jpg"
-      ]
+      ],
+      "itemType": "Computer"
     },
     {
       "id": "computers-7934369647",
@@ -1956,7 +1966,8 @@
         "https://images.craigslist.org/00e0e_i7uNXIExwh9_0qB0bJ_600x450.jpg",
         "https://images.craigslist.org/00606_3TfZ4WePvJS_0qB0bJ_600x450.jpg",
         "https://images.craigslist.org/01515_lQ7tSjIwhqB_0qB0bJ_600x450.jpg"
-      ]
+      ],
+      "itemType": "Computer"
     },
     {
       "id": "computers-7932181126",
@@ -1966,7 +1977,7 @@
       "location": "brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-pc-built-with-rtx-3060/7932181126.html",
       "image": "https://images.craigslist.org/00202_eZpnq8WGEXQ_0xc0t2_600x450.jpg",
-      "subcategory": "Laptops",
+      "subcategory": "Desktops",
       "brand": null,
       "year": null,
       "screen": null,
@@ -1977,7 +1988,8 @@
         "https://images.craigslist.org/00202_eZpnq8WGEXQ_0xc0t2_600x450.jpg",
         "https://images.craigslist.org/00g0g_fKAEgH0pQSm_0iS09F_600x450.jpg",
         "https://images.craigslist.org/00Y0Y_7IQ55KLab8g_0CI0rO_600x450.jpg"
-      ]
+      ],
+      "itemType": "Computer"
     },
     {
       "id": "computers-7911707994",
@@ -1987,13 +1999,14 @@
       "location": "Midwood, Brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-belkin-usb-type-to-usb-micro/7911707994.html",
       "image": null,
-      "subcategory": "Accessories",
+      "subcategory": "Chargers & adapters",
       "brand": null,
       "year": null,
       "screen": null,
       "ramGb": null,
       "storageGb": null,
-      "condition": null
+      "condition": null,
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7912134469",
@@ -2003,7 +2016,7 @@
       "location": "Midwood, Brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-mini-displayport-to/7912134469.html",
       "image": "https://images.craigslist.org/00J0J_4m2Syfp6E8T_0fu0aF_600x450.jpg",
-      "subcategory": "Monitors",
+      "subcategory": "Chargers & adapters",
       "brand": null,
       "year": null,
       "screen": null,
@@ -2016,7 +2029,8 @@
         "https://images.craigslist.org/00000_7jcq5OgZizo_0fu0cU_600x450.jpg",
         "https://images.craigslist.org/00f0f_7BtOogrikyv_0du0fu_600x450.jpg",
         "https://images.craigslist.org/00R0R_9O6OlmNUlHn_0fn0fu_600x450.jpg"
-      ]
+      ],
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7911063059",
@@ -2026,7 +2040,7 @@
       "location": "Midwood, Brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-usb-data-sync-charger-cable/7911063059.html",
       "image": "https://images.craigslist.org/00d0d_707pkUdBiik_0K70VP_600x450.jpg",
-      "subcategory": "Accessories",
+      "subcategory": "Chargers & adapters",
       "brand": null,
       "year": null,
       "screen": null,
@@ -2036,7 +2050,8 @@
       "images": [
         "https://images.craigslist.org/00d0d_707pkUdBiik_0K70VP_600x450.jpg",
         "https://images.craigslist.org/00k0k_1634x5VZhMq_0AB0SX_600x450.jpg"
-      ]
+      ],
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7912134446",
@@ -2046,13 +2061,14 @@
       "location": "Midwood, Brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-mmi-av-pin-switching-adapter/7912134446.html",
       "image": null,
-      "subcategory": "Accessories",
+      "subcategory": "Chargers & adapters",
       "brand": null,
       "year": null,
       "screen": null,
       "ramGb": null,
       "storageGb": null,
-      "condition": null
+      "condition": null,
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7911063053",
@@ -2062,13 +2078,14 @@
       "location": "Midwood, Brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-usb-type-to-usb-type-plugable/7911063053.html",
       "image": null,
-      "subcategory": "Laptops",
+      "subcategory": "Chargers & adapters",
       "brand": null,
       "year": null,
       "screen": null,
       "ramGb": null,
       "storageGb": null,
-      "condition": null
+      "condition": null,
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7913133796",
@@ -2078,7 +2095,7 @@
       "location": "Midwood, Brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-usb-type-to-usb-30-type-cable/7913133796.html",
       "image": "https://images.craigslist.org/00x0x_9x2kaXfm3Uz_0fu0cj_600x450.jpg",
-      "subcategory": "Laptops",
+      "subcategory": "Chargers & adapters",
       "brand": null,
       "year": null,
       "screen": null,
@@ -2089,7 +2106,8 @@
         "https://images.craigslist.org/00x0x_9x2kaXfm3Uz_0fu0cj_600x450.jpg",
         "https://images.craigslist.org/00a0a_kBy6Kdcxbev_0fu0aq_600x450.jpg",
         "https://images.craigslist.org/00B0B_9TNgwXskkmq_0fu0aZ_600x450.jpg"
-      ]
+      ],
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7912134581",
@@ -2099,13 +2117,14 @@
       "location": "Midwood, Brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-usb-type-to-usb-30-type-cable/7912134581.html",
       "image": null,
-      "subcategory": "Laptops",
+      "subcategory": "Chargers & adapters",
       "brand": null,
       "year": null,
       "screen": null,
       "ramGb": null,
       "storageGb": null,
-      "condition": null
+      "condition": null,
+      "itemType": "Accessory"
     },
     {
       "id": "computers-7912134680",
@@ -2115,7 +2134,7 @@
       "location": "Midwood, Brooklyn",
       "url": "https://newyork.craigslist.org/brk/sys/d/brooklyn-belkin-usb-type-to-usb-micro/7912134680.html",
       "image": "https://images.craigslist.org/00U0U_ir7UZV08bsH_1300IU_600x450.jpg",
-      "subcategory": "Accessories",
+      "subcategory": "Chargers & adapters",
       "brand": null,
       "year": null,
       "screen": null,
@@ -2126,7 +2145,8 @@
         "https://images.craigslist.org/00U0U_ir7UZV08bsH_1300IU_600x450.jpg",
         "https://images.craigslist.org/00z0z_eEVgXiynqcY_1300Hg_600x450.jpg",
         "https://images.craigslist.org/00v0v_bd1jI7vig1h_1300EN_600x450.jpg"
-      ]
+      ],
+      "itemType": "Accessory"
     },
     {
       "id": "phones-7939885686",

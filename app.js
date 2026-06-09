@@ -48,15 +48,17 @@ const housingLeaseValues = ["Short-term lease", "Month-to-month", "1 year+"];
 let housingNeighborhoods = ["Brooklyn", "Williamsburg", "Park Slope", "Astoria", "Flatbush", "Kensington", "Bensonhurst", "Bath Beach"];
 const housingFilters = new Set(readHousingFilters());
 
-const baseComputerTabs = ["Laptops", "Desktops", "Monitors", "Components", "Accessories"];
+const baseComputerTabs = ["All computer categories", "Laptops", "Desktops", "Monitors", "Components"];
 let computerFilterSets = {
   tabs: baseComputerTabs,
+  itemTypes: ["Computer", "Accessory", "All computer listings"],
   brands: ["Any brand", "Apple", "Dell", "HP", "Lenovo"],
   screens: ["Any size", "13\"", "14\"", "15\"", "16\""]
 };
 
 const computerFilters = {
-  tab: null,
+  itemType: "Computer",
+  tab: "All computer categories",
   brand: "Any brand",
   screen: "Any size",
   year: "Any year",
@@ -75,7 +77,8 @@ const computerBrandSelect = document.querySelector("#computer-brand");
 const computerSortSelect = document.querySelector("#computers [aria-label='Sort computer listings']");
 const computerSpecSelects = Array.from(document.querySelectorAll("#computers .select-grid select"));
 const computerTabs = document.querySelector(".computer-tabs");
-const computerScreenGroup = document.querySelector("#computers .filter-panel .chip-group");
+const computerFilterPanel = document.querySelector("#computers .filter-panel");
+const computerScreenGroup = document.querySelector("#computers [data-computer-filter='screen']");
 const computerActiveFilters = document.querySelector("#computers .active-filters");
 const compareButton = document.querySelector("#compare-button");
 
@@ -181,7 +184,7 @@ function metaForCategory(category) {
 function artForListing(listing) {
   if (listing.category === "cars") return listing.body === "Truck" ? "art-truck" : listing.color === "Silver" ? "silver-car" : "art-car";
   if (listing.category === "housing") return listing.bedrooms === 0 ? "art-loft" : listing.bedrooms >= 2 ? "art-townhouse" : "art-apartment";
-  if (listing.category === "computers") return listing.subcategory === "Accessories" ? "light-laptop" : "art-laptop";
+  if (listing.category === "computers") return listing.itemType === "Accessory" ? "light-laptop" : "art-laptop";
   return metaForCategory(listing.category).art;
 }
 
@@ -334,6 +337,7 @@ function deriveFilterOptionsFromData() {
 
   computerFilterSets = {
     tabs: Array.from(new Set([...baseComputerTabs, ...uniqueSorted(computers, (listing) => listing.subcategory)])),
+    itemTypes: ["Computer", "Accessory", "All computer listings"].filter((value) => value === "All computer listings" || computers.some((listing) => listing.itemType === value)),
     brands: ["Any brand", ...uniqueSorted(computers, (listing) => listing.brand)],
     screens: ["Any size", ...uniqueSorted(computers, (listing) => listing.screen ? `${listing.screen}"` : "")]
   };
@@ -357,8 +361,32 @@ function renderHousingNeighborhoodOptions() {
 }
 
 function renderComputerOptionControls() {
+  const itemTypes = computerFilterSets.itemTypes.length ? computerFilterSets.itemTypes : ["Computer", "Accessory", "All computer listings"];
+  if (!itemTypes.includes(computerFilters.itemType)) computerFilters.itemType = "Computer";
+  let itemTypeBlock = document.querySelector("#computer-item-type-block");
+  if (!itemTypeBlock && computerFilterPanel) {
+    itemTypeBlock = document.createElement("div");
+    itemTypeBlock.id = "computer-item-type-block";
+    itemTypeBlock.className = "filter-block";
+    computerFilterPanel.prepend(itemTypeBlock);
+  }
+  if (itemTypeBlock) {
+    itemTypeBlock.innerHTML = `
+      <span class="filter-label">Listing type</span>
+      <div class="chip-group" data-computer-filter="itemType">
+        ${itemTypes.map((value) => `<button class="chip ${computerFilters.itemType === value ? "is-selected" : ""}" type="button" data-value="${escapeHtml(value)}">${escapeHtml(value)}</button>`).join("")}
+      </div>
+    `;
+  }
+
+  const visibleComputerRows = categoryListings("computers")
+    .filter((listing) => computerFilters.itemType === "All computer listings" || listing.itemType === computerFilters.itemType);
+  const allLabel = computerFilters.itemType === "Accessory" ? "All accessory categories" : "All computer categories";
+  const visibleTabs = [allLabel, ...uniqueSorted(visibleComputerRows, (listing) => listing.subcategory)];
+  if (!visibleTabs.includes(computerFilters.tab)) computerFilters.tab = allLabel;
+
   if (computerTabs) {
-    computerTabs.innerHTML = computerFilterSets.tabs
+    computerTabs.innerHTML = visibleTabs
       .map((tab) => `<button class="${tab === computerFilters.tab ? "is-selected" : ""}" type="button">${escapeHtml(tab)}</button>`)
       .join("");
   }
@@ -567,9 +595,9 @@ function excludedComputer(listing) {
 
 function matchesComputer(listing) {
   if (listing.category !== "computers") return false;
-  if (computerFilters.tab && listing.subcategory && lower(listing.subcategory) !== lower(computerFilters.tab)) return false;
+  if (computerFilters.itemType !== "All computer listings" && listing.itemType !== computerFilters.itemType) return false;
+  if (computerFilters.tab && !computerFilters.tab.startsWith("All ") && listing.subcategory && lower(listing.subcategory) !== lower(computerFilters.tab)) return false;
   if (computerFilters.brand && computerFilters.brand !== "Any brand" && lower(listing.brand) !== lower(computerFilters.brand) && !textIncludes(listing, computerFilters.brand)) return false;
-  if ((computerFilters.brand === "Apple") && !textIncludes(listing, "MacBook") && !textIncludes(listing, "Apple")) return false;
   if (listing.price && listing.price > computerFilters.maxPrice) return false;
   if (excludedComputer(listing)) return false;
   const selectedScreen = screenNumber(computerFilters.screen);
@@ -588,6 +616,8 @@ function matchesComputer(listing) {
 
 function computerSpecs(listing) {
   return [
+    listing.itemType || null,
+    listing.subcategory || null,
     listing.year || null,
     listing.ramGb ? `${listing.ramGb}GB RAM` : null,
     listing.storageGb ? `${listing.storageGb}GB SSD` : null,
@@ -606,12 +636,12 @@ function computerCard(listing) {
       <div class="listing-body">
         <div class="listing-topline">
           <span class="badge ${bestValue ? "badge-green" : ""}">${bestValue ? "Best value" : "Craigslist source"}</span>
-          <span class="badge">${escapeHtml(listing.condition || "Condition n/a")}</span>
+          <span class="badge">${escapeHtml(listing.itemType || "Computer listing")}</span>
         </div>
         <h3><a href="#detail" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="computers">${escapeHtml(listing.title)}</a></h3>
         <p>${escapeHtml([listing.brand, ...computerSpecs(listing)].filter(Boolean).join(" · "))}</p>
         <div class="badge-row">
-          ${computerSpecs(listing).slice(0, 3).map((item) => `<span class="badge">${escapeHtml(item)}</span>`).join("")}
+          ${computerSpecs(listing).slice(0, 4).map((item) => `<span class="badge">${escapeHtml(item)}</span>`).join("")}
         </div>
         <div class="listing-bottom">
           <span class="price">${formatPrice(listing.price)}</span>
@@ -628,7 +658,7 @@ function syncComputerControls() {
     tab.classList.toggle("is-selected", tab.textContent.trim() === computerFilters.tab);
   });
   if (computerBrandSelect) computerBrandSelect.value = computerFilters.brand;
-  document.querySelectorAll("#computers .chip-group .chip").forEach((chip) => {
+  computerScreenGroup?.querySelectorAll(".chip").forEach((chip) => {
     chip.classList.toggle("is-selected", chip.textContent.trim() === computerFilters.screen);
   });
 }
@@ -641,7 +671,8 @@ function renderComputerActiveFilters() {
   if (!computerActiveFilters) return;
   const priceLabel = Number.isFinite(computerFilters.maxPrice) ? `Under $${computerFilters.maxPrice}` : null;
   const active = [
-    computerFilters.tab,
+    computerFilters.itemType !== "All computer listings" ? computerFilters.itemType : null,
+    computerFilters.tab && !computerFilters.tab.startsWith("All ") ? computerFilters.tab : null,
     computerFilters.brand !== "Any brand" ? computerFilters.brand : null,
     computerFilters.screen !== "Any size" ? computerFilters.screen : null,
     computerFilters.year !== "Any year" ? computerFilters.year : null,
@@ -1013,14 +1044,14 @@ function renderDetail() {
       ];
     } else if (category === "computers") {
       cards = [
+        { icon: "i-laptop", label: "Listing type", value: listing.itemType || "Computer" },
+        { icon: "i-tag", label: "Detailed category", value: listing.subcategory || "n/a" },
         { icon: "i-laptop", label: "Brand", value: listing.brand || "n/a" },
         { icon: "i-tag", label: "Year", value: listing.year || "n/a" },
         { icon: "i-tag", label: "Screen", value: listing.screen ? `${listing.screen}"` : "n/a" },
         { icon: "i-gauge", label: "RAM", value: listing.ramGb ? `${listing.ramGb} GB` : "n/a" },
         { icon: "i-id", label: "Storage", value: listing.storageGb ? `${listing.storageGb} GB` : "n/a" },
-        { icon: "i-shield", label: "Condition", value: listing.condition || "n/a" },
-        { icon: "i-tag", label: "Subcategory", value: listing.subcategory || "n/a" },
-        { icon: "i-map", label: "Location", value: listing.location || "n/a" }
+        { icon: "i-shield", label: "Condition", value: listing.condition || "n/a" }
       ];
     } else {
       cards = [
@@ -1481,6 +1512,14 @@ computerTabs?.addEventListener("click", (event) => {
   const tab = event.target.closest("button");
   if (!tab) return;
   computerFilters.tab = tab.textContent.trim();
+  renderComputerFilters();
+});
+
+document.querySelector("#computers")?.addEventListener("click", (event) => {
+  const chip = event.target.closest("[data-computer-filter='itemType'] .chip");
+  if (!chip) return;
+  computerFilters.itemType = chip.dataset.value || chip.textContent.trim();
+  computerFilters.tab = computerFilters.itemType === "Accessory" ? "All accessory categories" : "All computer categories";
   renderComputerFilters();
 });
 
