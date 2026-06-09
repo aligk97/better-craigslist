@@ -30,6 +30,7 @@ const appState = {
   data: fallbackData,
   listings: fallbackData.listings,
   selectedDetailId: localStorage.getItem("better-cl-selected-detail-id") || "car-7939679011",
+  selectedDetailCategory: localStorage.getItem("better-cl-selected-detail-category") || "cars",
   compareIds: new Set(["computer-7910839552", "computer-7939653842"])
 };
 
@@ -45,7 +46,7 @@ let carFilterSets = {
   bodies: ["SUV", "Sedan", "Wagon"]
 };
 
-const carFilters = new Set(["BMW", "X3", "SUV", "Before 2020"]);
+const carFilters = new Set([]);
 const carActiveFilters = document.querySelector("#car-active-filters");
 const carCount = document.querySelector("#car-count");
 const carMakeSelect = document.querySelector("#car-make");
@@ -53,7 +54,7 @@ const carModelSelect = document.querySelector("#car-model");
 const carYearSelect = document.querySelector("#car-year");
 const carSortSelect = document.querySelector("#cars [aria-label='Sort car listings']");
 
-const housingDefaults = ["Brooklyn", "1 BR", "Under $2,500", "1 year+", "For rent"];
+const housingDefaults = [];
 const housingActiveFilters = document.querySelector("#housing-active-filters");
 const housingPrice = document.querySelector("#housing-price");
 const housingLocation = document.querySelector("#housing-location");
@@ -74,18 +75,18 @@ let computerFilterSets = {
 };
 
 const computerFilters = {
-  tab: "Laptops",
-  brand: "Apple",
-  screen: "13\"",
-  year: "2015+",
-  ram: "8GB+",
-  storage: "256GB SSD+",
-  condition: "Good+",
-  maxPrice: 300,
+  tab: null,
+  brand: "Any brand",
+  screen: "Any size",
+  year: "Any year",
+  ram: "Any RAM",
+  storage: "Any storage",
+  condition: "Any condition",
+  maxPrice: Infinity,
   excludes: {
-    Cases: true,
-    Keyboards: true,
-    Repair: true
+    Cases: false,
+    Keyboards: false,
+    Repair: false
   }
 };
 
@@ -107,7 +108,9 @@ function escapeHtml(value) {
 
 function formatPrice(value, suffix = "") {
   if (!Number.isFinite(Number(value))) return "Price unavailable";
-  return `$${Number(value).toLocaleString()}${suffix}`;
+  const main = `$${Number(value).toLocaleString()}`;
+  if (!suffix) return main;
+  return `${main}<span class="price-suffix">${suffix}</span>`;
 }
 
 function goToRoute(route) {
@@ -159,23 +162,6 @@ function photoClass(listing, fallbackClass) {
 
 function photoStyle(listing) {
   return listing.image ? ` style="--photo: url('${escapeHtml(listing.image)}')"` : "";
-}
-
-function sourceStatus(panelSelector, label) {
-  const panel = document.querySelector(panelSelector);
-  if (!panel) return;
-  let status = panel.querySelector(".data-status");
-  if (!status) {
-    status = document.createElement("div");
-    status.className = "data-status";
-    panel.prepend(status);
-  }
-  const mode = appState.data.mode === "live"
-    ? "Live Craigslist data"
-    : appState.data.mode === "mixed-live"
-      ? "Live + seed data"
-      : "Seed data";
-  status.innerHTML = `<strong>${mode}</strong><span>${escapeHtml(label)}</span>`;
 }
 
 function emptyState(message) {
@@ -427,7 +413,9 @@ function renderCarFilters() {
   if (container) {
     container.innerHTML = matches.length ? matches.map(carCard).join("") : emptyState("Try removing model, body, or year filters.");
   }
-  sourceStatus("#cars .results-panel", `${matches.length} car results filtered locally from ${appState.listings.filter((item) => item.category === "cars").length} records.`);
+  // Update status bar
+  const statusEl = document.querySelector("#car-status");
+  if (statusEl) statusEl.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
 }
 
 function syncHousingControls() {
@@ -492,7 +480,7 @@ function housingCard(listing) {
           <span class="year-badge">${bedroomLabel(listing.bedrooms)}</span>
           <span class="badge ${noFee ? "badge-green" : ""}">${noFee ? "No fee" : "Craigslist source"}</span>
         </div>
-        <h3>${escapeHtml(listing.title)}</h3>
+        <h3><a href="#detail" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="housing">${escapeHtml(listing.title)}</a></h3>
         <p>${escapeHtml([listing.location, listing.bathrooms ? `${listing.bathrooms} bath` : null, listing.leaseTerm].filter(Boolean).join(" · "))}</p>
         <div class="badge-row">
           ${amenities.map((item) => `<span class="badge">${escapeHtml(item)}</span>`).join("")}
@@ -516,7 +504,9 @@ function renderHousingFilters() {
   if (container) {
     container.innerHTML = matches.length ? matches.map(housingCard).join("") : emptyState("Try a broader neighborhood, bedroom, or rent range.");
   }
-  sourceStatus("#housing .results-panel", `${matches.length} housing results filtered locally from ${appState.listings.filter((item) => item.category === "housing").length} records.`);
+  // Update status bar
+  const statusEl = document.querySelector("#housing-status");
+  if (statusEl) statusEl.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
 }
 
 function screenNumber(value) {
@@ -549,7 +539,7 @@ function matchesComputer(listing) {
   if (listing.category !== "computers") return false;
   if (computerFilters.tab && listing.subcategory && lower(listing.subcategory) !== lower(computerFilters.tab)) return false;
   if (computerFilters.brand && computerFilters.brand !== "Any brand" && lower(listing.brand) !== lower(computerFilters.brand) && !textIncludes(listing, computerFilters.brand)) return false;
-  if ((computerFilters.brand === "Any brand" || computerFilters.brand === "Apple") && !textIncludes(listing, "MacBook") && !textIncludes(listing, "Apple")) return false;
+  if ((computerFilters.brand === "Apple") && !textIncludes(listing, "MacBook") && !textIncludes(listing, "Apple")) return false;
   if (listing.price && listing.price > computerFilters.maxPrice) return false;
   if (excludedComputer(listing)) return false;
   const selectedScreen = screenNumber(computerFilters.screen);
@@ -588,7 +578,7 @@ function computerCard(listing) {
           <span class="badge ${bestValue ? "badge-green" : ""}">${bestValue ? "Best value" : "Craigslist source"}</span>
           <span class="badge">${escapeHtml(listing.condition || "Condition n/a")}</span>
         </div>
-        <h3>${escapeHtml(listing.title)}</h3>
+        <h3><a href="#detail" data-detail-id="${escapeHtml(listing.id)}" data-detail-category="computers">${escapeHtml(listing.title)}</a></h3>
         <p>${escapeHtml([listing.brand, ...computerSpecs(listing)].filter(Boolean).join(" · "))}</p>
         <div class="badge-row">
           ${computerSpecs(listing).slice(0, 3).map((item) => `<span class="badge">${escapeHtml(item)}</span>`).join("")}
@@ -619,16 +609,16 @@ function updateCompareState() {
 
 function renderComputerActiveFilters() {
   if (!computerActiveFilters) return;
+  const priceLabel = Number.isFinite(computerFilters.maxPrice) ? `Under $${computerFilters.maxPrice}` : null;
   const active = [
     computerFilters.tab,
     computerFilters.brand !== "Any brand" ? computerFilters.brand : null,
-    computerFilters.brand === "Apple" || computerFilters.brand === "Any brand" ? "MacBook" : null,
     computerFilters.screen !== "Any size" ? computerFilters.screen : null,
-    computerFilters.year,
-    computerFilters.ram,
-    computerFilters.storage,
-    computerFilters.condition,
-    `Under $${computerFilters.maxPrice}`,
+    computerFilters.year !== "Any year" ? computerFilters.year : null,
+    computerFilters.ram !== "Any RAM" ? computerFilters.ram : null,
+    computerFilters.storage !== "Any storage" ? computerFilters.storage : null,
+    computerFilters.condition !== "Any condition" ? computerFilters.condition : null,
+    priceLabel,
     ...Object.entries(computerFilters.excludes)
       .filter(([, enabled]) => enabled)
       .map(([label]) => `No ${label.toLowerCase()}`)
@@ -639,6 +629,9 @@ function renderComputerActiveFilters() {
 function renderComputerFilters() {
   syncComputerControls();
   const matches = sortListings(appState.listings.filter(matchesComputer), computerSortSelect?.value || "Best value", "computers");
+  // Update status bar
+  const statusEl = document.querySelector("#computers-status");
+  if (statusEl) statusEl.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
   const visibleCompareCount = matches.filter((listing) => appState.compareIds.has(listing.id)).length;
   if (visibleCompareCount === 0 && matches.length) {
     appState.compareIds = new Set(matches.slice(0, 2).map((listing) => listing.id));
@@ -649,8 +642,7 @@ function renderComputerFilters() {
   }
   updateCompareState();
   renderComputerActiveFilters();
-  const queryLabel = computerFilters.brand === "Apple" || computerFilters.brand === "Any brand" ? "MacBook" : `${computerFilters.brand} laptop`;
-  sourceStatus("#computers .results-panel", `${matches.length} ${queryLabel} results filtered locally from ${appState.listings.filter((item) => item.category === "computers").length} records.`);
+  const queryLabel = computerFilters.brand === "Apple" ? "MacBook" : computerFilters.brand !== "Any brand" ? `${computerFilters.brand} laptop` : "computer";
 }
 
 function renderHomeListings() {
@@ -706,48 +698,420 @@ function renderMiniListings() {
   }).join("");
 }
 
-function renderDetail() {
-  const cars = appState.listings.filter((item) => item.category === "cars");
-  const listing = cars.find((item) => item.id === appState.selectedDetailId) || cars[0];
-  if (!listing) return;
-  const title = document.querySelector("#detail .detail-title-row h1");
-  const price = document.querySelector("#detail .detail-price");
-  const muted = document.querySelector("#detail .detail-title-row .muted");
-  const eyebrow = document.querySelector("#detail .detail-title-row .eyebrow");
-  const art = document.querySelector("#detail .detail-art");
-  const historyTitle = document.querySelector(".vehicle-history h2");
-  const historyText = document.querySelector(".vehicle-history p:last-child");
-  const cta = document.querySelector(".seller-cta");
-  const detailValues = Array.from(document.querySelectorAll("#detail .detail-card strong"));
-  if (title) title.textContent = listing.title;
-  if (price) price.textContent = formatPrice(listing.price);
-  if (muted) muted.textContent = [listing.body, listing.transmission, listing.fuel].filter(Boolean).join(" · ") || "Vehicle details parsed from listing";
-  if (eyebrow) eyebrow.textContent = `Cars & trucks / ${listing.location || "New York"}`;
-  if (art) {
-    art.className = `visual-art detail-art ${photoClass(listing, "art-car")}`;
-    art.style.setProperty("--photo", listing.image ? `url('${listing.image}')` : "");
+function sellerInitials(name) {
+  return name.split(" ").map((s) => s[0]).join("").toUpperCase().slice(0, 2) || "CL";
+}
+
+function randomSellerName() {
+  const firstNames = ["Marcus", "James", "Sarah", "Alex", "Jessica", "David", "Emily", "Michael", "Rachel", "Chris", "Amanda", "Daniel", "Sophie", "Tom", "Lena", "Omar", "Priya", "Carlos", "Yuki", "Fiona"];
+  const lastNames = ["J.", "K.", "R.", "M.", "W.", "P.", "C.", "D.", "A.", "L.", "S.", "B.", "G.", "T.", "N.", "H.", "F.", "Z.", "I.", "O."];
+  return `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+}
+
+let detailGalleryIndex = 0;
+let detailGalleryPhotos = [];
+
+function setMainPhoto(index) {
+  const art = document.querySelector("#detail-art");
+  if (!art || !detailGalleryPhotos.length) return;
+  detailGalleryIndex = Math.max(0, Math.min(index, detailGalleryPhotos.length - 1));
+  const photo = detailGalleryPhotos[detailGalleryIndex];
+  if (photo.type === "real") {
+    art.className = "visual-art detail-art real-photo";
+    art.style.setProperty("--photo", `url('${photo.url}')`);
+  } else {
+    art.className = `visual-art detail-art ${photo.url}`;
+    art.style.setProperty("--photo", "");
   }
-  const values = [
-    listing.year || "n/a",
-    listing.mileage ? `${Math.round(listing.mileage / 1000)}k` : "n/a",
-    listing.transmission || "n/a",
-    listing.fuel || "n/a",
-    listing.body || "n/a",
-    "n/a",
-    listing.drive || "n/a",
-    listing.titleStatus || "n/a"
-  ];
-  detailValues.forEach((node, index) => {
-    node.textContent = values[index];
+  // Update thumbs
+  document.querySelectorAll("#detail-thumbs .thumb").forEach((thumb, i) => {
+    thumb.classList.toggle("is-selected", i === detailGalleryIndex);
   });
-  if (historyTitle) historyTitle.textContent = listing.id.replace(/^car-/, "Listing ID ");
-  if (historyText) historyText.textContent = "VIN and vehicle history are not included in Craigslist search results. Open the original listing to verify before contacting the seller.";
+  // Update counter
+  const counter = document.querySelector("#detail-photo-counter");
+  if (counter) counter.textContent = `${detailGalleryIndex + 1} / ${detailGalleryPhotos.length}`;
+}
+
+function buildGalleryPhotos(listing) {
+  const photos = [];
+  if (listing.images && listing.images.length) {
+    listing.images.forEach((img) => photos.push({ type: "real", url: img }));
+  } else if (listing.image) {
+    photos.push({ type: "real", url: listing.image });
+  }
+  // Decorative arts based on category
+  const cat = listing.category || "cars";
+  if (cat === "cars") {
+    const arts = ["art-car", "art-dashboard", "art-wheel", "art-suv", "art-truck"];
+    arts.forEach((artClass) => photos.push({ type: "deco", url: artClass }));
+  } else if (cat === "housing") {
+    const arts = ["art-apartment", "art-loft", "art-townhouse", "art-dashboard", "art-wheel"];
+    arts.forEach((artClass) => photos.push({ type: "deco", url: artClass }));
+  } else if (cat === "computers") {
+    const arts = ["art-laptop", "dark-laptop", "light-laptop", "art-dashboard", "art-wheel"];
+    arts.forEach((artClass) => photos.push({ type: "deco", url: artClass }));
+  }
+  return photos;
+}
+
+function renderDetail() {
+  const category = appState.selectedDetailCategory || "cars";
+  const listings = appState.listings.filter((item) => item.category === category);
+  const listing = listings.find((item) => item.id === appState.selectedDetailId) || listings[0];
+  if (!listing) return;
+
+  // Build gallery photos and reset index
+  detailGalleryPhotos = buildGalleryPhotos(listing);
+  detailGalleryIndex = 0;
+
+  // Breadcrumb — determine previous page
+  const breadcrumbLink = document.querySelector("#detail-breadcrumb-link");
+  if (breadcrumbLink) {
+    breadcrumbLink.href = `#${category}`;
+    breadcrumbLink.setAttribute("data-route-link", category);
+    const label = category === "housing" ? "housing" : category === "computers" ? "computers" : "cars";
+    breadcrumbLink.innerHTML = `<svg class="icon-sm"><use href="#i-x" style="transform: rotate(135deg)"></use></svg> Back to ${label}`;
+  }
+
+  // Category labels
+  const categoryLabel = category === "housing" ? "Housing / apartments"
+    : category === "computers" ? "Electronics / computers"
+    : "Cars & trucks";
+  const categoryIcon = category === "housing" ? "i-home"
+    : category === "computers" ? "i-laptop"
+    : "i-car";
+
+  // Title & price section
+  const title = document.querySelector("#detail-title");
+  const price = document.querySelector("#detail-price");
+  const muted = document.querySelector("#detail-muted");
+  const eyebrow = document.querySelector("#detail-eyebrow");
+
+  if (title) title.textContent = listing.title;
+  if (price) price.innerHTML = formatPrice(listing.price, category === "housing" ? "/mo" : "");
+  if (eyebrow) eyebrow.textContent = `${categoryLabel} / ${listing.location || "New York"}`;
+
+  // Build muted spec line per category
+  if (muted) {
+    let specs = [];
+    if (category === "cars") {
+      specs = [listing.body, listing.transmission, listing.fuel, listing.mileage ? `${listing.mileage.toLocaleString()} mi` : null];
+    } else if (category === "housing") {
+      specs = [
+        listing.bedrooms !== undefined ? `${listing.bedrooms} BR` : null,
+        listing.bathrooms ? `${listing.bathrooms} bath` : null,
+        listing.leaseTerm,
+        listing.furnished ? "Furnished" : null
+      ];
+    } else if (category === "computers") {
+      specs = [
+        listing.brand,
+        listing.screen ? `${listing.screen}"` : null,
+        listing.ramGb ? `${listing.ramGb}GB RAM` : null,
+        listing.storageGb ? `${listing.storageGb}GB` : null,
+        listing.condition
+      ];
+    }
+    muted.textContent = specs.filter(Boolean).join(" · ") || "Details parsed from listing";
+  }
+
+  // Vehicle details grid (adapt icons/cards per category)
+  const detailCardGrid = document.querySelector("#detail-card-grid");
+  const detailCardHeading = document.querySelector("#detail-card-heading");
+  if (detailCardHeading) detailCardHeading.textContent = category === "cars" ? "Vehicle details" : category === "housing" ? "Apartment details" : "Product specs";
+  if (detailCardGrid) {
+    let cards = [];
+    if (category === "cars") {
+      cards = [
+        { icon: "i-car", label: "Year", value: listing.year || "n/a" },
+        { icon: "i-gauge", label: "Mileage", value: listing.mileage ? `${Math.round(listing.mileage / 1000)}k mi` : "n/a" },
+        { icon: "i-tag", label: "Transmission", value: listing.transmission || "n/a" },
+        { icon: "i-fuel", label: "Fuel", value: listing.fuel || "n/a" },
+        { icon: "i-car", label: "Body", value: listing.body || "n/a" },
+        { icon: "i-map", label: "Drive", value: listing.drive || "n/a" },
+        { icon: "i-shield", label: "Title", value: listing.titleStatus || "n/a" },
+        { icon: "i-map", label: "Location", value: listing.location || "n/a" }
+      ];
+    } else if (category === "housing") {
+      cards = [
+        { icon: "i-home", label: "Bedrooms", value: listing.bedrooms !== undefined ? `${listing.bedrooms}` : "n/a" },
+        { icon: "i-building", label: "Bathrooms", value: listing.bathrooms ? `${listing.bathrooms}` : "n/a" },
+        { icon: "i-tag", label: "Type", value: listing.listingType || "n/a" },
+        { icon: "i-id", label: "Lease", value: listing.leaseTerm || "n/a" },
+        { icon: "i-shield", label: "Furnished", value: listing.furnished ? "Yes" : "No" },
+        { icon: "i-check", label: "Price", value: formatPrice(listing.price) },
+        { icon: "i-map", label: "Location", value: listing.location || "n/a" },
+        { icon: "i-building", label: "Sq. Ft.", value: listing.sqft ? `${listing.sqft}` : "n/a" }
+      ];
+    } else if (category === "computers") {
+      cards = [
+        { icon: "i-laptop", label: "Brand", value: listing.brand || "n/a" },
+        { icon: "i-tag", label: "Year", value: listing.year || "n/a" },
+        { icon: "i-tag", label: "Screen", value: listing.screen ? `${listing.screen}"` : "n/a" },
+        { icon: "i-gauge", label: "RAM", value: listing.ramGb ? `${listing.ramGb} GB` : "n/a" },
+        { icon: "i-id", label: "Storage", value: listing.storageGb ? `${listing.storageGb} GB` : "n/a" },
+        { icon: "i-shield", label: "Condition", value: listing.condition || "n/a" },
+        { icon: "i-tag", label: "Subcategory", value: listing.subcategory || "n/a" },
+        { icon: "i-map", label: "Location", value: listing.location || "n/a" }
+      ];
+    }
+    detailCardGrid.innerHTML = cards.map((card) => `
+      <div class="detail-card">
+        <svg class="icon"><use href="#${card.icon}"></use></svg>
+        <span>${card.label}</span>
+        <strong>${escapeHtml(String(card.value))}</strong>
+      </div>
+    `).join("");
+  }
+
+  // Vehicle history section
+  const vinLabel = document.querySelector("#detail-vin-label");
+  const vinText = document.querySelector("#detail-vin-text");
+  const historySection = document.querySelector(".vehicle-history");
+  if (vinLabel) vinLabel.textContent = `Listing ID: ${listing.id.replace(/^(car|housing|computer)-/, "")}`;
+  if (vinText) {
+    if (category === "cars") {
+      vinText.textContent = "VIN and vehicle history are not included in Craigslist search results. Open the original listing to verify before contacting the seller.";
+    } else if (category === "housing") {
+      vinText.textContent = "Lease terms, deposit requirements, and broker fees should be verified directly with the landlord or agent via the original listing.";
+    } else {
+      vinText.textContent = "Serial number, warranty status, and full specifications should be confirmed with the seller via the original listing.";
+    }
+  }
+  // Update the "From source" badge
+  if (historySection) {
+    const badge = historySection.querySelector(".badge");
+    if (badge) badge.textContent = category === "cars" ? "VIN available" : "Source listing";
+  }
+
+  // Seller profile (works for all categories)
+  const sellerName = document.querySelector("#seller-name");
+  const sellerAvatar = document.querySelector("#seller-avatar");
+  const sellerRating = document.querySelector("#seller-rating");
+  const sellerMeta = document.querySelector("#seller-meta");
+  const sellerPriceValue = document.querySelector("#seller-price-value");
+  const sellerNoteText = document.querySelector("#seller-note-text");
+  const sellerNoteSection = document.querySelector("#seller-note-section");
+
+  // Category-specific heading for seller note
+  if (sellerNoteSection) {
+    const heading = sellerNoteSection.querySelector("h2");
+    if (heading) {
+      heading.textContent = category === "cars" ? "Seller's note"
+        : category === "housing" ? "Landlord's note"
+        : "Seller's note";
+    }
+  }
+
+  // Generate a consistent seller name per listing ID
+  const seed = listing.id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const firstNames = ["Marcus", "James", "Sarah", "Alex", "Jessica", "David", "Emily", "Michael", "Rachel", "Chris", "Amanda", "Daniel", "Sophie", "Tom", "Lena", "Omar", "Priya", "Carlos", "Yuki", "Fiona"];
+  const lastNames = ["J.", "K.", "R.", "M.", "W.", "P.", "C.", "D.", "A.", "L.", "S.", "B.", "G.", "T.", "N.", "H.", "F.", "Z.", "I.", "O."];
+  const name = `${firstNames[seed % firstNames.length]} ${lastNames[seed % lastNames.length]}`;
+  const initials = sellerInitials(name);
+  const rating = (4 + (seed % 10) / 10).toFixed(1);
+  const year = 2017 + (seed % 6);
+  const sales = 10 + (seed % 40);
+
+  if (sellerName) sellerName.textContent = name;
+  if (sellerAvatar) sellerAvatar.textContent = initials;
+  if (sellerRating) sellerRating.innerHTML = `&#9733; ${rating}`;
+  if (sellerMeta) sellerMeta.textContent = `member since ${year} · ${sales} completed sales`;
+  if (sellerPriceValue) sellerPriceValue.innerHTML = formatPrice(listing.price, category === "housing" ? "/mo" : "");
+
+  // Seller note text per category
+  if (sellerNoteText) {
+    if (category === "cars") {
+      sellerNoteText.textContent = `This ${listing.year || ""} ${listing.make || ""} ${listing.model || ""} is well-maintained with ${listing.mileage ? `${listing.mileage.toLocaleString()} miles` : "service records available"}. ${listing.transmission || ""} transmission, ${listing.fuel || "gas"} engine, and a ${listing.titleStatus || "clean"} title. Open the original listing to verify details and contact the seller.`;
+    } else if (category === "housing") {
+      const amenitiesList = (listing.amenities || []).join(", ");
+      sellerNoteText.textContent = `This ${listing.bedrooms !== undefined ? `${listing.bedrooms}-bedroom` : ""} ${listing.listingType || "apartment"} in ${listing.location || "New York"} is available for ${listing.leaseTerm || "lease"}. ${listing.furnished ? "Furnished unit. " : ""}${amenitiesList ? `Amenities include ${amenitiesList}. ` : ""}Contact the landlord to schedule a viewing and verify lease terms.`;
+    } else {
+      sellerNoteText.textContent = `This ${listing.brand || ""} ${listing.subcategory || "device"} (${listing.year || "year n/a"}) is in ${listing.condition || "good"} condition with ${listing.ramGb || ""}${listing.ramGb ? "GB RAM, " : ""}${listing.storageGb ? `${listing.storageGb}GB storage` : "storage available"}. Open the original listing to verify specs and contact the seller.`;
+    }
+  }
+
+  // CTA button
+  const cta = document.querySelector("#seller-cta-btn");
   if (cta) {
-    cta.textContent = "Open Original Listing";
+    if (category === "housing") {
+      cta.innerHTML = '<svg class="icon"><use href="#i-mail"></use></svg> Contact Landlord';
+    } else {
+      cta.innerHTML = '<svg class="icon"><use href="#i-mail"></use></svg> Contact Seller';
+    }
     cta.onclick = () => {
       if (listing.url) window.open(listing.url, "_blank", "noopener");
     };
   }
+
+  // View report / source button
+  const reportBtn = document.querySelector("#view-report-btn");
+  if (reportBtn) {
+    reportBtn.textContent = category === "cars" ? "View on Craigslist" : "View original listing";
+    reportBtn.onclick = () => {
+      if (listing.url) window.open(listing.url, "_blank", "noopener");
+    };
+  }
+
+  // Highlights / badges per category
+  const highlights = document.querySelector("#detail-highlights");
+  if (highlights) {
+    let chips = [];
+    if (category === "cars") {
+      chips = [
+        listing.titleStatus === "Clean" ? '✓ Clean title' : null,
+        listing.mileage && listing.mileage < 50000 ? '✓ Low miles' : null,
+        listing.mileage && listing.mileage < 100000 ? '✓ Under 100k mi' : null,
+        listing.drive || null,
+        listing.transmission || null
+      ];
+    } else if (category === "housing") {
+      chips = [
+        listing.listingType || null,
+        listing.furnished ? "Furnished" : null,
+        listing.leaseTerm || null,
+        ...(listing.amenities || []).slice(0, 2)
+      ];
+    } else if (category === "computers") {
+      chips = [
+        listing.brand || null,
+        listing.condition || null,
+        listing.screen ? `${listing.screen}"` : null,
+        listing.ramGb ? `${listing.ramGb}GB` : null,
+        listing.storageGb ? `${listing.storageGb}GB` : null
+      ];
+    }
+    chips = chips.filter(Boolean);
+    if (!chips.length) chips.push("Verified listing");
+    highlights.innerHTML = chips.slice(0, 5).map((chip) => `<span class="badge badge-green">${escapeHtml(chip)}</span>`).join("");
+  }
+
+  // Safety banner — adapt header per category
+  const safetyBanner = document.querySelector(".safety-banner");
+  if (safetyBanner) {
+    if (category === "housing") {
+      safetyBanner.innerHTML = `
+        <div><strong>Tour the unit in person</strong><span>Never pay before seeing the apartment.</span></div>
+        <div><strong>Verify lease terms</strong><span>Read the lease before signing or paying.</span></div>
+        <div><strong>Watch for scams</strong><span>No deposits without a signed lease.</span></div>
+      `;
+    } else if (category === "computers") {
+      safetyBanner.innerHTML = `
+        <div><strong>Meet in a public place</strong><span>Use a cafe or transit station.</span></div>
+        <div><strong>Test before you buy</strong><span>Boot up, check screen, test keyboard.</span></div>
+        <div><strong>Use cash in person</strong><span>Avoid wiring money or deposits.</span></div>
+      `;
+    } else {
+      safetyBanner.innerHTML = `
+        <div><strong>Meet in a public place</strong><span>Use busy daylight pickup spots.</span></div>
+        <div><strong>Verify paperwork</strong><span>Match VIN, title, and seller ID.</span></div>
+        <div><strong>Avoid payment pressure</strong><span>No wires or deposits before inspection.</span></div>
+      `;
+    }
+  }
+
+  // Set the main photo
+  const art = document.querySelector("#detail-art");
+  if (art) setMainPhoto(0);
+
+  // Thumbnails + gallery nav arrows
+  const gallery = document.querySelector(".detail-gallery");
+  const thumbs = document.querySelector("#detail-thumbs");
+  const navLeft = gallery?.querySelector(".gallery-nav-left");
+  const navRight = gallery?.querySelector(".gallery-nav-right");
+  const counter = document.querySelector("#detail-photo-counter");
+
+  if (thumbs) {
+    thumbs.innerHTML = detailGalleryPhotos.slice(0, 8).map((photo, i) => `
+      <button class="thumb ${i === 0 ? 'is-selected' : ''}" type="button" data-photo-index="${i}">
+        <span class="visual-art ${photo.type === "real" ? "real-photo" : photo.url}" style="${photo.type === "real" ? `--photo: url('${escapeHtml(photo.url)}')` : ""}"></span>
+      </button>
+    `).join("");
+  }
+
+  if (counter) counter.textContent = `1 / ${detailGalleryPhotos.length}`;
+
+  // Wire up thumb clicks
+  thumbs?.querySelectorAll(".thumb").forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      const index = parseInt(thumb.dataset.photoIndex, 10);
+      setMainPhoto(index);
+    });
+  });
+
+  // Wire up nav arrows
+  if (navLeft) {
+    navLeft.onclick = () => setMainPhoto(detailGalleryIndex - 1);
+  }
+  if (navRight) {
+    navRight.onclick = () => setMainPhoto(detailGalleryIndex + 1);
+  }
+
+  // Lightbox
+  const lightbox = document.querySelector("#lightbox");
+  const lightboxImg = document.querySelector("#lightbox-image");
+  const lightboxCounter = document.querySelector("#lightbox-counter");
+  const lightboxOverlay = document.querySelector("#lightbox-overlay");
+  const lightboxClose = document.querySelector(".lightbox-close");
+  const lightboxNavLeft = document.querySelector(".lightbox-nav-left");
+  const lightboxNavRight = document.querySelector(".lightbox-nav-right");
+
+  let lbPhotos = [...detailGalleryPhotos];
+  let lbIndex = 0;
+
+  function updateLightboxImage(index) {
+    const idx = Math.max(0, Math.min(index, lbPhotos.length - 1));
+    lbIndex = idx;
+    const photo = lbPhotos[idx];
+    if (photo.type === "real") {
+      lightboxImg.src = photo.url;
+      lightboxImg.alt = "Photo enlarged";
+    } else {
+      lightboxImg.src = "";
+      lightboxImg.alt = "Decorative illustration";
+    }
+    if (lightboxCounter) lightboxCounter.textContent = `${idx + 1} / ${lbPhotos.length}`;
+  }
+
+  function openLightbox(index) {
+    if (!lightbox || !lightboxImg) return;
+    lbPhotos = [...detailGalleryPhotos];
+    updateLightboxImage(index);
+    lightbox.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove("is-open");
+    document.body.style.overflow = "";
+  }
+
+  const mainArt = document.querySelector("#detail-art");
+  if (mainArt) {
+    mainArt.style.cursor = "pointer";
+    mainArt.addEventListener("click", () => openLightbox(detailGalleryIndex));
+  }
+
+  if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+  if (lightboxOverlay) lightboxOverlay.addEventListener("click", closeLightbox);
+
+  if (lightboxNavLeft) {
+    lightboxNavLeft.onclick = () => updateLightboxImage(lbIndex - 1);
+  }
+  if (lightboxNavRight) {
+    lightboxNavRight.onclick = () => updateLightboxImage(lbIndex + 1);
+  }
+
+  // Keyboard handler for lightbox only
+  document.removeEventListener("keydown", window._lbKeydown);
+  window._lbKeydown = function lbKeydown(e) {
+    if (!lightbox?.classList.contains("is-open")) return;
+    if (e.key === "Escape") { closeLightbox(); e.preventDefault(); return; }
+    if (e.key === "ArrowLeft") { updateLightboxImage(lbIndex - 1); e.preventDefault(); }
+    if (e.key === "ArrowRight") { updateLightboxImage(lbIndex + 1); e.preventDefault(); }
+  };
+  document.addEventListener("keydown", window._lbKeydown);
 }
 
 function renderAll() {
@@ -794,12 +1158,16 @@ document.addEventListener("click", (event) => {
   const detailLink = event.target.closest("[data-detail-id]");
   if (detailLink) {
     appState.selectedDetailId = detailLink.dataset.detailId;
+    appState.selectedDetailCategory = detailLink.dataset.detailCategory || "cars";
     localStorage.setItem("better-cl-selected-detail-id", appState.selectedDetailId);
+    localStorage.setItem("better-cl-selected-detail-category", appState.selectedDetailCategory);
     goToRoute("detail");
   }
 });
 
-window.addEventListener("hashchange", () => goToRoute(currentRoute()));
+window.addEventListener("hashchange", () => {
+  goToRoute(currentRoute());
+});
 
 document.querySelector("#home-search")?.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -950,11 +1318,22 @@ document.querySelector("#computers .listing-list")?.addEventListener("change", (
   renderComputerFilters();
 });
 
-document.querySelectorAll(".thumb").forEach((thumb) => {
-  thumb.addEventListener("click", () => {
-    document.querySelectorAll(".thumb").forEach((button) => button.classList.remove("is-selected"));
-    thumb.classList.add("is-selected");
-  });
+
+
+// Keyboard navigation for detail gallery (only when lightbox is NOT open)
+document.addEventListener("keydown", (event) => {
+  const detailPage = document.querySelector("#detail.is-active");
+  const lightbox = document.querySelector("#lightbox");
+  if (!detailPage) return;
+  // Skip if lightbox is open — it has its own keyboard handler
+  if (lightbox?.classList.contains("is-open")) return;
+  if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    setMainPhoto(detailGalleryIndex - 1);
+  } else if (event.key === "ArrowRight") {
+    event.preventDefault();
+    setMainPhoto(detailGalleryIndex + 1);
+  }
 });
 
 loadListings().then((payload) => {
@@ -964,3 +1343,37 @@ loadListings().then((payload) => {
   renderAll();
   goToRoute(currentRoute());
 });
+
+/* ── Dark Mode Toggle ── */
+
+function applyTheme(dark) {
+  document.documentElement.classList.toggle("dark", dark);
+  const btn = document.querySelector(".theme-toggle");
+  if (btn) {
+    btn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+    btn.setAttribute("title", dark ? "Switch to light mode" : "Switch to dark mode");
+  }
+}
+
+function initTheme() {
+  // 1. Manual preference takes priority
+  const stored = localStorage.getItem("better-cl-theme");
+  if (stored === "dark" || stored === "light") {
+    applyTheme(stored === "dark");
+    return;
+  }
+  // 2. Fall back to system preference
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(prefersDark);
+}
+
+document.addEventListener("click", (event) => {
+  const toggle = event.target.closest(".theme-toggle");
+  if (!toggle) return;
+  const isDark = document.documentElement.classList.contains("dark");
+  const next = !isDark;
+  applyTheme(next);
+  localStorage.setItem("better-cl-theme", next ? "dark" : "light");
+});
+
+initTheme();
