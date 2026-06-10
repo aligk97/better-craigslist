@@ -16,6 +16,105 @@ const appState = {
   compareIds: new Set(["computer-7910839552", "computer-7939653842"])
 };
 
+/* ── Category Search State ── */
+
+const categorySearchState = {};
+
+/** Simple debounce: waits `ms` after last call, then invokes fn */
+function debounce(fn, ms) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), ms);
+  };
+}
+
+/**
+ * Perform search within a single category, filtering its listings
+ * and rendering them alongside existing category filters.
+ */
+function performCategorySearch(category, query) {
+  // Save the search state for this category
+  if (!categorySearchState[category]) {
+    categorySearchState[category] = { query: "", results: [], idOrder: [] };
+  }
+  categorySearchState[category].query = query;
+
+  const trimmed = query.trim();
+  if (!trimmed) {
+    // No query – clear search filter and re-render normally
+    categorySearchState[category].results = [];
+    categorySearchState[category].idOrder = [];
+    rerenderCategory(category);
+    return;
+  }
+
+  const parsed = parseSearchQuery(trimmed);
+  const catListings = appState.listings.filter((l) => l.category === category);
+
+  // Score each listing using the existing search ranking
+  const scored = catListings
+    .map((listing) => ({
+      listing,
+      score: searchScore(listing, parsed)
+    }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  categorySearchState[category].results = scored;
+  // Store the ranked ID order so we can sort by it during rendering
+  categorySearchState[category].idOrder = scored.map((r) => r.listing.id);
+
+  // Re-render the category listings with both filters AND search applied
+  rerenderCategory(category);
+}
+
+/** Re-render a category page, combining its existing filters with the category search query */
+function rerenderCategory(category) {
+  switch (category) {
+    case "cars":
+      renderCarFilters();
+      break;
+    case "housing":
+      renderHousingFilters();
+      break;
+    case "computers":
+      renderComputerFilters();
+      break;
+    case "electronics":
+      renderElectronicsFilters();
+      break;
+    case "phones":
+      renderPhonesFilters();
+      break;
+  }
+}
+
+/** Check if a listing matches the active category search query */
+function matchesCategorySearch(listing, category) {
+  const state = categorySearchState[category];
+  if (!state || !state.query.trim()) return true; // no search = no filter
+  // Only show listings that are in the search results
+  return state.results.some((r) => r.listing.id === listing.id);
+}
+
+/** Sort listings by the category search score order when a search is active */
+function sortByCategorySearch(listings, category) {
+  const state = categorySearchState[category];
+  // If no search is active or there are no search results, return as-is
+  if (!state || !state.query.trim() || !state.idOrder.length) return listings;
+  
+  // Sort by position in the ranked ID order
+  const idRank = {};
+  state.idOrder.forEach((id, idx) => { idRank[id] = idx; });
+  
+  return [...listings].sort((a, b) => {
+    const ra = idRank[a.id] !== undefined ? idRank[a.id] : Infinity;
+    const rb = idRank[b.id] !== undefined ? idRank[b.id] : Infinity;
+    return ra - rb;
+  });
+}
+
 /* ── Global Search State ── */
 
 const searchResults = {
@@ -708,6 +807,7 @@ function syncCarControls() {
 
 function matchesCar(listing) {
   if (listing.category !== "cars") return false;
+  if (!matchesCategorySearch(listing, "cars")) return false;
   for (const filter of carFilters) {
     if (filter === "Any make" || filter === "Any model") continue;
     if (carFilterSets.makes.includes(filter) && lower(listing.make) !== lower(filter) && !textIncludes(listing, filter)) return false;
@@ -757,7 +857,14 @@ function renderCarFilters() {
       .map((filter) => filterChip(filter, "car")),
     ...rangeChips.map((chip) => `<span class="filter-chip">${escapeHtml(chip)}</span>`)
   ].join("");
-  const matches = sortListings(appState.listings.filter(matchesCar), carSortSelect?.value || "Best match", "cars");
+  let filtered = appState.listings.filter(matchesCar);
+  const catState = categorySearchState["cars"];
+  if (catState && catState.query.trim()) {
+    filtered = sortByCategorySearch(filtered, "cars");
+  } else {
+    filtered = sortListings(filtered, carSortSelect?.value || "Best match", "cars");
+  }
+  const matches = filtered;
   const container = document.querySelector("#cars .listing-list");
   if (container) {
     container.innerHTML = matches.length ? matches.map(carCard).join("") : emptyState("Try removing model, body, or year filters.");
@@ -796,6 +903,7 @@ function isKnownHousingFilter(filter) {
 
 function matchesHousing(listing) {
   if (listing.category !== "housing") return false;
+  if (!matchesCategorySearch(listing, "housing")) return false;
   for (const filter of housingFilters) {
     if (housingListingTypes.includes(filter) && listing.listingType && lower(listing.listingType) !== lower(filter)) return false;
     if (housingBedroomValues.includes(filter) && bedroomLabel(listing.bedrooms) !== filter) return false;
@@ -845,7 +953,15 @@ function renderHousingFilters() {
     ...rangeChips.map((chip) => `<span class="filter-chip">${escapeHtml(chip)}</span>`)
   ].join("");
   saveHousingFilters();
-  const matches = sortListings(appState.listings.filter(matchesHousing), housingSortSelect?.value || "Best match", "housing");
+  let filtered = appState.listings.filter(matchesHousing);
+  // When a category search is active, use search score order; otherwise use the normal sort
+  const catState = categorySearchState["housing"];
+  if (catState && catState.query.trim()) {
+    filtered = sortByCategorySearch(filtered, "housing");
+  } else {
+    filtered = sortListings(filtered, housingSortSelect?.value || "Best match", "housing");
+  }
+  const matches = filtered;
   const container = document.querySelector("#housing .listing-list");
   if (container) {
     container.innerHTML = matches.length ? matches.map(housingCard).join("") : emptyState("Try a broader neighborhood, bedroom, or rent range.");
@@ -883,6 +999,7 @@ function excludedComputer(listing) {
 
 function matchesComputer(listing) {
   if (listing.category !== "computers") return false;
+  if (!matchesCategorySearch(listing, "computers")) return false;
   if (computerFilters.tabs.size > 0 && listing.subcategory) {
     const match = Array.from(computerFilters.tabs).some((tab) => lower(listing.subcategory) === lower(tab));
     if (!match) return false;
@@ -980,7 +1097,14 @@ function renderComputerActiveFilters() {
 
 function renderComputerFilters() {
   syncComputerControls();
-  const matches = sortListings(appState.listings.filter(matchesComputer), computerSortSelect?.value || "Best value", "computers");
+  let filtered = appState.listings.filter(matchesComputer);
+  const catState = categorySearchState["computers"];
+  if (catState && catState.query.trim()) {
+    filtered = sortByCategorySearch(filtered, "computers");
+  } else {
+    filtered = sortListings(filtered, computerSortSelect?.value || "Best value", "computers");
+  }
+  const matches = filtered;
   // Update status bar
   const statusEl = document.querySelector("#computers-status");
   if (statusEl) statusEl.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
@@ -1022,6 +1146,7 @@ const electronicsSubcategoryGroup = document.querySelector("#electronics-subcate
 // Electronics matching
 function matchesElectronics(listing) {
   if (listing.category !== "electronics") return false;
+  if (!matchesCategorySearch(listing, "electronics")) return false;
   
   // Subcategory
   if (electronicsFilters.subcategory && listing.subcategory && 
@@ -1104,7 +1229,14 @@ function renderElectronicsActiveFilters() {
 
 function renderElectronicsFilters() {
   syncElectronicsControls();
-  const matches = sortListings(appState.listings.filter(matchesElectronics), electronicsSortSelect?.value || "Best value", "electronics");
+  let filtered = appState.listings.filter(matchesElectronics);
+  const catState = categorySearchState["electronics"];
+  if (catState && catState.query.trim()) {
+    filtered = sortByCategorySearch(filtered, "electronics");
+  } else {
+    filtered = sortListings(filtered, electronicsSortSelect?.value || "Best value", "electronics");
+  }
+  const matches = filtered;
   const statusEl = document.querySelector("#electronics-status");
   if (statusEl) statusEl.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
   const container = document.querySelector("#electronics-listing-list");
@@ -1142,6 +1274,7 @@ const phoneSubcategoryGroup = document.querySelector("#phones-subcategory-group"
 // Phones matching
 function matchesPhones(listing) {
   if (listing.category !== "phones") return false;
+  if (!matchesCategorySearch(listing, "phones")) return false;
   
   // Subcategory
   if (phoneFilters.subcategory && listing.subcategory) {
@@ -1242,7 +1375,14 @@ function renderPhonesActiveFilters() {
 
 function renderPhonesFilters() {
   syncPhoneControls();
-  const matches = sortListings(appState.listings.filter(matchesPhones), phoneSortSelect?.value || "Best value", "phones");
+  let filtered = appState.listings.filter(matchesPhones);
+  const catState = categorySearchState["phones"];
+  if (catState && catState.query.trim()) {
+    filtered = sortByCategorySearch(filtered, "phones");
+  } else {
+    filtered = sortListings(filtered, phoneSortSelect?.value || "Best value", "phones");
+  }
+  const matches = filtered;
   const statusEl = document.querySelector("#phones-status");
   if (statusEl) statusEl.textContent = `Showing ${matches.length} listing${matches.length !== 1 ? "s" : ""}`;
   const container = document.querySelector("#phones-listing-list");
@@ -2112,7 +2252,31 @@ phoneSortSelect?.addEventListener("change", renderPhonesFilters);
   });
 });
 
-// Keyboard navigation for detail gallery (only when lightbox is NOT open)
+/* ── Category Search Event Listeners (debounced 300ms) ── */
+
+const debouncedCategorySearch = debounce((input) => {
+  const category = input.dataset.categorySearch;
+  const query = input.value;
+  performCategorySearch(category, query);
+}, 300);
+
+document.addEventListener("input", (event) => {
+  const input = event.target.closest("[data-category-search]");
+  if (!input) return;
+  debouncedCategorySearch(input);
+});
+
+// Also trigger on Enter for immediate feedback
+document.addEventListener("keydown", (event) => {
+  const input = event.target.closest("[data-category-search]");
+  if (!input || event.key !== "Enter") return;
+  event.preventDefault();
+  const category = input.dataset.categorySearch;
+  const query = input.value;
+  performCategorySearch(category, query);
+});
+
+// ── Keyboard navigation for detail gallery (only when lightbox is NOT open) ──
 document.addEventListener("keydown", (event) => {
   const detailPage = document.querySelector("#detail.is-active");
   const lightbox = document.querySelector("#lightbox");

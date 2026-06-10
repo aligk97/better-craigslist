@@ -1050,6 +1050,49 @@ h3 {
   gap: 9px;
 }
 
+/* ── Category Search Bar ── */
+
+.category-search-shell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 42px;
+  padding: 0 10px;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-search-shell:focus-within {
+  border-color: #bfb7f3;
+  box-shadow: 0 0 0 2px rgba(187, 90, 234, 0.15);
+}
+
+.category-search-shell .icon {
+  flex: 0 0 auto;
+  opacity: 0.5;
+}
+
+.category-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  outline: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.category-search-input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
 .filter-block label,
 .filter-label {
   color: var(--ink);
