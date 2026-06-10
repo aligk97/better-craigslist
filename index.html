@@ -24,15 +24,25 @@
       <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></symbol>
       <symbol id="i-id" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 10h4M8 14h8"/><path d="M16.5 9.5h.01"/></symbol>
       <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 15a8 8 0 1 1 16 0"/><path d="m12 15 4-4"/><path d="M12 19h.01"/></symbol>
+      <symbol id="i-smartphone" viewBox="0 0 24 24"><path d="M7 3h10v18H7z"/><path d="M11 18h2"/></symbol>
+      <symbol id="i-headphones" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><path d="M4 14h2v6H4z"/><path d="M18 14h2v6h-2z"/></symbol>
+      <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></symbol>
+      <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M18 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></symbol>
+      <symbol id="i-sim" viewBox="0 0 24 24"><path d="M5 22V8l6-6h8v20z"/><path d="M11 2v6H5"/></symbol>
+      <symbol id="i-watch" viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M9 3h6v4H9zM9 17v4h6v-4z"/></symbol>
       <symbol id="i-fuel" viewBox="0 0 24 24"><path d="M5 4h8v17H5z"/><path d="M13 9h2a3 3 0 0 1 3 3v6a2 2 0 0 0 4 0v-6l-3-3"/><path d="M8 8h2"/></symbol>
       <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
       <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+      <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+      <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></symbol>
     </svg>
 
     <header class="topbar">
       <a class="brand" href="#home" data-route-link="home" aria-label="better craigslist home">
-        <span class="brand-mark">cl</span>
-        <span>better craigslist</span>
+        <span class="brand-mark">☮</span>
+        <span>Better Craigslist</span>
       </a>
       <button class="location-pill" type="button">
         <svg class="icon"><use href="#i-map"></use></svg>
@@ -43,11 +53,17 @@
         <a href="#cars" data-route-link="cars">Cars</a>
         <a href="#housing" data-route-link="housing">Housing</a>
         <a href="#computers" data-route-link="computers">Computers</a>
+        <a href="#electronics" data-route-link="electronics">Electronics</a>
+        <a href="#phones" data-route-link="phones">Phones</a>
       </nav>
       <div class="nav-actions">
         <button class="btn btn-primary" type="button">
           <svg class="icon"><use href="#i-plus"></use></svg>
           Post Ad
+        </button>
+        <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+          <svg class="icon icon-sun"><use href="#i-sun"></use></svg>
+          <svg class="icon icon-moon"><use href="#i-moon"></use></svg>
         </button>
         <button class="icon-btn" type="button" aria-label="Saved listings" title="Saved listings">
           <svg class="icon"><use href="#i-heart"></use></svg>
@@ -71,19 +87,14 @@
                   <svg class="icon"><use href="#i-search"></use></svg>
                   <input id="home-query" type="search" placeholder="Try MacBook under $300 or Brooklyn 1 BR" />
                 </label>
-                <select aria-label="Category">
-                  <option>All categories</option>
-                  <option>Cars & trucks</option>
-                  <option>Apartments</option>
-                  <option>Computers</option>
-                </select>
                 <button class="btn btn-primary" type="submit">Search</button>
               </form>
               <div class="trending-row" aria-label="Trending searches">
                 <button type="button" data-route-link="housing">No fee apartments</button>
                 <button type="button" data-route-link="cars">BMW SUV under $20k</button>
                 <button type="button" data-route-link="computers">MacBook under $300</button>
-                <button type="button">Weekend gigs</button>
+                <button type="button" data-route-link="electronics">Bose headphones</button>
+                <button type="button" data-route-link="phones">iPhones under $500</button>
               </div>
             </div>
             <div class="hero-visual" aria-label="Featured local listings">
@@ -118,7 +129,6 @@
               <p class="eyebrow">Browse</p>
               <h2>Popular categories</h2>
             </div>
-            <a class="text-link" href="#cars" data-route-link="cars">View all listings</a>
           </div>
           <div class="category-grid">
             <a class="category-card" href="#housing" data-route-link="housing">
@@ -136,31 +146,17 @@
               <h3>Computers</h3>
               <p>Laptops, desktops, monitors, components, and accessories.</p>
             </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-briefcase"></use></svg>
-              <h3>Jobs</h3>
-              <p>Full-time, part-time, contract, and local hiring posts.</p>
+            <a class="category-card" href="#electronics" data-route-link="electronics">
+              <svg class="icon-lg"><use href="#i-headphones"></use></svg>
+              <h3>Electronics</h3>
+              <p>TVs, speakers, headphones, audio gear, and accessories.</p>
             </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-shield"></use></svg>
-              <h3>Services</h3>
-              <p>Trusted local pros for repairs, moving, events, and more.</p>
+            <a class="category-card" href="#phones" data-route-link="phones">
+              <svg class="icon-lg"><use href="#i-smartphone"></use></svg>
+              <h3>Phones</h3>
+              <p>iPhones, Samsung Galaxy, cases, chargers, and accessories.</p>
             </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-tag"></use></svg>
-              <h3>For sale</h3>
-              <p>Furniture, electronics, tools, clothing, and collectibles.</p>
-            </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-map"></use></svg>
-              <h3>Community</h3>
-              <p>Activities, classes, groups, volunteers, and events.</p>
-            </a>
-            <a class="category-card" href="#home">
-              <svg class="icon-lg"><use href="#i-plus"></use></svg>
-              <h3>Gigs</h3>
-              <p>Quick work, creative projects, crews, and local tasks.</p>
-            </a>
+
           </div>
         </section>
 
@@ -177,14 +173,14 @@
             </div>
           </div>
           <div class="listing-grid three-up">
-            <article class="listing-card">
+            <article class="listing-card" data-detail-id="car-7939679011" data-detail-category="cars">
               <div class="visual-art art-car"></div>
               <div class="listing-body">
                 <div class="listing-topline">
                   <span class="price">$18,900</span>
                   <span class="badge badge-green">&#10003; VIN verified</span>
                 </div>
-                <h3><a href="#detail" data-route-link="detail">2018 BMW X3 xDrive28i</a></h3>
+                <h3>2018 BMW X3 xDrive28i</h3>
                 <p>Williamsburg, Brooklyn</p>
                 <div class="badge-row">
                   <span class="badge">&#9733; 4.8 seller</span>
@@ -192,14 +188,14 @@
                 </div>
               </div>
             </article>
-            <article class="listing-card">
+            <article class="listing-card" data-detail-id="housing-7939342197" data-detail-category="housing">
               <div class="visual-art art-apartment"></div>
               <div class="listing-body">
                 <div class="listing-topline">
                   <span class="price">$2,350</span>
                   <span class="badge badge-green">&#10003; Verified</span>
                 </div>
-                <h3><a href="#housing" data-route-link="housing">Sunny 1 BR near Prospect Park</a></h3>
+                <h3>Sunny 1 BR near Prospect Park</h3>
                 <p>Park Slope, Brooklyn</p>
                 <div class="badge-row">
                   <span class="badge">No fee</span>
@@ -207,14 +203,14 @@
                 </div>
               </div>
             </article>
-            <article class="listing-card">
+            <article class="listing-card" data-detail-id="computer-7910839552" data-detail-category="computers">
               <div class="visual-art art-laptop"></div>
               <div class="listing-body">
                 <div class="listing-topline">
                   <span class="price">$280</span>
                   <span class="badge badge-green">Best value</span>
                 </div>
-                <h3><a href="#computers" data-route-link="computers">MacBook Pro 13, 8GB, 256GB</a></h3>
+                <h3>MacBook Pro 13, 8GB, 256GB</h3>
                 <p>Upper West Side</p>
                 <div class="badge-row">
                   <span class="badge">&#10003; Verified</span>
@@ -232,18 +228,21 @@
             <p class="eyebrow">Cars & trucks</p>
             <h1>Browse cars with smarter filters.</h1>
           </div>
-          <div class="result-meta">
-            <span id="car-count">128 matches</span>
-            <span class="live-dot">Auto-applied</span>
-          </div>
         </div>
         <div class="container search-layout">
           <aside class="filter-panel" aria-label="Car filters">
             <div class="filter-block">
+              <label for="car-search">Search in Cars</label>
+              <div class="category-search-shell">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="car-search" class="category-search-input" type="search" placeholder="Search within cars…" data-category-search="cars" />
+              </div>
+            </div>
+            <div class="filter-block">
               <label for="car-make">Make</label>
               <select id="car-make">
-                <option value="Any make">Any make</option>
-                <option value="BMW" selected>BMW</option>
+                <option value="Any make" selected>Any make</option>
+                <option value="BMW">BMW</option>
                 <option value="Toyota">Toyota</option>
                 <option value="Honda">Honda</option>
                 <option value="Ford">Ford</option>
@@ -252,8 +251,8 @@
             <div class="filter-block">
               <label for="car-model">Model</label>
               <select id="car-model">
-                <option value="Any model">Any model</option>
-                <option value="X3" selected>X3</option>
+                <option value="Any model" selected>Any model</option>
+                <option value="X3">X3</option>
                 <option value="X5">X5</option>
                 <option value="3 Series">3 Series</option>
                 <option value="5 Series">5 Series</option>
@@ -262,26 +261,33 @@
             <div class="filter-block">
               <span class="filter-label">Body type</span>
               <div class="chip-group" data-car-group="body">
-                <button class="chip is-selected" type="button" data-value="SUV">SUV</button>
+                <button class="chip" type="button" data-value="SUV">SUV</button>
                 <button class="chip" type="button" data-value="Sedan">Sedan</button>
                 <button class="chip" type="button" data-value="Truck">Truck</button>
                 <button class="chip" type="button" data-value="Coupe">Coupe</button>
                 <button class="chip" type="button" data-value="Wagon">Wagon</button>
               </div>
             </div>
-            <div class="filter-block">
-              <label for="car-year">Year</label>
-              <select id="car-year">
-                <option value="Any year">Any year</option>
-                <option value="Before 2020" selected>Before 2020</option>
-                <option value="2020 or newer">2020 or newer</option>
-                <option value="2016 or newer">2016 or newer</option>
-              </select>
+            <div class="filter-block range-group">
+              <span class="filter-label">Year range</span>
+              <div class="range-inputs">
+                <input type="number" id="car-year-from" class="range-input" min="1990" max="2030" placeholder="From" aria-label="Year from" />
+                <span class="range-sep">–</span>
+                <input type="number" id="car-year-to" class="range-input" min="1990" max="2030" placeholder="To" aria-label="Year to" />
+              </div>
+            </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Price range</span>
+              <div class="range-inputs">
+                <input type="number" id="car-price-min" class="range-input" min="0" step="500" placeholder="Min $" aria-label="Price min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="car-price-max" class="range-input" min="0" step="500" placeholder="Max $" aria-label="Price max" />
+              </div>
             </div>
             <div class="filter-block">
               <span class="filter-label">Color</span>
               <div class="swatch-grid" data-car-group="color">
-                <button class="swatch black is-selected" type="button" data-value="Black" aria-label="Black"></button>
+                <button class="swatch black" type="button" data-value="Black" aria-label="Black"></button>
                 <button class="swatch white" type="button" data-value="White" aria-label="White"></button>
                 <button class="swatch silver" type="button" data-value="Silver" aria-label="Silver"></button>
                 <button class="swatch blue" type="button" data-value="Blue" aria-label="Blue"></button>
@@ -296,6 +302,7 @@
           <section class="results-panel">
             <div class="active-bar">
               <div id="car-active-filters" class="active-filters" aria-label="Active car filters"></div>
+              <span class="match-status" id="car-status">Showing 3 listings</span>
               <select aria-label="Sort car listings">
                 <option>Best match</option>
                 <option>Lowest price</option>
@@ -303,14 +310,14 @@
               </select>
             </div>
             <div class="listing-list">
-              <article class="listing-card horizontal">
+              <article class="listing-card horizontal" data-detail-id="car-7939679011" data-detail-category="cars">
                 <div class="visual-art art-car"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
                     <span class="year-badge">2018</span>
                     <span class="badge badge-green">&#10003; VIN verified</span>
                   </div>
-                  <h3><a href="#detail" data-route-link="detail">BMW X3 xDrive28i, clean title</a></h3>
+                  <h3>BMW X3 xDrive28i, clean title</h3>
                   <p>Williamsburg, Brooklyn &middot; 42k miles &middot; Automatic</p>
                   <div class="listing-bottom">
                     <span class="price">$18,900</span>
@@ -318,7 +325,7 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal">
+              <article class="listing-card horizontal" data-detail-id="car-7939066504" data-detail-category="cars">
                 <div class="visual-art art-truck"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -333,7 +340,7 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal">
+              <article class="listing-card horizontal" data-detail-id="car-7938716285" data-detail-category="cars">
                 <div class="visual-art art-car silver-car"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -356,51 +363,74 @@
       <section id="detail" class="page" data-page="detail">
         <div class="container detail-grid">
           <section class="detail-main">
+            <nav class="detail-breadcrumb">
+              <a href="#cars" id="detail-breadcrumb-link">
+                <svg class="icon-sm"><use href="#i-x" style="transform: rotate(135deg)"></use></svg>
+                Back
+              </a>
+            </nav>
             <div class="detail-gallery">
-              <div class="visual-art art-car detail-art"></div>
-              <div class="thumb-row">
-                <button class="thumb is-selected" type="button"><span class="visual-art art-car"></span></button>
+              <div class="detail-gallery-main">
+                <div class="visual-art detail-art" id="detail-art"></div>
+                <button class="gallery-nav gallery-nav-left" type="button" aria-label="Previous photo">
+                  <svg class="icon"><use href="#i-chevron-left"></use></svg>
+                </button>
+                <button class="gallery-nav gallery-nav-right" type="button" aria-label="Next photo">
+                  <svg class="icon"><use href="#i-chevron-right"></use></svg>
+                </button>
+                <span class="photo-counter" id="detail-photo-counter">1 / 7</span>
+              </div>
+              <div class="thumb-row" id="detail-thumbs">
+                <button class="thumb is-selected" type="button"><span class="visual-art"></span></button>
                 <button class="thumb" type="button"><span class="visual-art art-dashboard"></span></button>
                 <button class="thumb" type="button"><span class="visual-art art-wheel"></span></button>
               </div>
             </div>
+            <div class="lightbox" id="lightbox" aria-hidden="true">
+              <div class="lightbox-overlay" id="lightbox-overlay"></div>
+              <button class="lightbox-close" type="button" aria-label="Close lightbox">
+                <svg class="icon"><use href="#i-x"></use></svg>
+              </button>
+              <button class="lightbox-nav lightbox-nav-left" type="button" aria-label="Previous photo">
+                <svg class="icon"><use href="#i-chevron-left"></use></svg>
+              </button>
+              <button class="lightbox-nav lightbox-nav-right" type="button" aria-label="Next photo">
+                <svg class="icon"><use href="#i-chevron-right"></use></svg>
+              </button>
+              <div class="lightbox-image-wrapper">
+                <img class="lightbox-image" id="lightbox-image" src="" alt="Photo enlarged" />
+              </div>
+              <span class="lightbox-counter" id="lightbox-counter">1 / 7</span>
+            </div>
             <div class="detail-title-row">
               <div>
-                <p class="eyebrow">Cars & trucks / Brooklyn</p>
-                <h1>2012 Ford Mustang GT Premium</h1>
-                <p class="muted">Coupe &middot; Excellent condition &middot; Manual</p>
+                <p class="eyebrow detail-eyebrow" id="detail-eyebrow">Cars & trucks</p>
+                <h1 id="detail-title">Loading...</h1>
+                <p class="muted" id="detail-muted"></p>
               </div>
-              <span class="detail-price">$6,000</span>
+              <span class="detail-price" id="detail-price">$--</span>
             </div>
-            <div class="highlight-row">
-              <span class="badge badge-green">&#10003; No rust</span>
-              <span class="badge badge-green">&#10003; New tires</span>
-              <span class="badge badge-green">&#10003; Borla exhaust</span>
-              <span class="badge">Garage kept</span>
-            </div>
+            <div class="highlight-row" id="detail-highlights"></div>
             <section class="section-block flush">
               <div class="section-heading compact">
-                <h2>Vehicle details</h2>
+                <h2 id="detail-card-heading">Details</h2>
               </div>
-              <div class="detail-card-grid">
-                <div class="detail-card"><svg class="icon"><use href="#i-car"></use></svg><span>Year</span><strong>2012</strong></div>
-                <div class="detail-card"><svg class="icon"><use href="#i-gauge"></use></svg><span>Mileage</span><strong>88k</strong></div>
-                <div class="detail-card"><svg class="icon"><use href="#i-tag"></use></svg><span>Transmission</span><strong>Manual</strong></div>
-                <div class="detail-card"><svg class="icon"><use href="#i-fuel"></use></svg><span>Fuel</span><strong>Gas</strong></div>
-                <div class="detail-card"><svg class="icon"><use href="#i-car"></use></svg><span>Body</span><strong>Coupe</strong></div>
-                <div class="detail-card"><svg class="icon"><use href="#i-gauge"></use></svg><span>Cylinders</span><strong>8</strong></div>
-                <div class="detail-card"><svg class="icon"><use href="#i-map"></use></svg><span>Drive</span><strong>RWD</strong></div>
-                <div class="detail-card"><svg class="icon"><use href="#i-shield"></use></svg><span>Title</span><strong>Clean</strong></div>
-              </div>
+              <div class="detail-card-grid" id="detail-card-grid"></div>
+            </section>
+            <section class="seller-note" id="seller-note-section">
+              <h2>Seller's note</h2>
+              <p id="seller-note-text">
+                Open the original listing to view full details and contact the seller.
+              </p>
             </section>
             <section class="vehicle-history">
               <div>
                 <p class="eyebrow">Vehicle history</p>
-                <h2>VIN ending in 84F3</h2>
-                <p>No accidents reported. Service history available from the seller.</p>
+                <h2 id="detail-vin-label">VIN available</h2>
+                <p id="detail-vin-text">VIN and vehicle history details can be found on the original listing.</p>
               </div>
-              <button class="btn btn-secondary" type="button">View report</button>
-              <span class="badge badge-green">CarFax ready</span>
+              <button class="btn btn-secondary" id="view-report-btn" type="button">View on Craigslist</button>
+              <span class="badge badge-green" id="history-source-badge">Source listing</span>
             </section>
             <section class="safety-banner" aria-label="Safety tips">
               <div>
@@ -418,18 +448,18 @@
             </section>
           </section>
 
-          <aside class="seller-panel">
+          <aside class="seller-panel" id="seller-panel">
             <div class="seller-card">
               <div class="seller-head">
-                <div class="avatar">MJ</div>
+                <div class="avatar" id="seller-avatar">CL</div>
                 <div>
-                  <h2>Marcus J.</h2>
-                  <span class="badge badge-green">&#10003; Verified seller</span>
+                  <h2 id="seller-name">Craigslist Seller</h2>
+                  <span class="badge badge-green">&#10003; Verified listing</span>
                 </div>
               </div>
               <div class="seller-score">
-                <strong>&#9733; 4.7</strong>
-                <span>member since 2018 &middot; 36 completed sales</span>
+                <strong id="seller-rating">&#9733; 4.5</strong>
+                <span id="seller-meta">member since 2019 &middot; Active seller</span>
               </div>
               <div class="verification-grid">
                 <span><svg class="icon-sm"><use href="#i-mail"></use></svg> Email</span>
@@ -438,10 +468,16 @@
               </div>
               <div class="seller-price">
                 <span>Asking price</span>
-                <strong>$6,000</strong>
+                <strong id="seller-price-value">$--</strong>
               </div>
-              <button class="btn btn-primary seller-cta" type="button">Contact Seller</button>
-              <button class="btn btn-ghost" type="button">Save listing</button>
+              <button class="btn btn-primary seller-cta" id="seller-cta-btn" type="button">
+                <svg class="icon"><use href="#i-mail"></use></svg>
+                Contact Seller
+              </button>
+              <button class="btn btn-ghost" id="detail-save-btn" type="button">
+                <svg class="icon"><use href="#i-heart"></use></svg>
+                Save listing
+              </button>
             </div>
           </aside>
         </div>
@@ -461,14 +497,21 @@
         </div>
         <div class="container search-layout">
           <aside class="filter-panel" aria-label="Housing filters">
+            <div class="filter-block">
+              <label for="housing-search">Search in Housing</label>
+              <div class="category-search-shell">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="housing-search" class="category-search-input" type="search" placeholder="Search within housing…" data-category-search="housing" />
+              </div>
+            </div>
             <div class="segmented" role="group" aria-label="Listing type">
-              <button class="is-selected" type="button" data-housing-filter="For rent">For rent</button>
+              <button type="button" data-housing-filter="For rent">For rent</button>
               <button type="button" data-housing-filter="For sale">Sale</button>
               <button type="button" data-housing-filter="Short-term">Short-term</button>
             </div>
             <div class="filter-block">
               <label for="housing-location">City or neighborhood</label>
-              <input id="housing-location" type="text" value="Brooklyn, NY" autocomplete="off" />
+              <input id="housing-location" type="text" value="" placeholder="e.g. Brooklyn, Williamsburg" autocomplete="off" />
               <div class="quick-links">
                 <button type="button" data-housing-filter="Williamsburg">Williamsburg</button>
                 <button type="button" data-housing-filter="Park Slope">Park Slope</button>
@@ -479,19 +522,19 @@
               <span class="filter-label">Bedrooms</span>
               <div class="chip-group">
                 <button class="chip" type="button" data-housing-filter="Studio">Studio</button>
-                <button class="chip is-selected" type="button" data-housing-filter="1 BR">1</button>
+                <button class="chip" type="button" data-housing-filter="1 BR">1</button>
                 <button class="chip" type="button" data-housing-filter="2 BR">2</button>
                 <button class="chip" type="button" data-housing-filter="3 BR">3</button>
                 <button class="chip" type="button" data-housing-filter="4+ BR">4+</button>
               </div>
             </div>
-            <div class="filter-block">
-              <span class="filter-label">Monthly rent</span>
-              <select id="housing-price">
-                <option value="Under $2,500" selected>Under $2,500</option>
-                <option value="Under $3,000">Under $3,000</option>
-                <option value="Any price">Any price</option>
-              </select>
+            <div class="filter-block range-group">
+              <span class="filter-label">Rent range</span>
+              <div class="range-inputs">
+                <input type="number" id="housing-rent-min" class="range-input" min="0" step="100" placeholder="Min $" aria-label="Rent min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="housing-rent-max" class="range-input" min="0" step="100" placeholder="Max $" aria-label="Rent max" />
+              </div>
             </div>
             <div class="filter-block">
               <span class="filter-label">Furnished</span>
@@ -505,17 +548,17 @@
               <div class="chip-group">
                 <button class="chip" type="button" data-housing-filter="Short-term lease">Short-term</button>
                 <button class="chip" type="button" data-housing-filter="Month-to-month">Month-to-month</button>
-                <button class="chip is-selected" type="button" data-housing-filter="1 year+">1 year+</button>
+                <button class="chip" type="button" data-housing-filter="1 year+">1 year+</button>
               </div>
             </div>
           </aside>
           <section class="results-panel">
             <div class="active-bar">
               <div id="housing-active-filters" class="active-filters" aria-label="Active housing filters"></div>
-              <span class="live-dot">Saved filters</span>
+              <span class="match-status" id="housing-status">Showing 3 listings</span>
             </div>
             <div class="listing-list">
-              <article class="listing-card horizontal apartment-card">
+              <article class="listing-card horizontal apartment-card" data-detail-id="housing-7939394454" data-detail-category="housing">
                 <div class="visual-art art-apartment"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -535,7 +578,7 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal apartment-card">
+              <article class="listing-card horizontal apartment-card" data-detail-id="housing-7939342197" data-detail-category="housing">
                 <div class="visual-art art-loft"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -555,7 +598,7 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal apartment-card">
+              <article class="listing-card horizontal apartment-card" data-detail-id="housing-7939064569" data-detail-category="housing">
                 <div class="visual-art art-townhouse"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -583,30 +626,32 @@
       <section id="computers" class="page" data-page="computers">
         <div class="container page-head">
           <div>
-            <p class="eyebrow">Computers / MacBook search</p>
-            <h1>Find the MacBook, skip the clutter.</h1>
+            <p class="eyebrow">Computers</p>
+            <h1>Find what you need, skip the clutter.</h1>
           </div>
           <button id="compare-button" class="btn btn-primary" type="button">Compare (2)</button>
         </div>
         <div class="container computer-tabs" role="tablist" aria-label="Computer categories">
-          <button class="is-selected" type="button">Laptops</button>
+          <button type="button">Laptops</button>
           <button type="button">Desktops</button>
           <button type="button">Monitors</button>
           <button type="button">Components</button>
           <button type="button">Accessories</button>
         </div>
-        <div class="container smart-banner">
-          <svg class="icon"><use href="#i-search"></use></svg>
-          <strong>Detected: Apple MacBook &middot; max $300 &middot; accessories excluded</strong>
-          <span>Best value sort is on.</span>
-        </div>
         <div class="container search-layout">
           <aside class="filter-panel" aria-label="Computer filters">
             <div class="filter-block">
+              <label for="computer-search">Search in Computers</label>
+              <div class="category-search-shell">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="computer-search" class="category-search-input" type="search" placeholder="Search within computers…" data-category-search="computers" />
+              </div>
+            </div>
+            <div class="filter-block">
               <label for="computer-brand">Brand</label>
               <select id="computer-brand">
-                <option>Any brand</option>
-                <option selected>Apple</option>
+                <option selected>Any brand</option>
+                <option>Apple</option>
                 <option>Dell</option>
                 <option>Lenovo</option>
                 <option>HP</option>
@@ -615,23 +660,38 @@
             <div class="filter-block">
               <span class="filter-label">Screen size</span>
               <div class="chip-group">
-                <button class="chip is-selected" type="button">13"</button>
+                <button class="chip" type="button">13"</button>
                 <button class="chip" type="button">14"</button>
                 <button class="chip" type="button">15"</button>
                 <button class="chip" type="button">16"</button>
               </div>
             </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Year range</span>
+              <div class="range-inputs">
+                <input type="number" id="computer-year-from" class="range-input" min="2000" max="2030" placeholder="From" aria-label="Year from" />
+                <span class="range-sep">–</span>
+                <input type="number" id="computer-year-to" class="range-input" min="2000" max="2030" placeholder="To" aria-label="Year to" />
+              </div>
+            </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Price range</span>
+              <div class="range-inputs">
+                <input type="number" id="computer-price-min" class="range-input" min="0" step="50" placeholder="Min $" aria-label="Price min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="computer-price-max" class="range-input" min="0" step="50" placeholder="Max $" aria-label="Price max" />
+              </div>
+            </div>
             <div class="filter-block select-grid">
-              <label>Year<select><option>2015+</option><option>2018+</option><option>2020+</option></select></label>
-              <label>RAM<select><option>8GB+</option><option>16GB+</option></select></label>
-              <label>Storage<select><option>256GB SSD+</option><option>512GB SSD+</option></select></label>
-              <label>Condition<select><option>Good+</option><option>Excellent</option><option>Open box</option></select></label>
+              <label>RAM<select><option selected>Any RAM</option><option>8GB+</option><option>16GB+</option></select></label>
+              <label>Storage<select><option selected>Any storage</option><option>256GB SSD+</option><option>512GB SSD+</option></select></label>
+              <label>Condition<select><option selected>Any condition</option><option>Good+</option><option>Excellent</option><option>Open box</option></select></label>
             </div>
             <div class="filter-block exclude-box">
               <span class="filter-label">Exclude</span>
-              <label><input type="checkbox" checked /> Cases</label>
-              <label><input type="checkbox" checked /> Keyboards</label>
-              <label><input type="checkbox" checked /> Repair</label>
+              <label><input type="checkbox" /> Cases</label>
+              <label><input type="checkbox" /> Keyboards</label>
+              <label><input type="checkbox" /> Repair</label>
             </div>
           </aside>
           <section class="results-panel">
@@ -642,6 +702,7 @@
                 <span class="filter-chip">Under $300</span>
                 <span class="filter-chip">Accessories excluded</span>
               </div>
+              <span class="match-status" id="computers-status">Showing 5 listings</span>
               <select aria-label="Sort computer listings">
                 <option selected>Best value</option>
                 <option>Lowest price</option>
@@ -649,8 +710,8 @@
               </select>
             </div>
             <div class="listing-list computer-list">
-              <article class="listing-card horizontal compare-card is-compared">
-                <label class="compare-check"><input type="checkbox" checked /> Compare</label>
+              <article class="listing-card horizontal compare-card is-compared" data-detail-id="computer-7910839552" data-detail-category="computers">
+                <label class="compare-check" onclick="event.stopPropagation()"><input type="checkbox" checked /> Compare</label>
                 <div class="visual-art art-laptop"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -670,8 +731,8 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal compare-card is-compared">
-                <label class="compare-check"><input type="checkbox" checked /> Compare</label>
+              <article class="listing-card horizontal compare-card is-compared" data-detail-id="computer-7939700366" data-detail-category="computers">
+                <label class="compare-check" onclick="event.stopPropagation()"><input type="checkbox" checked /> Compare</label>
                 <div class="visual-art art-laptop dark-laptop"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -691,8 +752,8 @@
                   </div>
                 </div>
               </article>
-              <article class="listing-card horizontal compare-card">
-                <label class="compare-check"><input type="checkbox" /> Compare</label>
+              <article class="listing-card horizontal compare-card" data-detail-id="computer-7939646209" data-detail-category="computers">
+                <label class="compare-check" onclick="event.stopPropagation()"><input type="checkbox" /> Compare</label>
                 <div class="visual-art art-laptop light-laptop"></div>
                 <div class="listing-body">
                   <div class="listing-topline">
@@ -713,6 +774,170 @@
                 </div>
               </article>
             </div>
+          </section>
+        </div>
+      </section>
+      <section id="electronics" class="page" data-page="electronics">
+        <div class="container page-head">
+          <div>
+            <p class="eyebrow">Electronics</p>
+            <h1>TVs, audio, headphones, and more.</h1>
+          </div>
+          <select class="sort-select" aria-label="Sort electronics">
+            <option selected>Best value</option>
+            <option>Lowest price</option>
+            <option>Newest</option>
+          </select>
+        </div>
+        <div class="container search-layout">
+          <aside class="filter-panel" aria-label="Electronics filters">
+            <div class="filter-block">
+              <label for="electronics-search">Search in Electronics</label>
+              <div class="category-search-shell">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="electronics-search" class="category-search-input" type="search" placeholder="Search within electronics…" data-category-search="electronics" />
+              </div>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Category</span>
+              <div class="chip-group" id="electronics-subcategory-group">
+                <button class="chip" type="button">Audio</button>
+                <button class="chip" type="button">Headphones</button>
+                <button class="chip" type="button">TV &amp; video</button>
+                <button class="chip" type="button">Other electronics</button>
+              </div>
+            </div>
+            <div class="filter-block">
+              <label for="electronics-brand">Brand</label>
+              <select id="electronics-brand">
+                <option selected>Any brand</option>
+                <option>Apple</option>
+                <option>Bose</option>
+                <option>LG</option>
+                <option>Yamaha</option>
+              </select>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Condition</span>
+              <div class="chip-group two-col">
+                <button class="chip" type="button" data-electronics-condition="New">New</button>
+                <button class="chip" type="button" data-electronics-condition="Used - Good">Good</button>
+                <button class="chip" type="button" data-electronics-condition="Used - Fair">Fair</button>
+                <button class="chip" type="button" data-electronics-condition="Open box">Open box</button>
+              </div>
+            </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Price range</span>
+              <div class="range-inputs">
+                <input type="number" id="electronics-price-min" class="range-input" min="0" step="25" placeholder="Min $" aria-label="Price min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="electronics-price-max" class="range-input" min="0" step="25" placeholder="Max $" aria-label="Price max" />
+              </div>
+            </div>
+          </aside>
+          <section class="results-panel">
+            <div class="active-bar">
+              <div id="electronics-active-filters" class="active-filters" aria-label="Active electronics filters"></div>
+              <span class="match-status" id="electronics-status">Showing 20 listings</span>
+            </div>
+            <div class="listing-list" id="electronics-listing-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="search" class="page" data-page="search">
+        <div class="container page-head">
+          <div>
+            <p class="eyebrow" id="search-eyebrow">Search results</p>
+            <h1 id="search-heading">Searching...</h1>
+          </div>
+          <span class="match-status" id="search-status"></span>
+        </div>
+        <div class="container" id="search-results-container">
+          <div class="listing-list" id="search-listing-list"></div>
+        </div>
+      </section>
+
+      <section id="phones" class="page" data-page="phones">
+        <div class="container page-head">
+          <div>
+            <p class="eyebrow">Phones</p>
+            <h1>iPhones, Samsung, and accessories.</h1>
+          </div>
+          <select class="sort-select" aria-label="Sort phones">
+            <option selected>Best value</option>
+            <option>Lowest price</option>
+            <option>Newest</option>
+          </select>
+        </div>
+        <div class="container search-layout">
+          <aside class="filter-panel" aria-label="Phone filters">
+            <div class="filter-block">
+              <label for="phones-search">Search in Phones</label>
+              <div class="category-search-shell">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="phones-search" class="category-search-input" type="search" placeholder="Search within phones…" data-category-search="phones" />
+              </div>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Type</span>
+              <div class="chip-group" id="phones-subcategory-group">
+                <button class="chip" type="button">iPhone</button>
+                <button class="chip" type="button">Samsung Galaxy</button>
+                <button class="chip" type="button">Cases &amp; covers</button>
+                <button class="chip" type="button">Accessories</button>
+                <button class="chip" type="button">Other phones</button>
+              </div>
+            </div>
+            <div class="filter-block">
+              <label for="phones-brand">Brand</label>
+              <select id="phones-brand">
+                <option selected>Any brand</option>
+                <option>Apple</option>
+                <option>Samsung</option>
+                <option>Motorola</option>
+                <option>LG</option>
+              </select>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Storage</span>
+              <div class="chip-group">
+                <button class="chip" type="button" data-phones-storage="64">64GB</button>
+                <button class="chip" type="button" data-phones-storage="128">128GB</button>
+                <button class="chip" type="button" data-phones-storage="256">256GB</button>
+                <button class="chip" type="button" data-phones-storage="512">512GB</button>
+              </div>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Unlocked</span>
+              <div class="chip-group two-col">
+                <button class="chip" type="button" data-phones-unlocked="true">Unlocked</button>
+                <button class="chip" type="button" data-phones-unlocked="false">Carrier</button>
+              </div>
+            </div>
+            <div class="filter-block">
+              <span class="filter-label">Condition</span>
+              <div class="chip-group">
+                <button class="chip" type="button" data-phones-condition="New">New</button>
+                <button class="chip" type="button" data-phones-condition="Good">Good</button>
+                <button class="chip" type="button" data-phones-condition="Fair">Fair</button>
+              </div>
+            </div>
+            <div class="filter-block range-group">
+              <span class="filter-label">Price range</span>
+              <div class="range-inputs">
+                <input type="number" id="phones-price-min" class="range-input" min="0" step="25" placeholder="Min $" aria-label="Price min" />
+                <span class="range-sep">–</span>
+                <input type="number" id="phones-price-max" class="range-input" min="0" step="25" placeholder="Max $" aria-label="Price max" />
+              </div>
+            </div>
+          </aside>
+          <section class="results-panel">
+            <div class="active-bar">
+              <div id="phones-active-filters" class="active-filters" aria-label="Active phone filters"></div>
+              <span class="match-status" id="phones-status">Showing 20 listings</span>
+            </div>
+            <div class="listing-list" id="phones-listing-list"></div>
           </section>
         </div>
       </section>
