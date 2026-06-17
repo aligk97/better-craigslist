@@ -513,6 +513,7 @@ h3 {
   gap: 14px;
   align-items: center;
   min-height: 112px;
+  height: 112px;
   padding: 12px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -520,13 +521,23 @@ h3 {
   box-shadow: 0 14px 28px rgba(23, 21, 31, 0.08);
 }
 
-.mini-listing.offset {
-  transform: translateX(28px);
+.mini-listing {
+  margin-left: 28px;
 }
 
 .mini-listing strong,
 .mini-listing span {
   display: block;
+}
+
+.mini-listing > div:last-child {
+  overflow: hidden;
+}
+
+.mini-listing strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mini-listing span,
@@ -742,7 +753,9 @@ h3 {
 }
 
 .mini-listing .visual-art {
+  width: 98px;
   min-height: 86px;
+  height: 86px;
 }
 
 .art-car,
@@ -2078,10 +2091,9 @@ html.dark .compare-card.is-compared {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .mini-listing,
-  .mini-listing.offset {
+  .mini-listing {
     grid-template-columns: 1fr;
-    transform: none;
+    margin-left: 0;
   }
 }
 
